@@ -1,10 +1,13 @@
 ---
 name: user-story-generator
 description: >-
-  Analyzes project inputs in any format (notes, transcripts, emails, PRDs, spreadsheets,
-  bullet lists, chat logs) and converts them into structured user stories with acceptance
-  criteria. Use when the user asks to generate user stories, turn requirements into a
-  backlog, write acceptance criteria, or break a feature or project down into stories.
+  Convert raw project inputs in any format (meeting notes, transcripts, email threads,
+  PRDs, spreadsheets, bullet lists, chat logs) into structured user stories with
+  acceptance criteria, grouped into epics. Use when the user asks to generate user
+  stories, turn requirements or notes into a backlog, write acceptance criteria, break a
+  feature or project down into stories, or "make this Agile".
+tags: [product, requirements, agile, backlog]
+allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 ---
 
 # UserStoryGenerator
@@ -39,11 +42,20 @@ If no input is provided, ask the user to paste the material or drop files in `in
 3. **Cluster** – Group related needs into **epics** (themes / feature areas).
 4. **Write stories** – For each need, write one user story in the required format.
    Split anything that bundles multiple actions or benefits into separate stories.
-5. **Acceptance criteria** – Add 2–6 testable criteria per story (see format below).
+5. **Acceptance criteria** – Add 2–6 testable criteria per story. See
+   [references/acceptance-criteria-guide.md](references/acceptance-criteria-guide.md).
 6. **Flag gaps** – Where inputs are silent or contradictory, add an "Open questions"
    list instead of guessing. Do not invent scope, personas, or numbers.
-7. **Write output** – Save to `output/user-stories-<YYYY-MM-DD>.md` (or per-epic files
-   for large sets). Also summarize in the chat response.
+7. **Write output** – Save to `output/user-stories-<YYYY-MM-DD>.md` following
+   [references/output-template.md](references/output-template.md). Also summarize in chat.
+8. **Validate** – Run the harness validator and fix every error it reports before
+   presenting results:
+
+   ```bash
+   python3 harness/validate_stories.py --strict output/user-stories-<YYYY-MM-DD>.md
+   ```
+
+   Then self-check against [references/rubric.md](references/rubric.md).
 
 ## Required user story format
 
@@ -59,56 +71,22 @@ Rules:
 
 ## Acceptance criteria format
 
-Prefer Gherkin-style:
+Prefer Gherkin-style — `Given <context>, when <action>, then <expected outcome>.` — with a
+`- [ ]` checklist as the fallback for constraints that don't fit a scenario. Full guidance
+and examples: [references/acceptance-criteria-guide.md](references/acceptance-criteria-guide.md).
 
-```
-- Given <context>, when <action>, then <expected outcome>.
-```
+## Output
 
-A checklist is acceptable when scenarios don't fit Given/When/Then:
-
-```
-- [ ] <observable, testable condition>
-```
-
-Criteria must be **testable, specific, and cover the main path plus key edge cases**
-(empty state, invalid input, permissions, error handling) when relevant.
-
-## Output template
-
-```markdown
-# User Stories — <project / feature name>
-
-_Generated: <date> · Sources: <list of inputs>_
-
-## Personas
-- **<user-type>** — <one-line description>
-
-## Epic: <epic name>
-
-### US-<n>: <short title>
-**As a** <user-type>, **I want to** <action> **so that I can** <benefit/gain>.
-
-**Acceptance criteria**
-- Given <...>, when <...>, then <...>.
-- Given <...>, when <...>, then <...>.
-
-**Priority:** <High/Medium/Low>  ·  **Notes:** <optional>
-
----
-
-## Open questions
-- <ambiguity or missing info that blocks a confident story>
-```
+Structure and rules: [references/output-template.md](references/output-template.md).
+A worked input → output example is in [examples/](examples/).
 
 ## Quality checklist before finishing
 
-- [ ] Every input source was reviewed and is listed.
+- [ ] Every input source was reviewed and is listed on the `Sources:` line.
 - [ ] Every story follows the `As a / I want to / so that` sentence exactly.
 - [ ] No story bundles multiple actions or multiple benefits.
 - [ ] Every story has at least 2 testable acceptance criteria.
 - [ ] Personas are specific; "user" only used when truly generic.
 - [ ] Assumptions and gaps are in "Open questions", not invented into stories.
 - [ ] Output file written to `output/`.
-
-See `examples/` for a worked input-to-output sample.
+- [ ] `python3 harness/validate_stories.py --strict <file>` passes.

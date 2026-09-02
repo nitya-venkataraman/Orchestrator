@@ -1,0 +1,14 @@
+# Harness run artifacts
+harness/results/*.json
+harness/results/latest-*.md
+eval-result.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Editors / OS
+.DS_Store
+
+# Claude Code per-user local settings
+.claude/settings.local.json

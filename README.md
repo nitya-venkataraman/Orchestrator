@@ -31,3 +31,16 @@ stories, a backlog, or acceptance criteria.
 
 See `.claude/skills/user-story-generator/examples/` for a sample input and the stories
 generated from it.
+
+## Testing the skill
+
+A three-layer harness lives in [`harness/`](harness/README.md):
+
+| Layer | Command | Needs |
+|-------|---------|-------|
+| Deterministic validator | `make test` / `python3 harness/validate_stories.py <file>` | Python 3 |
+| End-to-end local runner | `make run` / `python3 harness/run.py` | `claude` CLI |
+| LLM-graded eval suite | `make eval` / `claude plugin eval ./.claude/skills/user-story-generator` | early access + API key |
+
+`.github/workflows/harness.yml` runs the validator, its self-tests, and the structural
+lint on every push and PR.

@@ -1,0 +1,15 @@
+PRD excerpt — Saved Searches (v1)
+
+Goal: reduce repeat-search effort and grow return visits via match notifications.
+
+In scope for v1:
+- Create a saved search from the current search filters.
+- View saved searches on a dedicated "Saved" screen, newest first.
+- Run a saved search (opens results with those filters applied).
+- Opt in to email match alerts per saved search, daily or weekly.
+- Unsubscribe from a saved search's alerts without deleting the search.
+
+Success metric: 25% of active seekers have >= 1 saved search within 60 days of launch;
+alert emails achieve >= 30% open rate.
+
+Not in scope for v1: push notifications, shared/team searches, instant alerts.

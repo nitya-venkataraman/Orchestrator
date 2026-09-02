@@ -1,0 +1,6 @@
+id,area,requirement,priority,notes
+R1,intake,Scan a return barcode to open the matching order,High,barcode printed on packing slip
+R2,intake,Show the customer-stated return reason on the return screen,High,captured at RMA request time
+R3,processing,Mark each returned item as restock / refurbish / scrap,Medium,drives inventory adjustment
+R4,reporting,Monthly export of returns by reason and category,Medium,finance consumer; CSV acceptable
+R5,intake,Handle a return with no barcode by manual order lookup,Medium,fallback path

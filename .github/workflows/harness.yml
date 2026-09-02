@@ -1,0 +1,81 @@
+name: skill-harness
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validator self-tests
+        run: python3 harness/tests/run_tests.py
+      - name: Validate committed example output
+        run: |
+          python3 harness/validate_stories.py --strict \
+            .claude/skills/user-story-generator/examples/sample-output.md
+      - name: Validate any generated backlogs in output/
+        run: |
+          shopt -s nullglob
+          files=(output/*.md)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "no output/*.md to check"
+          else
+            python3 harness/validate_stories.py --strict "${files[@]}"
+          fi
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Lint skill + eval suite structure
+        run: python3 harness/lint_skill.py
+
+  eval:
+    # `claude plugin eval` is early-access and needs an API key. This job only runs
+    # when the ANTHROPIC_API_KEY secret is configured, and never blocks the build
+    # while the feature is in early access.
+    runs-on: ubuntu-latest
+    needs: [validate, lint]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Skip if no API key
+        id: gate
+        run: |
+          if [ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "ANTHROPIC_API_KEY not set — skipping eval"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install Claude Code
+        if: steps.gate.outputs.run == 'true'
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Run eval suite
+        if: steps.gate.outputs.run == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude plugin eval ./.claude/skills/user-story-generator \
+            --eval-dir .claude/skills/user-story-generator/evals \
+            --json eval-result.json --no-publish || true
+          cat eval-result.json || true
+      - name: Upload eval result
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-result
+          path: eval-result.json
+          if-no-files-found: ignore

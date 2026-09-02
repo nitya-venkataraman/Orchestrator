@@ -1,0 +1,18 @@
+From: Rosa Imports (Operations)
+To: Product
+Subject: RE: warehouse returns are a mess
+
+> From: Product
+> What's the single biggest pain in returns right now?
+
+Honestly it's that the warehouse team can't tell why something came back. The box shows
+up, there's no paperwork half the time, and they have to email the customer service queue
+to find the original order. That round trip is 1-2 days per return.
+
+If the packing slip had a scannable code that pulled up the order + the stated reason for
+return, they could just process it on the spot.
+
+Second thing: we have no report of what's being returned and why. Finance asks every month
+and I build it by hand in a spreadsheet.
+
+Rosa
