@@ -1,0 +1,56 @@
+{
+  "color": {
+    "bg": "#FAF6EF",
+    "bgAlt": "#F2EBE0",
+    "ink": "#000000",
+    "surface": "#FFFFFF",
+    "accentPink": "#FF39A4",
+    "accentPurple": "#623CEA",
+    "accentGreen": "#008B21",
+    "accentYellow": "#FFD400",
+    "accentBlue2": "#3B4EFF",
+    "accentGrey": "#C9C9C9",
+    "accentRed": "#E8262B",
+    "focusBlue": "#005BD1",
+    "textMuted": "#666666",
+    "textMuted2": "#707070",
+    "border": "#EEEEEE",
+    "overlay": "rgba(0,0,0,0.56)",
+    "overlayHeavy": "rgba(0,0,0,0.8)"
+  },
+  "typography": {
+    "fontDisplay": "GTStandard-M, sans-serif",
+    "fontHeading": "\"Instrument Sans\", sans-serif",
+    "fontBody": "Helvetica, Arial, sans-serif",
+    "size": {
+      "display": "134px",
+      "h2": "86px",
+      "h3": "69px",
+      "h4": "22px",
+      "h5": "44px",
+      "h6": "14px",
+      "body": "18px",
+      "small": "15px",
+      "micro": "10px"
+    },
+    "tracking": {
+      "display": "-6.71px",
+      "h2": "-4.29px",
+      "h5": "-2.2px",
+      "micro": "0.75px"
+    }
+  },
+  "space": {
+    "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "20px",
+    "6": "24px", "7": "28px", "8": "36px", "9": "40px",
+    "10": "100px", "11": "108px", "12": "136px"
+  },
+  "radius": {
+    "none": "0px", "sm": "4px", "md": "8px", "lg": "12px",
+    "xl": "16px", "full": "9999px"
+  },
+  "shadow": {
+    "focus": "0 0 0 1px #005BD1",
+    "focusInset": "0 0 0 10px #005BD1 inset"
+  }
+}
