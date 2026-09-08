@@ -21,12 +21,15 @@ jobs:
         run: |
           python3 harness/validate_stories.py --strict \
             .claude/skills/user-story-generator/examples/sample-output.md
+      # Only user-story backlogs. output/ also holds Superlap pipeline stage
+      # artifacts (discovery-synthesis-/strategy-/ideation-/wireframe-/delivery-),
+      # which are a different document type with their own validator.
       - name: Validate any generated backlogs in output/
         run: |
           shopt -s nullglob
-          files=(output/*.md)
+          files=(output/user-stories-*.md)
           if [ ${#files[@]} -eq 0 ]; then
-            echo "no output/*.md to check"
+            echo "no output/user-stories-*.md to check"
           else
             python3 harness/validate_stories.py --strict "${files[@]}"
           fi
