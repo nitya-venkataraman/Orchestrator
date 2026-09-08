@@ -1,0 +1,95 @@
+{
+  "design_system": "material-3",
+  "note": "Baseline Material 3 system tokens. Wireframe specs reference these by name (md.sys.color.primary, md.sys.typescale.title-large, ...), never the raw values. The values are here only so the Figma render step can create matching Figma variables. Swap in a project's real M3 theme when one exists.",
+  "md.sys.color": {
+    "primary": "#6750A4",
+    "on-primary": "#FFFFFF",
+    "primary-container": "#EADDFF",
+    "on-primary-container": "#21005D",
+    "secondary": "#625B71",
+    "on-secondary": "#FFFFFF",
+    "secondary-container": "#E8DEF8",
+    "on-secondary-container": "#1D192B",
+    "tertiary": "#7D5260",
+    "on-tertiary": "#FFFFFF",
+    "tertiary-container": "#FFD8E4",
+    "surface": "#FEF7FF",
+    "surface-container-lowest": "#FFFFFF",
+    "surface-container-low": "#F7F2FA",
+    "surface-container": "#F3EDF7",
+    "surface-container-high": "#ECE6F0",
+    "surface-container-highest": "#E6E0E9",
+    "on-surface": "#1D1B20",
+    "on-surface-variant": "#49454F",
+    "outline": "#79747E",
+    "outline-variant": "#CAC4D0",
+    "error": "#B3261E",
+    "on-error": "#FFFFFF",
+    "error-container": "#F9DEDC",
+    "on-error-container": "#410E0B",
+    "inverse-surface": "#322F35",
+    "inverse-on-surface": "#F5EFF7",
+    "scrim": "#000000"
+  },
+  "md.sys.typescale": {
+    "display-large": {"size": 57, "line": 64, "weight": 400, "unit": "sp"},
+    "display-medium": {"size": 45, "line": 52, "weight": 400, "unit": "sp"},
+    "display-small": {"size": 36, "line": 44, "weight": 400, "unit": "sp"},
+    "headline-large": {"size": 32, "line": 40, "weight": 400, "unit": "sp"},
+    "headline-medium": {"size": 28, "line": 36, "weight": 400, "unit": "sp"},
+    "headline-small": {"size": 24, "line": 32, "weight": 400, "unit": "sp"},
+    "title-large": {"size": 22, "line": 28, "weight": 400, "unit": "sp"},
+    "title-medium": {"size": 16, "line": 24, "weight": 500, "unit": "sp"},
+    "title-small": {"size": 14, "line": 20, "weight": 500, "unit": "sp"},
+    "body-large": {"size": 16, "line": 24, "weight": 400, "unit": "sp"},
+    "body-medium": {"size": 14, "line": 20, "weight": 400, "unit": "sp"},
+    "body-small": {"size": 12, "line": 16, "weight": 400, "unit": "sp"},
+    "label-large": {"size": 14, "line": 20, "weight": 500, "unit": "sp"},
+    "label-medium": {"size": 12, "line": 16, "weight": 500, "unit": "sp"},
+    "label-small": {"size": 11, "line": 16, "weight": 500, "unit": "sp"}
+  },
+  "md.sys.shape.corner": {
+    "none": 0,
+    "extra-small": 4,
+    "small": 8,
+    "medium": 12,
+    "large": 16,
+    "extra-large": 28,
+    "full": 9999,
+    "unit": "dp"
+  },
+  "md.sys.elevation": {
+    "level0": 0,
+    "level1": 1,
+    "level2": 3,
+    "level3": 6,
+    "level4": 8,
+    "level5": 12,
+    "unit": "dp"
+  },
+  "md.sys.spacing": {
+    "scale": [4, 8, 12, 16, 24, 32, 48, 64],
+    "edge-margin": 16,
+    "between-items": 8,
+    "between-groups": 24,
+    "unit": "dp"
+  },
+  "platform_conventions": {
+    "android": {
+      "status_inset": "24dp",
+      "bottom_inset": "48dp",
+      "min_touch_target": "48dp",
+      "system_font": "Roboto",
+      "frame": "360x800dp",
+      "primary_nav": "MD-NavigationBar (bottom)"
+    },
+    "ios": {
+      "status_inset": "44-59pt",
+      "bottom_inset": "34pt",
+      "min_touch_target": "44pt",
+      "system_font": "SF Pro",
+      "frame": "393x852pt",
+      "primary_nav": "MD-NavigationBar as bottom tab bar"
+    }
+  }
+}

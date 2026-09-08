@@ -12,3 +12,7 @@ __pycache__/
 
 # Claude Code per-user local settings
 .claude/settings.local.json
+
+# UX pipeline run state (repo root) — regenerated per run, never committed
+/workspace/
+/workspace.bak-*/
