@@ -1,0 +1,322 @@
+{
+  "stories": [
+    {
+      "id": "US-1",
+      "persona": "The Delegated Task Shopper",
+      "screen": "Shop home",
+      "capability": "see which country the storefront is shipping to and which currency it is pricing in, stated as standing text I can act on",
+      "benefit": "I never get several screens deep before discovering the prices I have been reading are not the ones I would pay",
+      "acceptance_criteria": [
+        {
+          "given": "the storefront has inferred a delivery country from my location",
+          "when": "the home screen renders",
+          "then": "an assist chip states the delivery country and the display currency, and it does not auto-dismiss"
+        },
+        {
+          "given": "the locale chip is visible",
+          "when": "I tap it",
+          "then": "the Delivery & currency screen opens"
+        },
+        {
+          "given": "I have previously confirmed a delivery country that contradicts the inference",
+          "when": "the home screen renders",
+          "then": "the confirmed country is shown and no banner reappears"
+        },
+        {
+          "given": "locale inference is unavailable",
+          "when": "the home screen renders",
+          "then": "the chip reads 'Set delivery country' and routes to the same screen rather than guessing one"
+        },
+        {
+          "given": "the catalogue request has failed",
+          "when": "the error state renders",
+          "then": "the locale chip is still live, because it is read from local state rather than the failed call"
+        }
+      ]
+    },
+    {
+      "id": "US-2",
+      "persona": "The Delegated Task Shopper",
+      "screen": "Delivery & currency",
+      "capability": "pick a delivery country and see a real item re-priced in the resulting currency before I commit to it",
+      "benefit": "I can tell whether the change gives me the prices I expected instead of committing and finding out afterwards",
+      "acceptance_criteria": [
+        {
+          "given": "I am on Delivery & currency",
+          "when": "I select a country",
+          "then": "the preview card re-prices one representative item in that country's currency"
+        },
+        {
+          "given": "a re-price request is in flight",
+          "when": "I look at the screen",
+          "then": "the preview holds its previous value at disabled opacity beside a progress indicator, and the save button is disabled rather than hidden"
+        },
+        {
+          "given": "the selected country does not ship the representative item",
+          "when": "the preview renders",
+          "then": "it says so plainly instead of showing a converted price"
+        },
+        {
+          "given": "the selected currency has no minor units",
+          "when": "the preview renders",
+          "then": "no trailing decimal places are shown"
+        },
+        {
+          "given": "I have selected a country but not saved",
+          "when": "I use the back gesture",
+          "then": "the pending selection is discarded and the previously confirmed country is unchanged"
+        }
+      ]
+    },
+    {
+      "id": "US-3",
+      "persona": "The Absent Requester",
+      "screen": "Delivery & currency",
+      "capability": "have the delivery country I chose stay chosen even when the server does not acknowledge it",
+      "benefit": "the price I am shown is the one I asked for, so I can trust a summary of what was picked and what it costs",
+      "acceptance_criteria": [
+        {
+          "given": "I tap save and the local write succeeds",
+          "when": "the network call to persist it fails",
+          "then": "the local value is kept, a retry runs in the background, and the choice is never silently reverted"
+        },
+        {
+          "given": "I am offline",
+          "when": "I open Delivery & currency",
+          "then": "the country list renders from cache, the preview is suppressed with an inline note, and saving is still allowed"
+        },
+        {
+          "given": "a country is served by more than one currency",
+          "when": "that country is selected",
+          "then": "a second choice is offered rather than a currency being assumed"
+        }
+      ]
+    },
+    {
+      "id": "US-4",
+      "persona": "The Delegated Task Shopper",
+      "screen": "Search",
+      "capability": "commit the words I typed without depending on the suggestion list appearing or resolving",
+      "benefit": "pressing enter always produces results, so I never have to work out why nothing happened",
+      "acceptance_criteria": [
+        {
+          "given": "I have typed a query",
+          "when": "I trigger the keyboard action",
+          "then": "the search is committed and Results opens with that exact string"
+        },
+        {
+          "given": "I have typed a query",
+          "when": "I tap the trailing submit button",
+          "then": "exactly the same thing happens as with the keyboard action"
+        },
+        {
+          "given": "suggestions have not loaded",
+          "when": "I tap the first row holding my literal query",
+          "then": "the search is committed without waiting for suggestions"
+        },
+        {
+          "given": "the suggestion service has failed",
+          "when": "the screen renders",
+          "then": "the suggestion list is omitted and both the literal-query row and the submit button remain"
+        },
+        {
+          "given": "I have typed only whitespace",
+          "when": "I look at the submit button",
+          "then": "it is disabled rather than routing to an empty result set"
+        },
+        {
+          "given": "I submit twice in quick succession",
+          "when": "the navigation resolves",
+          "then": "one Results screen is pushed, not two"
+        }
+      ]
+    },
+    {
+      "id": "US-5",
+      "persona": "The Delegated Task Shopper",
+      "screen": "Results",
+      "capability": "read every result's price in the currency I chose, and change that choice mid-list without losing my place",
+      "benefit": "I can compare options against a budget I actually hold, without restarting the scan every time I adjust the locale",
+      "acceptance_criteria": [
+        {
+          "given": "results are rendered",
+          "when": "I read a card",
+          "then": "the price is shown in the active currency with the secondary-currency line directly beneath it"
+        },
+        {
+          "given": "I have scrolled some way into the list",
+          "when": "I change the delivery country from the locale chip and return",
+          "then": "prices re-render in place and my scroll position is preserved"
+        },
+        {
+          "given": "a currency conversion is unavailable for one result",
+          "when": "that card renders",
+          "then": "only the primary price is shown, never a placeholder or a stale rate"
+        },
+        {
+          "given": "an item is unavailable for the selected delivery country",
+          "when": "that card renders",
+          "then": "it is dimmed at disabled opacity and states why"
+        },
+        {
+          "given": "paging returns an item already loaded",
+          "when": "the next page renders",
+          "then": "the duplicate is removed before render"
+        }
+      ]
+    },
+    {
+      "id": "US-6",
+      "persona": "The Delegated Task Shopper",
+      "screen": "Product",
+      "capability": "reach the add control at any scroll position without hunting for it or scrolling sideways",
+      "benefit": "the action I opened the product to take is always one tap away, whatever else I am reading",
+      "acceptance_criteria": [
+        {
+          "given": "I am anywhere on the product screen",
+          "when": "I look at the bottom of the viewport",
+          "then": "the docked action bar is visible above the bottom inset, holding the quantity stepper and the add button"
+        },
+        {
+          "given": "the product details are still loading",
+          "when": "the screen renders",
+          "then": "the docked bar is already present and disabled, so its position is established before content arrives"
+        },
+        {
+          "given": "the product has no media",
+          "when": "the screen renders",
+          "then": "a tonal placeholder is used rather than a collapse, so the docked bar does not jump"
+        },
+        {
+          "given": "the docked bar is visible",
+          "when": "I scroll the specification list to its end",
+          "then": "the bar has reserved its own layout height and has not covered any row"
+        },
+        {
+          "given": "I tap add twice in quick succession",
+          "when": "the cart updates",
+          "then": "one line is posted with quantity two, not two lines"
+        }
+      ]
+    },
+    {
+      "id": "US-7",
+      "persona": "The Absent Requester",
+      "screen": "Product",
+      "capability": "know that adding to the cart cannot become checking out by accident",
+      "benefit": "the boundary I set on the task holds without anyone having to steer carefully around a button",
+      "acceptance_criteria": [
+        {
+          "given": "the docked action bar is rendered",
+          "when": "I inspect its contents",
+          "then": "it holds no checkout affordance of any kind"
+        },
+        {
+          "given": "I tap add to cart",
+          "when": "the request completes",
+          "then": "the item is in the cart and no checkout flow has been entered"
+        },
+        {
+          "given": "the add request fails",
+          "when": "the response returns",
+          "then": "the button returns to its enabled label and a snackbar states what happened and offers a retry"
+        },
+        {
+          "given": "the price changed between render and add",
+          "when": "the cart responds",
+          "then": "the cart price is treated as authoritative and the difference is stated rather than absorbed silently"
+        }
+      ]
+    },
+    {
+      "id": "US-8",
+      "persona": "The Delegated Task Shopper",
+      "screen": "Cart",
+      "capability": "come back to the cart and find the add still confirmed, with a subtotal that has not disappeared",
+      "benefit": "I can stop, check something else, and return without re-verifying that the item ever landed",
+      "acceptance_criteria": [
+        {
+          "given": "I added an item and navigated away",
+          "when": "I open the cart",
+          "then": "the line is present with its quantity and price in the active currency"
+        },
+        {
+          "given": "the cart is loading",
+          "when": "the screen renders",
+          "then": "placeholder lines are shown and the totals block is suppressed rather than showing a zero that will change"
+        },
+        {
+          "given": "the cart request fails",
+          "when": "the error state renders",
+          "then": "the last known line count stays visible, so I am never told my cart is empty when it is not"
+        },
+        {
+          "given": "a line is unavailable for the newly selected delivery country",
+          "when": "the cart re-prices",
+          "then": "that line is dimmed, excluded from the subtotal, and the exclusion is stated above the total"
+        }
+      ]
+    },
+    {
+      "id": "US-9",
+      "persona": "The Delegated Task Shopper",
+      "screen": "Cart",
+      "capability": "change a line quantity or remove a line and undo that removal",
+      "benefit": "I can correct a mistake without rebuilding the cart from the search results",
+      "acceptance_criteria": [
+        {
+          "given": "a line is in the cart",
+          "when": "I step its quantity up or down",
+          "then": "the line price and the subtotal re-total in place"
+        },
+        {
+          "given": "a line is at quantity one",
+          "when": "I step it down",
+          "then": "a dialog asks me to confirm removal before anything is deleted"
+        },
+        {
+          "given": "I confirm a removal",
+          "when": "the line disappears",
+          "then": "a snackbar offers an undo, and taking it restores the line"
+        },
+        {
+          "given": "the removal has already committed on the server",
+          "when": "I take the undo",
+          "then": "the line is re-added and I am told that is what happened, rather than the undo failing quietly"
+        },
+        {
+          "given": "a requested quantity exceeds the stock cap",
+          "when": "I step past it",
+          "then": "the stepper clamps and states the cap rather than failing later at checkout"
+        }
+      ]
+    }
+  ],
+  "microcopy": {
+    "cta_primary": "Add to cart",
+    "empty_states": {
+      "Shop home": "Nothing viewed yet. Search for something to get started.",
+      "Delivery & currency": "No countries match that filter. Clear the filter.",
+      "Search": "Type to search. Recent searches are below.",
+      "Results": "No results for that search. Try one of your recent searches.",
+      "Product": "No images for this product. Details are below.",
+      "Cart": "Your cart is empty. Start shopping."
+    },
+    "error_states": {
+      "Shop home": "Categories didn't load. Retry.",
+      "Delivery & currency": "Prices didn't update. Showing the last converted amount.",
+      "Search": "Suggestions are unavailable. Search still works.",
+      "Results": "Results didn't load. Retry.",
+      "Product": "Product details didn't load. Retry.",
+      "Cart": "Your cart didn't load. Retry."
+    },
+    "confirmations": {
+      "Shop home": "Delivery set to {country}. Prices now in {currency}.",
+      "Delivery & currency": "Saved. Prices now in {currency}.",
+      "Search": "Searching for {query}.",
+      "Results": "Prices updated to {currency}.",
+      "Product": "Added to cart. Subtotal {amount}.",
+      "Cart": "Removed {item}. Undo."
+    }
+  }
+}

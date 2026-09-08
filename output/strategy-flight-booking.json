@@ -1,0 +1,175 @@
+{
+  "personas": [
+    {
+      "name": "The headline-fare traveler",
+      "type": "primary",
+      "context": "An occasional leisure traveler booking a round-trip economy flight for one adult, starting from the advertised headline fare and expecting that number to be close to what they will actually pay.",
+      "goals": [
+        "Book the cheapest workable round-trip for their dates",
+        "Know the real, all-in total before entering payment details",
+        "Avoid overpaying by picking the wrong fare tier"
+      ],
+      "frustrations": [
+        "The headline fare excludes carry-on, seat selection, and checked bags, and that only becomes clear deep in the flow",
+        "The cheapest-looking fare can end up costing more than a higher tier once seats and bags are added",
+        "The same charge is shown differently on different screens, so no number feels reliable",
+        "Add-ons arrive with pre-checked boxes and decline options hidden as text links"
+      ],
+      "quote": "that $361.79 is not what this trip costs if you're a normal traveler.",
+      "grounded_in": [
+        "True cost hidden in skippable panels",
+        "Price levers aren't the default view",
+        "Upsell nudges shape the defaults",
+        "Cost figures contradict across steps"
+      ]
+    },
+    {
+      "name": "The fare-structure scrutinizer",
+      "type": "secondary",
+      "context": "An experienced traveler who opens the fare-class panel instead of skimming past it, and who weighs trade-offs like a split-airline itinerary before committing to a flight.",
+      "goals": [
+        "Keep full visibility into the fare structure and change/refund rules",
+        "Avoid itineraries that split delay risk across two airlines",
+        "Control which airports and which fare class are actually in play"
+      ],
+      "frustrations": [
+        "The search form resists correction: it pre-fills the wrong origin from geolocation and appends instead of replacing typed text",
+        "The return leg switches to showing deltas and silently re-prices the already-chosen outbound",
+        "The cheapest return option quietly produces a mixed-carrier itinerary without flagging the risk"
+      ],
+      "quote": "that would have made it a mixed-carrier itinerary, where a delay on one airline isn't the other's problem.",
+      "grounded_in": [
+        "Return-leg screen changes the rules",
+        "Search form defaults fight the user",
+        "True cost hidden in skippable panels",
+        "Price levers aren't the default view"
+      ]
+    }
+  ],
+  "journey": [
+    {
+      "stage": "Set up the search",
+      "actions": [
+        "Clear the geolocation-filled origin and retype the real departure city",
+        "Choose 'All Airports' for the origin instead of a single airport",
+        "Set destination, round-trip, economy, and dates"
+      ],
+      "emotion": "wary",
+      "friction": [
+        "Origin field pre-filled with the wrong city and appends rather than replaces typed input",
+        "Single-airport default would silently narrow results unless the traveler knows to pick 'All Airports'"
+      ],
+      "dropoff_risk": "low"
+    },
+    {
+      "stage": "Scan the results",
+      "actions": [
+        "Read the flexible-dates strip to compare prices across nearby days",
+        "Read the left sidebar to work out what the fare tiers include",
+        "Consider re-sorting the list by price"
+      ],
+      "emotion": "skeptical",
+      "friction": [
+        "Results default to 'Recommended' sort, not price",
+        "The real price structure (carry-on and seat cost extra) is disclosed only in the sidebar",
+        "Same route, same week, prices swing from $172 to over $1,000 depending on the day"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Pick the outbound fare",
+      "actions": [
+        "Click a flight and open the fare-class panel",
+        "Compare Base vs Main vs premium and flexible tiers",
+        "Pick the cheapest fare to see what it really includes"
+      ],
+      "emotion": "cautious",
+      "friction": [
+        "The fare-class panel is the step people skim past",
+        "The cheap fare's true cost (seat extra, change fee) is not obvious at the point of choosing it"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Choose the return",
+      "actions": [
+        "Read return options priced as deltas rather than totals",
+        "Notice a '+$0' option on a different airline and weigh the trade-off",
+        "Pick a same-airline return and absorb the added cost"
+      ],
+      "emotion": "confused",
+      "friction": [
+        "Pricing model switches from totals to deltas without explanation",
+        "The cheapest delta would create a mixed-carrier itinerary",
+        "Choosing a nicer fare here silently re-prices the outbound leg"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Dismiss the upsell",
+      "actions": [
+        "Hit a full-screen 'Bundle & Save' flight-plus-car interstitial",
+        "Look for a way past it",
+        "Click the 'No thanks' text link"
+      ],
+      "emotion": "annoyed",
+      "friction": [
+        "Full-screen interstitial blocks the flow",
+        "'No thanks' is a text link under the blue button rather than an equal option"
+      ],
+      "dropoff_risk": "low"
+    },
+    {
+      "stage": "Add seats and bags",
+      "actions": [
+        "Open the seat map and scroll looking for a free seat",
+        "Check checked-bag pricing",
+        "Decide whether to continue without bags"
+      ],
+      "emotion": "frustrated",
+      "friction": [
+        "Every seat on the fare costs $36-$94; there is no free seat even at the back",
+        "Checked bags read '$95 roundtrip' here but '$49' per direction on the fare panel",
+        "The 'Continue without bags?' dialog wrongly says the trip has no carry-on"
+      ],
+      "dropoff_risk": "high"
+    },
+    {
+      "stage": "Check out",
+      "actions": [
+        "Enter name, gender, date of birth, contact details, and billing address",
+        "Make the forced trip-insurance choice",
+        "Read the fine print and confirm the booking"
+      ],
+      "emotion": "distrustful",
+      "friction": [
+        "Trip insurance is a forced choice with a self-incriminating decline: 'I understand my ... booking won't be protected'",
+        "The SMS-alerts checkbox is pre-ticked",
+        "Fine print: nonrefundable, $150/ticket change fee, with free cancellation only within 24 hours"
+      ],
+      "dropoff_risk": "medium"
+    }
+  ],
+  "hmw_statements": [
+    {
+      "statement": "How might we help a traveler see the price they will actually pay before they commit to a fare?",
+      "derived_from": "Pick the outbound fare"
+    },
+    {
+      "statement": "How might we surface the choices that most affect price so a traveler does not miss them by accepting the defaults?",
+      "derived_from": "Scan the results"
+    },
+    {
+      "statement": "How might we keep cost information consistent and trustworthy as a traveler moves through the booking?",
+      "derived_from": "Add seats and bags"
+    },
+    {
+      "statement": "How might we let a traveler weigh a cheaper option against its trade-offs, such as a split-airline itinerary?",
+      "derived_from": "Choose the return"
+    },
+    {
+      "statement": "How might we give a traveler a clear, pressure-free way to decline add-ons they do not want?",
+      "derived_from": "Dismiss the upsell"
+    }
+  ]
+}

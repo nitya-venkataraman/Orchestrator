@@ -1,0 +1,149 @@
+{
+  "features": [
+    {
+      "name": "Buy Again",
+      "description": "A one-tap action on any past order that loads its full contents into the cart for editing.",
+      "hmw": "How might we let a returning shopper recreate their usual order without hunting down each item?",
+      "reach": 6000,
+      "impact": 3,
+      "confidence": 0.8,
+      "effort": 1.5,
+      "rice_score": 9600.0
+    },
+    {
+      "name": "My Regulars list",
+      "description": "A standing list of the shopper's core items they can tick into the cart in one screen instead of searching each week.",
+      "hmw": "How might we let a returning shopper recreate their usual order without hunting down each item?",
+      "reach": 5000,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 2.0,
+      "rice_score": 4000.0
+    },
+    {
+      "name": "Per-item substitution rules",
+      "description": "Set once per product or category whether to allow a swap, choose from a shortlist, or refund if it's out of stock.",
+      "hmw": "How might we keep shoppers in control when something they wanted turns out to be unavailable?",
+      "reach": 7000,
+      "impact": 3,
+      "confidence": 0.8,
+      "effort": 2.0,
+      "rice_score": 8400.0
+    },
+    {
+      "name": "Approve-the-swap notification",
+      "description": "When an item goes out of stock at pick time, notify the shopper with a proposed alternative to accept or reject before dispatch.",
+      "hmw": "How might we keep shoppers in control when something they wanted turns out to be unavailable?",
+      "reach": 6000,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 2.5,
+      "rice_score": 3840.0
+    },
+    {
+      "name": "Never-substitute default",
+      "description": "An account-level setting that removes any item that can't be fulfilled rather than swapping it, no per-item setup.",
+      "hmw": "How might we keep shoppers in control when something they wanted turns out to be unavailable?",
+      "reach": 4000,
+      "impact": 1,
+      "confidence": 0.8,
+      "effort": 0.5,
+      "rice_score": 6400.0
+    },
+    {
+      "name": "AM/PM delivery windows",
+      "description": "Let shoppers pick a morning or afternoon slot at checkout instead of a whole day, narrowing to a 2-hour window on the day.",
+      "hmw": "How might we make a delivery's timing predictable enough to plan a household around?",
+      "reach": 8000,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 2.0,
+      "rice_score": 6400.0
+    },
+    {
+      "name": "Proactive delay alerts",
+      "description": "When an order will miss its slot, push a message with the reason and a new ETA rather than leaving the shopper to guess.",
+      "hmw": "How might we make a delivery's timing predictable enough to plan a household around?",
+      "reach": 3000,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 1.0,
+      "rice_score": 4800.0
+    },
+    {
+      "name": "Per-order impact receipt",
+      "description": "Replace the bare score with a plain-language summary of what this order did: local farms supported, produce-waste prevented, average food miles.",
+      "hmw": "How might we help shoppers feel what their order achieved without asking them to interpret a score?",
+      "reach": 8000,
+      "impact": 1,
+      "confidence": 0.8,
+      "effort": 1.5,
+      "rice_score": 4266.7
+    },
+    {
+      "name": "Your GreenBasket story",
+      "description": "A running, shareable summary of cumulative impact over time — producers supported, total food miles, waste prevented since sign-up.",
+      "hmw": "How might we help shoppers feel what their order achieved without asking them to interpret a score?",
+      "reach": 5000,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 2.0,
+      "rice_score": 1250.0
+    },
+    {
+      "name": "Seasonal picks module",
+      "description": "A curated 'what's good and new this week' section on the home screen that changes with the season and stock.",
+      "hmw": "How might we make browsing feel like discovering a market rather than scanning a list?",
+      "reach": 4000,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 2.0,
+      "rice_score": 1000.0
+    },
+    {
+      "name": "Producer stories in browse",
+      "description": "Surface the producer profile — photos, farm, why they started — inline while browsing a category, with a shareable producer page.",
+      "hmw": "How might we make browsing feel like discovering a market rather than scanning a list?",
+      "reach": 3000,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 2.5,
+      "rice_score": 600.0
+    }
+  ],
+  "design_directions": [
+    {
+      "name": "Two Taps to Done",
+      "summary": "Bet that GreenBasket wins by being the fastest way to run a known weekly shop. Rebuild the home screen around the repeat order and remove every surprise; discovery is a secondary surface.",
+      "differentiator": "A reorder-first home built on your regulars and last order, substitution rules set once, and delivery windows tight enough to plan around — the whole shop in under two minutes.",
+      "hmws_addressed": [
+        "How might we let a returning shopper recreate their usual order without hunting down each item?",
+        "How might we keep shoppers in control when something they wanted turns out to be unavailable?",
+        "How might we make a delivery's timing predictable enough to plan a household around?"
+      ],
+      "tradeoff": "Gives up the market-discovery feeling the values-driven shopper wants; risks reading as utilitarian as Ocado and losing the brand warmth that makes people evangelists."
+    },
+    {
+      "name": "The Digital Market",
+      "summary": "Bet that GreenBasket wins on the one thing no competitor has — the feeling of a curated market with people and stories behind the food. Lead the experience with seasonal editorial, producer narratives, and impact framed as part of the story.",
+      "differentiator": "Producer stories and seasonal curation live in the browse flow, not a hidden blog; every product connects to a shareable human story, turning word-of-mouth into a built-in feature.",
+      "hmws_addressed": [
+        "How might we make browsing feel like discovering a market rather than scanning a list?",
+        "How might we help shoppers feel what their order achieved without asking them to interpret a score?"
+      ],
+      "tradeoff": "Does little for the Sunday-night efficiency shopper in the short term, needs an ongoing content operation, and may lose time-pressed users before the discovery investment pays back."
+    },
+    {
+      "name": "Set It and Trust It",
+      "summary": "Bet that the winning move is to take the weekly shop off the user's plate entirely — a standing order the system maintains and adjusts for season and stock, with delivery and impact communicated to you rather than checked by you.",
+      "differentiator": "The system does the recurring work, not the user: a managed basket that proposes changes, handles stock-outs by your pre-set rules, and reports back — the shopper approves rather than assembles.",
+      "hmws_addressed": [
+        "How might we let a returning shopper recreate their usual order without hunting down each item?",
+        "How might we keep shoppers in control when something they wanted turns out to be unavailable?",
+        "How might we make a delivery's timing predictable enough to plan a household around?",
+        "How might we help shoppers feel what their order achieved without asking them to interpret a score?"
+      ],
+      "tradeoff": "Demands high trust in GreenBasket's judgment from users who've been burned by silent substitutions, reduces hands-on control, and is irrelevant to shoppers who browse for enjoyment."
+    }
+  ]
+}
