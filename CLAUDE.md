@@ -67,7 +67,9 @@ editing here.
 
 - Generated stories are written to `output/` as Markdown, one file per epic or per run.
 - Superlap pipeline stage artifacts also land in `output/`, as
-  `<stage>-<slug>.{json,md}` pairs.
+  `<stage>-<slug>.{json,md}` pairs. These are **gitignored** — they are regenerated
+  per run and never committed. `output/` allowlists only `user-stories-*`, so any
+  new pipeline stage is ignored automatically.
 - Keep the story voice user-centric — describe outcomes, not implementation.
 - When inputs are ambiguous or incomplete, list open questions rather than inventing detail.
 - **Always** finish by running `python3 harness/validate_stories.py --strict <file>` and
@@ -111,5 +113,5 @@ ux-pipeline/                    # LangGraph code-form of the Superlap pipeline (
   rubrics.py                    # loads rules/rubrics/, scores a 1–5 map against the pass rule
 .github/workflows/harness.yml   # CI
 inputs/                         # drop raw source material here (any format)
-output/                         # generated user stories land here
+output/                         # generated user stories (tracked) + pipeline artifacts (ignored)
 ```

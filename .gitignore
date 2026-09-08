@@ -16,3 +16,10 @@ __pycache__/
 # UX pipeline run state (repo root) — regenerated per run, never committed
 /workspace/
 /workspace.bak-*/
+
+# Superlap pipeline stage artifacts — regenerated per run, never committed.
+# Allowlist: only user-story backlogs (the UserStoryGenerator deliverable) are
+# tracked, so future pipeline stages stay ignored without touching this file.
+output/*
+!output/.gitkeep
+!output/user-stories-*
