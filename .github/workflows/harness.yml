@@ -21,7 +21,7 @@ jobs:
         run: |
           python3 harness/validate_stories.py --strict \
             .claude/skills/user-story-generator/examples/sample-output.md
-      # Only user-story backlogs. output/ also holds Superlap pipeline stage
+      # Only user-story backlogs. output/ also holds UX pipeline stage
       # artifacts (discovery-synthesis-/strategy-/ideation-/wireframe-/delivery-),
       # which are a different document type with their own validator.
       - name: Validate any generated backlogs in output/

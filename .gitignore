@@ -17,7 +17,7 @@ __pycache__/
 /workspace/
 /workspace.bak-*/
 
-# Superlap pipeline stage artifacts — regenerated per run, never committed.
+# UX pipeline stage artifacts — regenerated per run, never committed.
 # Allowlist: only user-story backlogs (the UserStoryGenerator deliverable) are
 # tracked, so future pipeline stages stay ignored without touching this file.
 output/*
