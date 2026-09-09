@@ -8,8 +8,8 @@ them, assembles the judge prompt, and turns a per-dimension 1-5 score map into a
 pass/fail decision. It contains no model call — `orchestrator.judge()` owns that.
 
 CLI:
-    python ux-pipeline/rubrics.py <stage>          # print the assembled rubric
-    python ux-pipeline/rubrics.py --check          # validate every rubric file
+    python3 ux-pipeline/rubrics.py <stage>          # print the assembled rubric
+    python3 ux-pipeline/rubrics.py --check          # validate every rubric file
 """
 from __future__ import annotations
 

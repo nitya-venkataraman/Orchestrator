@@ -1,24 +1,17 @@
 # Stage Contracts, Rules, and Rubrics
 
-The single rulebook for every stage of the Superlap UX pipeline — shared by the
-LangGraph `ux-pipeline/` scaffold and the vendored `.claude/skills/superlap-*`
-skills (see [`README.md`](README.md)). For each stage: the JSON it emits and the
+The single rulebook for every stage of the Superlap UX pipeline, and the source
+of truth for the LangGraph `ux-pipeline/` scaffold (see
+[`README.md`](README.md)). For each stage: the JSON it emits and the
 deterministic **Tier-1** structural rules (`ux-pipeline/validators/<stage>.py`
 re-implements these). The **Tier-2** LLM-judge rubric — dimensions, weights,
 score anchors, pass rule — lives per stage in [`rubrics/`](rubrics/); each Tier 2
 section below links to it.
 
-Stages 1–4 are ported verbatim from
-`.claude/skills/superlap-pipeline/references/contracts.md` so both consumers
-enforce exactly the same contract. Keep them in sync — the `BASE_ROLES` /
-`FORBIDDEN` lists and every check function in
-`ux-pipeline/validators/wireframe.py` must stay byte-identical to
-`.claude/skills/superlap-wireframe/scripts/validate_ds.py`, and the page-builder
-reference (`.claude/skills/superlap-wireframe/references/page-builder-reference.md`)
-must match its copy in `.claude/skills/superlap-pipeline/references/`. Material 3
-is now only an optional baseline profile
-(`references/material-design-system.md`, tokens extracted to
-`ux-pipeline/skills/wireframe-ia/references/material-design-tokens.json`).
+Change a rule here first; the validators implement this file, they do not
+redefine it. Material 3 is only an optional baseline profile, its tokens
+extracted to
+`ux-pipeline/skills/wireframe-ia/references/material-design-tokens.json`.
 
 ## Contents
 
@@ -63,7 +56,7 @@ State key: `synthesized_insights` (the artifact) — reads `raw_research_data`.
 [`rubrics/discovery-synthesis.md`](rubrics/discovery-synthesis.md)
 (`evidence_grounding`, `theme_distinctness`, `signal_coverage`). Pass rule in that file.
 
-Persisted files: `output/discovery-synthesis-<slug>.{json,md}`.
+Persisted files: `output/discovery/discovery-synthesis-<slug>.{json,md}`.
 
 ---
 
@@ -102,7 +95,7 @@ State keys: `persona_profile`, `journey_map`, `problem_statement` — reads
 [`rubrics/strategy-definition.md`](rubrics/strategy-definition.md)
 (`persona_grounding`, `hmw_quality`, `journey_realism`). Pass rule in that file.
 
-Persisted files: `output/strategy-<slug>.{json,md}`.
+Persisted files: `output/strategy/strategy-<slug>.{json,md}`.
 
 ---
 
@@ -143,7 +136,7 @@ State keys: `feature_matrix`, `concept_proposals` — reads `problem_statement`,
 (`hmw_linkage`, `rice_integrity`, `direction_distinctness`). The most lenient pass rule in
 the pipeline — divergence is not punished as hard as fabrication. Rule in that file.
 
-Persisted files: `output/ideation-<slug>.{json,md}`.
+Persisted files: `output/ideation/ideation-<slug>.{json,md}`.
 
 ---
 
@@ -162,12 +155,10 @@ Design system: **agnostic**. This stage owns no component library — it reuses
 whichever system the project already has, and falls back to a documented
 baseline only when none is supplied or linkable. The enforced vocabulary is the
 fixed **base-role taxonomy**, the page and component naming patterns, the
-breakpoints, and the required state/accessibility keys, all in
-`.claude/skills/superlap-wireframe/references/page-builder-reference.md`
-(mirrored under `.claude/skills/superlap-pipeline/references/`, narrated in
-`ux-pipeline/skills/wireframe-ia/assets/component-patterns.md`). Material 3
-survives as one *optional* baseline profile in `material-design-system.md` with
-its tokens extracted to
+breakpoints, and the required state/accessibility keys — all specified below,
+enforced by `ux-pipeline/validators/wireframe.py` and narrated in
+`ux-pipeline/skills/wireframe-ia/assets/component-patterns.md`. Material 3
+survives as one *optional* baseline profile, with its tokens extracted to
 `ux-pipeline/skills/wireframe-ia/references/material-design-tokens.json` — it is
 no longer an allowlist.
 
@@ -263,7 +254,7 @@ no longer an allowlist.
 `accessibility_rigor`, `requirements_completeness`). The strictest pass rule in
 the pipeline — `ds_compliance` must be a 5. Rule in that file.
 
-Persisted files: `output/wireframe-<slug>.{json,md}`. The `.md` follows the final
+Persisted files: `output/wireframe/wireframe-<slug>.{json,md}`. The `.md` follows the final
 review format — UX Interpretation, User Flow, Sitemap, Pages Created, Components
 Used, Responsive Behaviour, Accessibility, Prototype, Design System Gaps,
 Assumptions, Validation — and is the HITL surface.
@@ -313,7 +304,7 @@ State keys: `developer_handoff_stories`, `microcopy` — reads `sitemap`,
 [`rubrics/delivery-handoff.md`](rubrics/delivery-handoff.md)
 (`story_completeness`, `traceability`, `voice_consistency`). Pass rule in that file.
 
-Persisted files: `output/delivery-<slug>.{json,md}`. The `.md` — Jira-style
+Persisted files: `output/delivery/delivery-<slug>.{json,md}`. The `.md` — Jira-style
 stories with Given/When/Then plus microcopy tables — is the HITL surface.
 
 ---

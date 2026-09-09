@@ -7,7 +7,7 @@ max_turns: 10
 allowed_tools: [Read, Write, Bash, Glob]
 ---
 
-Use the user-story-generator skill on this input. Write the result to `output/stories.md`
+Use the user-story-generator skill on this input. Write the result to `output/delivery/stories.md`
 using the skill's output template.
 
 --- INPUT: stakeholder review note ---

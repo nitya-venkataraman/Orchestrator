@@ -14,7 +14,7 @@ description: Use this skill to convert synthesized research insights into person
    moves across the journey, friction points, and `dropoff_risk`.
 4. Convert top friction points into 3–5 "How Might We" statements — each opens literally
    with "How might we", names a friction (not a feature), stays solution-neutral.
-5. **Self-check.** Run `python ux-pipeline/validators/strategy.py <your .json>` and fix every
+5. **Self-check.** Run `python3 ux-pipeline/validators/strategy.py <your .json>` and fix every
    violation before returning.
 
 ## Output contract
@@ -24,7 +24,7 @@ shape and the Tier-1 rules. Tier-2 scores it 1–5 per dimension against
 [`../../../rules/rubrics/strategy-definition.md`](../../../rules/rubrics/strategy-definition.md).
 
 1. Return `persona_profile`, `journey_map`, `problem_statement` to state.
-2. Persist `output/strategy-<slug>.json` and `output/strategy-<slug>.md` (persona cards,
+2. Persist `output/strategy/strategy-<slug>.json` and `output/strategy/strategy-<slug>.md` (persona cards,
    the current-state journey table, the numbered HMW list with `derived_from`). Reuse the
    run's `<slug>`; overwrite on re-run.
 3. The Markdown is the surface shown at the HITL gate — not the JSON.

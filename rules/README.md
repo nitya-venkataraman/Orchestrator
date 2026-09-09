@@ -1,14 +1,10 @@
 # rules/
 
 The rulebook for the Superlap UX pipeline, kept here — outside `ux-pipeline/` — because it
-is the **single source of truth** shared by two consumers:
-
-- **`ux-pipeline/`** — the LangGraph scaffold. `ux-pipeline/validators/*.py` implement the
-  Tier-1 rules; `ux-pipeline/rubrics.py` + `ux-pipeline/orchestrator.py` `judge()` score
-  Tier-2 against `rubrics/`; each `ux-pipeline/skills/*/SKILL.md` points here for its
-  Output contract.
-- **`.claude/skills/superlap-*`** — the vendored conversational skills. Their canonical
-  contract is `.claude/skills/superlap-pipeline/references/contracts.md`.
+is the **single source of truth**. Its consumer is `ux-pipeline/`:
+`ux-pipeline/validators/*.py` implement the Tier-1 rules; `ux-pipeline/rubrics.py` +
+`ux-pipeline/orchestrator.py` `judge()` score Tier-2 against `rubrics/`; each
+`ux-pipeline/skills/*/SKILL.md` points here for its Output contract.
 
 ## Files
 
@@ -19,19 +15,14 @@ is the **single source of truth** shared by two consumers:
 
 ## Keeping it in sync
 
-- **Stages 1–4** of `CONTRACTS.md` must stay aligned with
-  `.claude/skills/superlap-pipeline/references/contracts.md`. `CONTRACTS.md` is the fuller
-  version (it also carries Stage 5 — delivery-handoff — which the vendored pipeline stops
-  short of).
 - Stage 4 is **design-system agnostic** — it enforces no component allowlist. The
   **base-role taxonomy** and **forbidden styling substrings** in `CONTRACTS.md`
-  § Stage 4 must match `BASE_ROLES` / `FORBIDDEN` — and every check function — in
-  both `ux-pipeline/validators/wireframe.py` and
-  `.claude/skills/superlap-wireframe/scripts/validate_ds.py`, byte for byte.
-- Each rubric's **dimension keys and weights** live only in its ```json block;
+  § Stage 4 are implemented as `BASE_ROLES` / `FORBIDDEN` in
+  `ux-pipeline/validators/wireframe.py`; change them here first, then there.
+- Each rubric's **dimension keys and weights** live only in its `json` block;
   `python3 ux-pipeline/rubrics.py --check` asserts every file's weights sum to 1.0.
-  The vendored skills' inline *Quality bar* sections still mirror Stages 1–4 — update
-  them (and re-upload) when a rubric changes.
+- The **Superlap skills on claude.ai** carry their own copies of these contracts and
+  quality bars — they are not in this repo and nothing here can check them. When you
+  change a rule or a rubric criterion, re-sync those skills by hand.
 
-Change a rule here first, then propagate to the validators, the rubrics, and the vendored
-copies.
+Change a rule here first, then propagate to the validators and the rubrics.

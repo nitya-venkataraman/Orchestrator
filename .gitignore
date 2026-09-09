@@ -22,4 +22,6 @@ __pycache__/
 # tracked, so future pipeline stages stay ignored without touching this file.
 output/*
 !output/.gitkeep
-!output/user-stories-*
+!output/delivery/
+output/delivery/*
+!output/delivery/user-stories-*

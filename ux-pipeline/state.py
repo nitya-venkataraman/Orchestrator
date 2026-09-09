@@ -4,7 +4,7 @@ Typed state for the ux-pipeline LangGraph.
 The artifact fields mirror the schemas in `rules/CONTRACTS.md`. They are typed as
 `TypedDict`s so a misread field fails at author time rather than three stages
 later; at runtime they are plain JSON-serializable dicts/lists threaded through
-the graph and written to `output/<stage>-<slug>.{json,md}`.
+the graph and written to `output/<stage>/<stage>-<slug>.{json,md}`.
 
 `total=False` throughout: the state fills in as the run advances, and a resumed
 run rehydrates only the keys that were already approved.

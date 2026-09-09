@@ -32,19 +32,21 @@ The `ux-pipeline/` directory holds the LangGraph code-form of a research-to-desi
 pipeline — research synthesis, strategy, ideation, page building, delivery handoff — with
 a two-tier gate (deterministic `validators/` for Tier-1, a 1–5 rubric judge for Tier-2),
 retry/escalation, a content-addressed cache for correct resume, and a direction-selection
-fork. Stages write `output/<stage>-<slug>.{json,md}` (prefixes:
-`discovery-synthesis-`, `strategy-`, `ideation-`, `wireframe-`, `delivery-`; one
-kebab-case `<slug>` per run, re-runs overwrite). Its rulebook is `rules/CONTRACTS.md`
+fork. Stages write `output/<stage>/<stage>-<slug>.{json,md}` — one folder per
+stage (`discovery/`, `strategy/`, `ideation/`, `wireframe/`, `delivery/`), the
+filename keeping the stage prefix; one kebab-case `<slug>` per run, re-runs
+overwrite. Its rulebook is `rules/CONTRACTS.md`
 (schemas + Tier-1) and `rules/rubrics/` (Tier-2 scoring, one file per stage). See
 `ux-pipeline/CLAUDE.md` for details.
 
 ## Conventions
 
-- Generated stories are written to `output/` as Markdown, one file per epic or per run.
-- UX pipeline stage artifacts also land in `output/`, as
-  `<stage>-<slug>.{json,md}` pairs. These are **gitignored** — they are regenerated
-  per run and never committed. `output/` allowlists only `user-stories-*`, so any
-  new pipeline stage is ignored automatically.
+- Generated stories are written to `output/delivery/` as Markdown, one file per epic
+  or per run.
+- UX pipeline stage artifacts land in a folder per stage —
+  `output/<stage>/<stage>-<slug>.{json,md}`. These are **gitignored** — they are
+  regenerated per run and never committed. The allowlist tracks only
+  `output/delivery/user-stories-*`, so any new pipeline stage is ignored automatically.
 - Keep the story voice user-centric — describe outcomes, not implementation.
 - When inputs are ambiguous or incomplete, list open questions rather than inventing detail.
 - **Always** finish by running `python3 harness/validate_stories.py --strict <file>` and
@@ -88,5 +90,8 @@ ux-pipeline/                    # LangGraph code-form of the UX pipeline (see it
   rubrics.py                    # loads rules/rubrics/, scores a 1–5 map against the pass rule
 .github/workflows/harness.yml   # CI
 inputs/                         # drop raw source material here (any format)
-output/                         # generated user stories (tracked) + pipeline artifacts (ignored)
+output/                         # one folder per pipeline stage (all ignored except backlogs)
+  RUN-SUMMARY-<slug>.md         # per-run index, links every stage artifact
+  discovery/ strategy/ ideation/ wireframe/   # <stage>-<slug>.{json,md}
+  delivery/                     # delivery-<slug>.{json,md} + user-stories-*.md (tracked)
 ```

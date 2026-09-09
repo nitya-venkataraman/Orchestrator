@@ -39,7 +39,7 @@ Use the user-story-generator skill.
 
 Read every file in the `inputs/` directory of this project and convert the material into
 a structured user-story backlog. Follow the skill's output template exactly. Write the
-result to `output/{name}.md`. Then run the skill's validate step and fix any errors.
+result to `output/delivery/{name}.md`. Then run the skill's validate step and fix any errors.
 """
 
 

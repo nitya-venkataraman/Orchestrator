@@ -3,24 +3,20 @@
 Stage 4 (wireframe-ia) Tier-1 validator — deterministic, no LLM.
 
 Checks a page-builder artifact against the rulebook — `rules/CONTRACTS.md`
-Stage 4, mirrored in
-`.claude/skills/superlap-wireframe/references/page-builder-reference.md`: the
-base-role taxonomy, the page and component naming conventions, the required UI
-states, the accessibility keys, the responsive coverage, and prototype
-reachability.
+§ Stage 4, the source of truth for the base-role taxonomy, the page and
+component naming conventions, the required UI states, the accessibility keys,
+the responsive coverage, and prototype reachability. This module implements
+those rules; it does not redefine them. Narrative guidance lives in
+`ux-pipeline/skills/wireframe-ia/assets/component-patterns.md`.
 
 This stage is DESIGN-SYSTEM AGNOSTIC. There is no component allowlist — a
 component's `name` is whatever the resolved design system calls it. What IS
 fixed is the `base` ROLE taxonomy, so the spec stays checkable across any design
 system.
 
-Ported from `.claude/skills/superlap-wireframe/scripts/validate_ds.py`. The
-constants and check functions below MUST stay byte-identical to that file so the
-LangGraph gate and the conversational skill enforce the same contract.
-
 Usage:
-    python validators/wireframe.py wireframe.json
-    cat wireframe.json | python validators/wireframe.py -
+    python3 validators/wireframe.py wireframe.json
+    cat wireframe.json | python3 validators/wireframe.py -
 
 Exit code 0 = pass, 1 = violations found (printed to stdout).
 """

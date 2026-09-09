@@ -19,8 +19,8 @@ personas and epics and open questions present, no invented scope.
 Lints one or more Markdown files against the skill's output rules. No LLM, no deps.
 
 ```bash
-python3 harness/validate_stories.py output/user-stories-2026-09-02.md
-python3 harness/validate_stories.py --strict --json "output/*.md"
+python3 harness/validate_stories.py output/delivery/user-stories-2026-09-02.md
+python3 harness/validate_stories.py --strict --json "output/delivery/*.md"
 ```
 
 - **errors** (exit 1): missing title/sources line, missing Personas/Epic/Open-questions

@@ -11,8 +11,8 @@ Implements the Tier-1 rules in `rules/CONTRACTS.md` § Stage 1:
     as context["raw_research_data"])
 
 Usage:
-    python validators/synthesis.py output/discovery-synthesis-<slug>.json
-    cat artifact.json | python validators/synthesis.py -
+    python3 validators/synthesis.py output/discovery/discovery-synthesis-<slug>.json
+    cat artifact.json | python3 validators/synthesis.py -
 Exit 0 = pass, 1 = violations.
 """
 from __future__ import annotations

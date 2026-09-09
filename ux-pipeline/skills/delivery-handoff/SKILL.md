@@ -15,7 +15,7 @@ description: Use this skill to translate approved wireframes/IA into developer-r
    matching the product voice (sentence-case verb-first CTAs ≤ 4 words, not ALL CAPS;
    error copy that states what happened then what to do with no apology; empty states
    that offer exactly one action).
-4. **Self-check.** Run `python ux-pipeline/validators/delivery.py <your .json>` and fix every
+4. **Self-check.** Run `python3 ux-pipeline/validators/delivery.py <your .json>` and fix every
    violation before returning.
 
 ## Output contract
@@ -25,10 +25,10 @@ shape and the Tier-1 rules. Tier-2 scores it 1–5 per dimension against
 [`../../../rules/rubrics/delivery-handoff.md`](../../../rules/rubrics/delivery-handoff.md).
 
 1. Return `developer_handoff_stories` (the `stories` list) and `microcopy` to state.
-2. Persist to the repo `output/` directory, reusing the run's `<slug>`:
-   - `output/delivery-<slug>.json` — `{ "stories": [...], "microcopy": {...} }`,
+2. Persist to the repo `output/delivery/` directory, reusing the run's `<slug>`:
+   - `output/delivery/delivery-<slug>.json` — `{ "stories": [...], "microcopy": {...} }`,
      pretty-printed.
-   - `output/delivery-<slug>.md` — human-readable: one block per story (`### US-<n>: …`
+   - `output/delivery/delivery-<slug>.md` — human-readable: one block per story (`### US-<n>: …`
      with the As-a/I-want/so-that sentence and a Given/When/Then acceptance-criteria
      list), then microcopy tables grouped by screen.
    Overwrite on re-run; never suffix a timestamp.

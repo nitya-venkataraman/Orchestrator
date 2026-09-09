@@ -14,7 +14,7 @@ description: Use this skill to brainstorm and prioritize features and propose UX
    `(reach × impact × confidence) / effort`, round to one decimal. Do not inflate inputs.
 4. Propose 2–3 genuinely distinct design directions — each a different bet, with a
    named `differentiator` and an explicit `tradeoff`. Never select a winner.
-5. **Self-check.** Run `python ux-pipeline/validators/ideation.py <your .json>` — it recomputes every
+5. **Self-check.** Run `python3 ux-pipeline/validators/ideation.py <your .json>` — it recomputes every
    RICE score — and fix every violation before returning.
 
 ## Output contract
@@ -26,7 +26,7 @@ shape and the Tier-1 rules. Tier-2 scores it 1–5 per dimension against
 1. Return `feature_matrix` (the `features` list) and `concept_proposals` (the
    `design_directions` list) to state. The winner is a human decision at the selection
    fork.
-2. Persist `output/ideation-<slug>.json` and `output/ideation-<slug>.md` (the RICE table
+2. Persist `output/ideation/ideation-<slug>.json` and `output/ideation/ideation-<slug>.md` (the RICE table
    sorted by score descending, then the directions with differentiator and tradeoff, then
    a closing line that the human picks). Reuse the run's `<slug>`; overwrite on re-run.
 3. The Markdown is the surface shown at the HITL gate — not the JSON.

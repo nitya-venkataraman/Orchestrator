@@ -3,10 +3,10 @@
 Human-in-the-loop UX design pipeline: raw research → synthesized insights → strategy →
 concepts → wireframes/IA → developer handoff. Five Claude Agent SDK skills orchestrated by
 a LangGraph state machine, with a two-tier machine gate and a human approval gate between
-every phase. The LangGraph code-form of the vendored `.claude/skills/superlap-*` skills.
+every phase.
 
-The rulebook lives in a repo-level [`../rules/`](../rules/) folder shared with the vendored
-skills: [`../rules/CONTRACTS.md`](../rules/CONTRACTS.md) (per-stage schemas + Tier-1 rules)
+The rulebook lives in a repo-level [`../rules/`](../rules/) folder:
+[`../rules/CONTRACTS.md`](../rules/CONTRACTS.md) (per-stage schemas + Tier-1 rules)
 and [`../rules/rubrics/`](../rules/rubrics/) (the Tier-2 scoring rubrics, one per stage).
 
 ## Layout

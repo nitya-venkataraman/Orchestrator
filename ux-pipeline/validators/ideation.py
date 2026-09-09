@@ -12,7 +12,7 @@ Implements `rules/CONTRACTS.md` § Stage 3:
     passed as context["problem_statement"])
 
 Usage:
-    python validators/ideation.py output/ideation-<slug>.json
+    python3 validators/ideation.py output/ideation/ideation-<slug>.json
 Exit 0 = pass, 1 = violations.
 """
 from __future__ import annotations

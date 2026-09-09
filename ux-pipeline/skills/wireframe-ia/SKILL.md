@@ -61,7 +61,7 @@ Where information is missing, make a reasonable UX assumption and record it in
     the primary journey is walkable.
 12. Fill `validation` (`ux`, `ui`, `responsive`, `accessibility`, `prototype`)
     and `assumptions`.
-13. **Self-check.** Run `python ux-pipeline/validators/wireframe.py <your .json>`
+13. **Self-check.** Run `python3 ux-pipeline/validators/wireframe.py <your .json>`
     — it re-implements the exact Tier-1 checks (base-role taxonomy, page and
     component naming, required states, accessibility keys, responsive coverage,
     prototype reachability, sitemap↔pages parity) — and fix every violation
@@ -97,7 +97,7 @@ role or a raw value.
    `responsive_matrix`, `prototype_flows`, `design_system_gaps`, `assumptions`,
    `validation`, `figma_file_url`, and set `design_tokens_applied = true` to
    state.
-2. Persist `output/wireframe-<slug>.json` and `output/wireframe-<slug>.md`. The
+2. Persist `output/wireframe/wireframe-<slug>.json` and `output/wireframe/wireframe-<slug>.md`. The
    Markdown follows the final review format: header (target, design system and
    whether reused or baseline, selected direction, validator result, `Figma:
    <figma_file_url>`), then UX Interpretation, User Flow, Sitemap, Pages Created,

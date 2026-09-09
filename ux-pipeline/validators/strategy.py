@@ -11,7 +11,7 @@ Implements `rules/CONTRACTS.md` § Stage 2:
     Stage-1 artifact is passed as context["synthesized_insights"])
 
 Usage:
-    python validators/strategy.py output/strategy-<slug>.json
+    python3 validators/strategy.py output/strategy/strategy-<slug>.json
 Exit 0 = pass, 1 = violations.
 """
 from __future__ import annotations

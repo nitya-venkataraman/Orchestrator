@@ -63,10 +63,9 @@ stage's next attempt. The gate allows 2 such retries, then escalates to the huma
 
 ## Keeping in sync
 
-- The dimension keys and weights live **only** in each file's ```json block. The prose
+- The dimension keys and weights live **only** in each file's `json` block. The prose
   table restates them for readers — if you change one, change both, and the verification
-  step (`python3 ux-pipeline/rubrics.py <stage>`) asserts the weights sum to 1.0.
-- Stages 1–4 mirror the *Quality bar* sections of the vendored
-  `.claude/skills/superlap-*/SKILL.md`. Those still carry inline copies; when you change a
-  criterion here, update the vendored skill's Quality bar too (and re-upload it — it syncs
-  to claude.ai).
+  step (`python3 ux-pipeline/rubrics.py --check`) asserts the weights sum to 1.0.
+- The Superlap skills on claude.ai carry their own inline *Quality bar* copies of these
+  criteria. They are outside this repo and unverifiable from here — re-sync them by hand
+  when you change a criterion.

@@ -14,7 +14,7 @@ Implements `rules/CONTRACTS.md` § Stage 5:
   - every microcopy cta_* value is sentence case, not ALL CAPS
 
 Usage:
-    python validators/delivery.py output/delivery-<slug>.json
+    python3 validators/delivery.py output/delivery/delivery-<slug>.json
 Exit 0 = pass, 1 = violations.
 """
 from __future__ import annotations

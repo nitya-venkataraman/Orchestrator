@@ -2,8 +2,8 @@
 
 Narrative guidance for the wireframe stage. The machine-checked vocabulary — the
 base-role taxonomy, the naming patterns, the required state and accessibility
-keys — lives in `../../../rules/CONTRACTS.md` § Stage 4 and mirrors
-`.claude/skills/superlap-wireframe/references/page-builder-reference.md`.
+keys — lives in `../../../rules/CONTRACTS.md` § Stage 4 and is enforced by
+`ux-pipeline/validators/wireframe.py`.
 
 This stage is **design-system agnostic**. Reuse whatever system the project has;
 `references/material-design-tokens.json` is only a baseline token set for when

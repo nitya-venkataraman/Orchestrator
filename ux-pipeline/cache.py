@@ -8,8 +8,6 @@ possibly producing a *different* artifact than the human approved. Keying on a
 hash of everything that shapes the output makes an unchanged stage return
 byte-for-byte what it returned before, and makes a changed stage miss honestly.
 
-Ported from `.claude/skills/superlap-pipeline/scripts/cache.py`; kept in sync.
-
 API (import it, don't shell out):
     input_hash(*parts) -> str
     get(run_id, stage, attempt, ihash) -> dict | None
@@ -17,12 +15,12 @@ API (import it, don't shell out):
     invalidate(run_id, stage) -> int                     # entries dropped
     entries(run_id) -> list[dict]
 
-CLI mirrors the vendored script:
-    python cache.py hash <part> [<part> ...]
-    python cache.py get <run_id> <stage> <attempt> <input_hash>
-    python cache.py put <run_id> <stage> <attempt> <input_hash> <file|->
-    python cache.py invalidate <run_id> <stage>
-    python cache.py list <run_id>
+CLI:
+    python3 cache.py hash <part> [<part> ...]
+    python3 cache.py get <run_id> <stage> <attempt> <input_hash>
+    python3 cache.py put <run_id> <stage> <attempt> <input_hash> <file|->
+    python3 cache.py invalidate <run_id> <stage>
+    python3 cache.py list <run_id>
 """
 from __future__ import annotations
 

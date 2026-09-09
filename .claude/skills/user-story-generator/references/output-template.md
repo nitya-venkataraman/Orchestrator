@@ -1,6 +1,6 @@
 # Output template
 
-Write generated stories to `output/user-stories-<YYYY-MM-DD>.md` (or one file per epic for
+Write generated stories to `output/delivery/user-stories-<YYYY-MM-DD>.md` (or one file per epic for
 large sets). Use this exact structure — the harness validator
 (`harness/validate_stories.py`) checks against it.
 

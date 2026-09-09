@@ -14,7 +14,7 @@ test: ## Run the validator self-tests
 lint: ## Structural lint of the skill + eval suite
 	$(PY) harness/lint_skill.py
 
-validate: ## Validate a file: make validate FILE=output/user-stories-2026-09-02.md
+validate: ## Validate a file: make validate FILE=output/delivery/user-stories-2026-09-02.md
 	@test -n "$(FILE)" || { echo "usage: make validate FILE=path/to/stories.md"; exit 2; }
 	$(PY) harness/validate_stories.py --strict $(FILE)
 
