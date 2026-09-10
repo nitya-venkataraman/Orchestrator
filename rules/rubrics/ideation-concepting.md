@@ -13,7 +13,7 @@ should not be punished as hard as fabrication.
 | Key | Weight | What "5" looks like |
 |---|---|---|
 | `hmw_linkage` | 0.30 | Every feature answers a specific Stage-2 HMW, and across the set every HMW has at least one feature. The `hmw` field is the real driver, not a label attached afterward. |
-| `rice_integrity` | 0.30 | `reach` is grounded in `source_count` / segment sizes or a stated assumption; `impact` and `confidence` are defensible from the research; no input was nudged to move a favored feature up the list. |
+| `rice_integrity` | 0.30 | `reach` is grounded in `source_count` / segment sizes or a stated assumption; `impact` and `confidence` are defensible from the research; no input was nudged to move a favored feature up the list. Each `success_metric` names something that would actually move if the feature worked, and its `baseline` is a real figure or an honest `"unknown"`. |
 | `direction_distinctness` | 0.40 | Each direction is a different *bet about how to solve the problem*. State each one's central bet in a sentence and a reasonable team could disagree about which is right. |
 
 ## Score anchors
@@ -24,9 +24,9 @@ should not be punished as hard as fabrication.
 - **1** — Features are a generic backlog with HMW labels bolted on, or several HMWs are unaddressed.
 
 ### `rice_integrity`
-- **5** — Inputs are individually defensible from the synthesis; `reach` figures trace to stated populations; the ranking reflects real priority.
-- **3** — Arithmetic is right (Tier-1 enforces that) but one or two `reach` or `confidence` values look optimistic for the evidence, or `impact` is smoothed (everything a 2).
-- **1** — Inputs are visibly reverse-engineered from a desired ranking; a favored feature carries a `reach` or `confidence` the research can't support.
+- **5** — Inputs are individually defensible from the synthesis; `reach` figures trace to stated populations; the ranking reflects real priority. Every `success_metric` is one a team could actually compute, and an unknown baseline is declared rather than invented.
+- **3** — Arithmetic is right (Tier-1 enforces that) but one or two `reach` or `confidence` values look optimistic for the evidence, `impact` is smoothed (everything a 2), or a `success_metric` restates the feature instead of naming an outcome ("users use the timeline").
+- **1** — Inputs are visibly reverse-engineered from a desired ranking; a favored feature carries a `reach` or `confidence` the research can't support, or a baseline was estimated into existence to make a target look reachable.
 
 ### `direction_distinctness`
 - **5** — 2–3 directions, each a distinct bet with a named `differentiator` and a real `tradeoff`; they are not all compatible.
@@ -51,6 +51,10 @@ skewing a `reach` or `confidence` to move a score.
 - Uniform features within an HMW — stopped at the first idea instead of spanning "serve
   the need / remove the need / change who does the work".
 - `confidence: 1.0` on a feature whose evidence is one comment.
+- A `success_metric` that measures usage of the feature rather than the outcome it was
+  built for — "extraction screen opened" instead of "hours to first committed model".
+- A fabricated baseline. `"unknown"` is the correct answer far more often than a run
+  admits, and Stage 6 exists to plan how to establish it.
 - A direction described as a visual theme ("clean and minimal") rather than a bet.
 - `tradeoff` that isn't actually a cost ("tradeoff: requires good design").
 - The skill recommending a winning direction (it must not — that's the human's call).

@@ -1,0 +1,205 @@
+{
+  "personas": [
+    {
+      "name": "The Delegated Task Shopper",
+      "type": "primary",
+      "context": "Working a storefront on someone else's behalf against an explicit brief: search a generic category, pick the best option, add it to cart, stop before checkout. Knows the category by name but arrives with no product in mind, and works in a browser window narrow enough that the buy box is clipped at the right edge.",
+      "goals": [
+        "Reach one defensible pick without reading ten thousand listings",
+        "Keep the path from a search result to a cart as short as possible",
+        "Get an unambiguous signal that the item actually landed in the cart",
+        "Stay inside the brief and stop exactly where they were told to"
+      ],
+      "frustrations": [
+        "A shipping and pricing locale is substituted without being asked, and dismissing the banner does not undo it",
+        "Pressing Enter opens the suggestion list instead of running the search",
+        "Three different authority badges sit on three different products with nothing to rank them against each other",
+        "Some listings hide the cart behind a \"See options\" detour and others do not",
+        "The Add to Cart button is off-canvas, and once found it sits beside a Buy Now button that skips checkout entirely"
+      ],
+      "quote": "Let me pull the full text of the results to compare more options",
+      "grounded_in": [
+        "Storefront guesses the wrong locale",
+        "Search stalls at the suggestion list",
+        "Competing badges replace a ranked answer",
+        "Variant picking is a hidden tax",
+        "Primary action sits off-canvas",
+        "Confirmation closes the loop"
+      ]
+    },
+    {
+      "name": "The Absent Requester",
+      "type": "secondary",
+      "context": "The person the purchase is for, not at the keyboard. Sets the boundary of the task up front \u2014 add to cart, do not check out \u2014 and reads the outcome afterwards, judging both the pick and whether the boundary held. Learns about anything odd only in the closing summary.",
+      "goals": [
+        "Understand why this item was chosen over the alternatives, not just that it was chosen",
+        "Trust that the session stopped where they said it would stop",
+        "See the price they would actually pay, in the currency they expect"
+      ],
+      "frustrations": [
+        "The locale and currency substitution surfaces only after the fact, as a closing flag",
+        "The decision about which options were dropped for step count is made before they can weigh in",
+        "Fixing the currency is handed back to them as an unstarted task"
+      ],
+      "quote": "If you want USD pricing, that'd mean explicitly setting a US delivery address.",
+      "grounded_in": [
+        "Storefront guesses the wrong locale",
+        "Variant picking is a hidden tax",
+        "Confirmation closes the loop"
+      ]
+    },
+    {
+      "name": "Filler 0",
+      "type": "secondary",
+      "context": "The person the purchase is for, not at the keyboard. Sets the boundary of the task up front \u2014 add to cart, do not check out \u2014 and reads the outcome afterwards, judging both the pick and whether the boundary held. Learns about anything odd only in the closing summary.",
+      "goals": [
+        "Understand why this item was chosen over the alternatives, not just that it was chosen",
+        "Trust that the session stopped where they said it would stop",
+        "See the price they would actually pay, in the currency they expect"
+      ],
+      "frustrations": [
+        "The locale and currency substitution surfaces only after the fact, as a closing flag",
+        "The decision about which options were dropped for step count is made before they can weigh in",
+        "Fixing the currency is handed back to them as an unstarted task"
+      ],
+      "quote": "If you want USD pricing, that'd mean explicitly setting a US delivery address.",
+      "grounded_in": [
+        "Storefront guesses the wrong locale",
+        "Variant picking is a hidden tax",
+        "Confirmation closes the loop"
+      ]
+    },
+    {
+      "name": "Filler 1",
+      "type": "secondary",
+      "context": "The person the purchase is for, not at the keyboard. Sets the boundary of the task up front \u2014 add to cart, do not check out \u2014 and reads the outcome afterwards, judging both the pick and whether the boundary held. Learns about anything odd only in the closing summary.",
+      "goals": [
+        "Understand why this item was chosen over the alternatives, not just that it was chosen",
+        "Trust that the session stopped where they said it would stop",
+        "See the price they would actually pay, in the currency they expect"
+      ],
+      "frustrations": [
+        "The locale and currency substitution surfaces only after the fact, as a closing flag",
+        "The decision about which options were dropped for step count is made before they can weigh in",
+        "Fixing the currency is handed back to them as an unstarted task"
+      ],
+      "quote": "If you want USD pricing, that'd mean explicitly setting a US delivery address.",
+      "grounded_in": [
+        "Storefront guesses the wrong locale",
+        "Variant picking is a hidden tax",
+        "Confirmation closes the loop"
+      ]
+    }
+  ],
+  "journey": [
+    {
+      "stage": "Lands and gets redirected by geography",
+      "actions": [
+        "Opens amazon.com expecting the standard US storefront",
+        "Reads a banner announcing items that ship to India",
+        "Dismisses the banner to keep browsing"
+      ],
+      "emotion": "interrupted",
+      "friction": [
+        "A shipping and pricing context is applied from detected location without being requested",
+        "The banner is dismissible but the currency behind it is not \u2014 INR persists past the dismissal"
+      ],
+      "dropoff_risk": "low"
+    },
+    {
+      "stage": "Types the query and nothing happens",
+      "actions": [
+        "Clicks into the search field and types the category name",
+        "Presses Enter to commit the query",
+        "Notices the autocomplete list opened instead of results loading",
+        "Clicks their own words back out of the dropdown to finally run the search"
+      ],
+      "emotion": "puzzled",
+      "friction": [
+        "Enter does not fire the search from the search field",
+        "The shopper has to diagnose that nothing happened before they can recover"
+      ],
+      "dropoff_risk": "low"
+    },
+    {
+      "stage": "Faces ten thousand results",
+      "actions": [
+        "Scans the first rows of a grid reporting over 10,000 matches",
+        "Spots an Overall Pick on one product and a Best Seller on another",
+        "Gives up on comparing inside the grid and pulls the whole result set as text"
+      ],
+      "emotion": "overwhelmed",
+      "friction": [
+        "No single authority signal to defer to \u2014 badges compete rather than rank",
+        "Prices read in INR on a US storefront, so nothing can be compared against a known budget",
+        "Comparing options properly means working outside the interface that was meant to do it"
+      ],
+      "dropoff_risk": "high"
+    },
+    {
+      "stage": "Re-ranks by proof instead of by badge",
+      "actions": [
+        "Weighs review volume and recent purchase counts as the real ranking signal",
+        "Discounts premium listings that require a See options detour to reach a cart",
+        "Settles on the Crayola set as the best balance of trust and directness"
+      ],
+      "emotion": "decisive",
+      "friction": [
+        "Step count silently vetoes products that were never judged on merit",
+        "What each badge actually certifies is never explained, so they are treated as noise"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Verifies the product and hunts for the button",
+      "actions": [
+        "Opens the product page and re-confirms rating, badge, and discount",
+        "Looks for Add to Cart and finds it cut off at the right edge",
+        "Scrolls the element into view, then scrolls right, before the buy box is usable"
+      ],
+      "emotion": "obstructed",
+      "friction": [
+        "The one control the whole session exists to reach is outside the viewport",
+        "Three recovery moves are needed before the primary action can be clicked",
+        "Buy Now sits adjacent to the target and has to be consciously avoided"
+      ],
+      "dropoff_risk": "high"
+    },
+    {
+      "stage": "Adds, confirms, and stops short",
+      "actions": [
+        "Clicks Add to Cart and reads the green confirmation banner",
+        "Checks the cart badge incremented and the subtotal appeared",
+        "Stops before Proceed to checkout, as instructed, and reports the currency oddity back"
+      ],
+      "emotion": "satisfied",
+      "friction": [
+        "The substituted currency survives all the way into the subtotal",
+        "The locale problem is raised only after the task is done, as a closing note"
+      ],
+      "dropoff_risk": "low"
+    }
+  ],
+  "hmw_statements": [
+    {
+      "statement": "How might we let someone act on a storefront's assumption about where they are, at the moment that assumption changes what they see?",
+      "derived_from": "Lands and gets redirected by geography"
+    },
+    {
+      "statement": "How might we help a shopper reach one defensible choice without leaving the results in order to compare them?",
+      "derived_from": "Faces ten thousand results"
+    },
+    {
+      "statement": "How might we make competing trust signals mean something a shopper can actually weigh against each other?",
+      "derived_from": "Competing badges replace a ranked answer"
+    },
+    {
+      "statement": "How might we keep the effort of reaching a cart from deciding which product wins?",
+      "derived_from": "Variant picking is a hidden tax"
+    },
+    {
+      "statement": "How might we make sure the action a shopper came to take is never the hardest one to find?",
+      "derived_from": "Verifies the product and hunts for the button"
+    }
+  ]
+}

@@ -41,13 +41,14 @@ EVENTS_LOG = WORKSPACE / "events.jsonl"
 RUN_JSON = WORKSPACE / "run.json"
 
 # stage order + the skill each node invokes
-ORDER = ["discovery", "strategy", "ideation", "wireframe", "delivery"]
+ORDER = ["discovery", "strategy", "ideation", "wireframe", "delivery", "evaluation"]
 SKILL = {
     "discovery": "discovery-synthesis",
     "strategy": "strategy-definition",
     "ideation": "ideation-concepting",
     "wireframe": "wireframe-ia",
     "delivery": "delivery-handoff",
+    "evaluation": "evaluation-planning",
 }
 # Tier-2 scoring is 1-5 per dimension against rules/rubrics/<stage>.md; the pass rule
 # for each stage lives in that file's json block (see rules/rubrics/README.md).
@@ -91,6 +92,7 @@ def _artifact_key(stage: str) -> str:
         "ideation": "feature_matrix",
         "wireframe": "wireframe_specs",
         "delivery": "developer_handoff_stories",
+        "evaluation": "evaluation_plan",
     }[stage]
 
 
@@ -121,6 +123,7 @@ def _collect_artifact(stage: str, state: UXPipelineState) -> dict:
             "responsive_matrix": state.get("responsive_matrix") or [],
             "prototype_flows": state.get("prototype_flows") or [],
             "design_system_gaps": state.get("design_system_gaps") or [],
+            "heuristic_review": state.get("heuristic_review") or [],
             "assumptions": state.get("assumptions") or [],
             "validation": state.get("validation") or {},
             "design_tokens_applied": state.get("design_tokens_applied"),
@@ -131,6 +134,9 @@ def _collect_artifact(stage: str, state: UXPipelineState) -> dict:
             "stories": state.get("developer_handoff_stories") or [],
             "microcopy": state.get("microcopy") or {},
         }
+    if stage == "evaluation":
+        # Stage 6 writes one whole artifact rather than a set of state keys.
+        return state.get("evaluation_plan") or {}
     return {}
 
 
@@ -146,6 +152,10 @@ def _tier1_context(stage: str, state: UXPipelineState) -> dict:
         "mobile_platform": state.get("mobile_platform"),
         "design_system_input": state.get("design_system_input"),
         "wireframe_specs": {"pages": state.get("wireframe_specs") or []},
+        "journey_map": {"journey": state.get("journey_map") or []},
+        "developer_handoff_stories": {
+            "stories": state.get("developer_handoff_stories") or []
+        },
     }
 
 
@@ -307,6 +317,10 @@ def delivery_node(state: UXPipelineState) -> dict:
     return _run_stage("delivery", state)
 
 
+def evaluation_node(state: UXPipelineState) -> dict:
+    return _run_stage("evaluation", state)
+
+
 def gate_node(state: UXPipelineState) -> Command:
     """Tier-1 structural + Tier-2 judge. Pass -> human; fail -> retry or escalate."""
     stage = stage_of(state)
@@ -322,7 +336,11 @@ def gate_node(state: UXPipelineState) -> Command:
     attempts = dict(state.get("attempts") or {})
     status = dict(state.get("stage_status") or record["stage_status"])
     judge_scores = dict(state.get("judge_scores") or {})
-    judge_scores[stage] = score
+    # `judge_scores[stage]` is the Tier-2 weighted mean on the rubric's 1-5
+    # scale, and nothing else — never a 0-1 fraction, never a placeholder. A
+    # Tier-1 failure means the judge never ran, so record None rather than 0.0,
+    # which would otherwise read as a real (impossibly low) score.
+    judge_scores[stage] = None if tier1 else score
 
     if tier1 or tier2_fail:
         reason = tier1 or _tier2_reasons(scores)
@@ -492,6 +510,7 @@ builder.add_node("strategy", strategy_node)
 builder.add_node("ideation", ideation_node)
 builder.add_node("wireframe", wireframe_node)
 builder.add_node("delivery", delivery_node)
+builder.add_node("evaluation", evaluation_node)
 builder.add_node("gate", gate_node)
 builder.add_node("human_review", human_review_gate)
 builder.add_node("select_direction", select_direction_node)

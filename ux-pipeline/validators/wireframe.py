@@ -15,7 +15,7 @@ fixed is the `base` ROLE taxonomy, so the spec stays checkable across any design
 system.
 
 Usage:
-    python3 validators/wireframe.py wireframe.json
+    python3 validators/wireframe.py output/<project-slug>/wireframe.json
     cat wireframe.json | python3 validators/wireframe.py -
 
 Exit code 0 = pass, 1 = violations found (printed to stdout).
@@ -69,8 +69,24 @@ COMPONENT_SOURCES = {"reused", "new"}
 
 REQUIRED_STATES = ("default", "loading", "empty", "error")
 OPTIONAL_STATES = ("success", "disabled")
-REQUIRED_A11Y = ("contrast", "keyboard_focus", "labels", "touch_targets", "reading_order")
+REQUIRED_A11Y = (
+    "contrast", "keyboard_focus", "labels", "touch_targets", "reading_order",
+    "status_messages", "motion",
+)
 WEB_BREAKPOINTS = ("desktop", "laptop", "tablet", "mobile")
+
+# --- Accessibility evidence (WCAG 2.2 AA) --------------------------------------
+# Two of the seven a11y keys make a claim that can be checked for evidence rather
+# than taken on trust. `contrast` must cite a ratio or a named token pair;
+# `touch_targets` must cite a measurement. The rest stay narrative and are judged
+# at Tier 2.
+CONTRAST_RATIO_RE = re.compile(r"(\d+(?:\.\d+)?)\s*:\s*1")
+AA_BODY_RATIO = 4.5
+AA_LARGE_RATIO = 3.0
+# 48dp Android / 44pt iOS / 44px web — the minimums recorded in
+# skills/wireframe-ia/references/material-design-tokens.json.
+TOUCH_SIZE_RE = re.compile(r"(\d+(?:\.\d+)?)\s*(dp|pt|px)\b")
+TOUCH_MINIMUMS = {"dp": 48.0, "pt": 44.0, "px": 44.0}
 REQUIRED_UX_KEYS = (
     "primary_user", "user_goal", "business_goal", "main_task", "context",
     "entry_point", "expected_outcome",
@@ -83,6 +99,23 @@ VALIDATION_KEYS = ("ux", "ui", "responsive", "accessibility", "prototype")
 
 MIN_PAGES, MAX_PAGES = 3, 12
 CTA_MAX_WORDS = 4
+
+# --- Usability heuristics (the Stage 4 self-critique) --------------------------
+# Named exactly as skills/wireframe-ia/references/usability-heuristics.md lists
+# them. This is the pipeline's only evaluative pass before a human sees the spec.
+HEURISTICS = (
+    "Visibility of system status",
+    "Match between system and the real world",
+    "User control and freedom",
+    "Consistency and standards",
+    "Error prevention",
+    "Recognition rather than recall",
+    "Flexibility and efficiency of use",
+    "Aesthetic and minimalist design",
+    "Help users recognize, diagnose and recover from errors",
+    "Help and documentation",
+)
+HEURISTIC_SEVERITIES = {"high", "medium", "low", "none"}
 
 
 def coerce_json(raw: str) -> dict:
@@ -248,7 +281,9 @@ def _check_responsive(page_name: str, page: dict, is_mobile: bool, errors: List[
             )
 
 
-def _check_accessibility(page_name: str, page: dict, errors: List[str]) -> None:
+def _check_accessibility(
+    page_name: str, page: dict, color_tokens: Set[str], errors: List[str]
+) -> None:
     a11y = page.get("accessibility")
     if not isinstance(a11y, dict):
         errors.append(
@@ -259,6 +294,167 @@ def _check_accessibility(page_name: str, page: dict, errors: List[str]) -> None:
     for key in REQUIRED_A11Y:
         if not _is_str(a11y.get(key)):
             errors.append("Page '{0}' accessibility.{1} is missing or empty".format(page_name, key))
+
+    _check_contrast_evidence(page_name, a11y.get("contrast"), color_tokens, errors)
+    _check_touch_target_evidence(page_name, a11y.get("touch_targets"), errors)
+
+
+def _check_contrast_evidence(
+    page_name: str, contrast: object, color_tokens: Set[str], errors: List[str]
+) -> None:
+    """`contrast` must cite a ratio or a named token pair — not claim compliance."""
+    if not _is_str(contrast):
+        return  # already reported as missing
+    text = str(contrast)
+
+    ratios = [float(m) for m in CONTRAST_RATIO_RE.findall(text)]
+    if ratios:
+        # Every ratio quoted must clear the lower AA bar; anything at or above
+        # 4.5:1 satisfies body text too. A ratio below 3:1 is a failing claim
+        # stated as if it passed.
+        low = [r for r in ratios if r < AA_LARGE_RATIO]
+        if low:
+            errors.append(
+                "Page '{0}' accessibility.contrast cites {1}:1, below the WCAG 2.2 AA "
+                "minimum of {2}:1 for large text and non-text UI ({3}:1 for body)".format(
+                    page_name, min(low), AA_LARGE_RATIO, AA_BODY_RATIO
+                )
+            )
+        return
+
+    # No ratio — a named pair of colour tokens is the other accepted evidence.
+    named = [t for t in color_tokens if t and t in text]
+    if len(named) >= 2:
+        return
+
+    errors.append(
+        "Page '{0}' accessibility.contrast cites no evidence — give a ratio (e.g. "
+        "'4.5:1') or name two design_system.tokens.color roles. A bare claim like "
+        "'meets WCAG AA' is not checkable".format(page_name)
+    )
+
+
+def _check_touch_target_evidence(page_name: str, targets: object, errors: List[str]) -> None:
+    """`touch_targets` must cite a measurement meeting the platform minimum."""
+    if not _is_str(targets):
+        return  # already reported as missing
+    found = TOUCH_SIZE_RE.findall(str(targets))
+    if not found:
+        errors.append(
+            "Page '{0}' accessibility.touch_targets cites no measurement — give a size "
+            "in dp/pt/px (minimum 48dp Android, 44pt iOS, 44px web)".format(page_name)
+        )
+        return
+    # At least one cited measurement must meet its platform minimum. Every
+    # number is not required to: a target size is routinely quoted alongside a
+    # smaller spacing figure ("44x44px with 8dp between adjacent targets"), and
+    # the spacing is not the thing under test.
+    if any(float(raw) >= TOUCH_MINIMUMS[unit] for raw, unit in found):
+        return
+    biggest, unit = max(found, key=lambda f: float(f[0]))
+    errors.append(
+        "Page '{0}' accessibility.touch_targets cites nothing at or above the minimum — "
+        "largest measurement is {1}{2}, minimum is {3}{2}".format(
+            page_name, biggest, unit, TOUCH_MINIMUMS[unit]
+        )
+    )
+
+
+def _check_heuristic_review(
+    data: dict, page_names: Set[str], errors: List[str]
+) -> None:
+    """All ten heuristics reviewed, each with a finding and a fix."""
+    review = data.get("heuristic_review")
+    if not isinstance(review, list) or not review:
+        errors.append(
+            "heuristic_review is missing — the ten usability heuristics are the only "
+            "evaluative pass before a human sees this spec"
+        )
+        return
+
+    seen: Set[str] = set()
+    for i, entry in enumerate(review, 1):
+        if not isinstance(entry, dict):
+            errors.append("heuristic_review entry {0} is not an object".format(i))
+            continue
+        name = entry.get("heuristic")
+        if name not in HEURISTICS:
+            errors.append(
+                "heuristic_review entry {0} heuristic {1!r} is not one of the ten — see "
+                "references/usability-heuristics.md".format(i, name)
+            )
+            continue
+        if name in seen:
+            errors.append("heuristic_review covers {0!r} more than once".format(name))
+        seen.add(name)
+
+        severity = entry.get("severity")
+        if severity not in HEURISTIC_SEVERITIES:
+            errors.append(
+                "heuristic_review {0!r} severity {1!r} not in {2}".format(
+                    name, severity, sorted(HEURISTIC_SEVERITIES)
+                )
+            )
+        for key in ("finding", "fix"):
+            if not _is_str(entry.get(key)):
+                errors.append("heuristic_review {0!r} has no {1}".format(name, key))
+
+        page = entry.get("page")
+        if severity == "none":
+            # A clean heuristic must say why it is clean; that reason is the
+            # evidence the review actually happened.
+            if page != "none" or entry.get("finding") != "none":
+                errors.append(
+                    "heuristic_review {0!r} has severity 'none' but names a page or a "
+                    "finding — use 'none' for both and put the reason in fix".format(name)
+                )
+        elif _is_str(page) and page != "none" and page not in page_names:
+            errors.append(
+                "heuristic_review {0!r} names page {1!r}, which has no page spec".format(
+                    name, page
+                )
+            )
+
+    for missing in [h for h in HEURISTICS if h not in seen]:
+        errors.append("heuristic_review does not cover {0!r}".format(missing))
+
+    # Ten-for-ten clean is not a clean bill of health on a real product; it is
+    # what a review that was not actually run looks like. The escape is to find
+    # one genuine low-severity thing, which any non-trivial design has.
+    if seen and not any(
+        isinstance(e, dict) and e.get("severity") in ("high", "medium", "low")
+        for e in review
+    ):
+        errors.append(
+            "heuristic_review found nothing on any of the ten heuristics — a design with "
+            "no friction anywhere is not a finding, it is a review that was not run"
+        )
+
+
+def _check_a11y_distinct(pages: List[dict], errors: List[str]) -> None:
+    """
+    No two pages may carry a byte-identical accessibility block.
+
+    Identical blocks mean the accessibility was written once and pasted across
+    the spec — different pages have different focus orders and different things
+    to announce. `rules/rubrics/wireframe-ia.md` already lists this as a failure
+    mode; this makes it Tier-1 rather than leaving it to the judge.
+    """
+    seen: Dict[str, str] = {}
+    for page in pages:
+        name = page.get("page_name")
+        a11y = page.get("accessibility")
+        if not _is_str(name) or not isinstance(a11y, dict):
+            continue
+        fingerprint = json.dumps(a11y, sort_keys=True)
+        first = seen.get(fingerprint)
+        if first is None:
+            seen[fingerprint] = name
+        else:
+            errors.append(
+                "Page '{0}' accessibility block is identical to page '{1}' — write the "
+                "accessibility for this page, not a template".format(name, first)
+            )
 
 
 def _check_requirements(page_name: str, page: dict, errors: List[str]) -> None:
@@ -459,6 +655,17 @@ def validate(data: dict, context: Optional[dict] = None) -> List[str]:
     families = _check_page_names(pages, target, errors)
     mobile_names = set(families.get("mobile") or [])
 
+    # The colour roles a page's `accessibility.contrast` may cite as evidence.
+    # Shape is not assumed: _check_design_system reports a malformed block, and
+    # this must still not raise on one (a legacy artifact has design_system as a
+    # bare string).
+    ds = data.get("design_system")
+    ds_tokens = ds.get("tokens") if isinstance(ds, dict) else None
+    colors = ds_tokens.get("color") if isinstance(ds_tokens, dict) else None
+    color_tokens: Set[str] = {
+        t for t in (colors or []) if isinstance(t, str) and t
+    }
+
     for page in pages:
         name = page.get("page_name", "<unnamed>")
 
@@ -488,12 +695,14 @@ def validate(data: dict, context: Optional[dict] = None) -> List[str]:
         _check_components(name, page, errors)
         _check_states(name, page, errors)
         _check_responsive(name, page, name in mobile_names, errors)
-        _check_accessibility(name, page, errors)
+        _check_accessibility(name, page, color_tokens, errors)
         _check_requirements(name, page, errors)
 
+    _check_a11y_distinct(pages, errors)
     _check_responsive_matrix(data, target, errors)
 
     page_names = {p.get("page_name") for p in pages if _is_str(p.get("page_name"))}
+    _check_heuristic_review(data, page_names, errors)
     _check_prototype(data, page_names, families, errors)
     _check_validation(data, errors)
     _check_gaps(data, errors)

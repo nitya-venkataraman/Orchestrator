@@ -28,6 +28,10 @@ _CONTEXT_KEYS: Dict[str, List[str]] = {
         "design_system_input",
     ],
     "delivery-handoff": ["sitemap", "wireframe_specs", "persona_profile"],
+    "evaluation-planning": [
+        "journey_map", "persona_profile", "feature_matrix", "wireframe_specs",
+        "heuristic_review", "developer_handoff_stories",
+    ],
 }
 
 

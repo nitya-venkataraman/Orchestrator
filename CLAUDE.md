@@ -1,97 +1,45 @@
 # AI POC
 
-A lightweight project repo for turning raw project inputs into structured, review-ready user stories.
+Two workflows share this repo:
 
-## Purpose
+1. **UserStoryGenerator** (`.claude/skills/user-story-generator/`) — raw project inputs in
+   any format → a validated user-story backlog. Entry point: `/generate-user-stories`.
+2. **ux-pipeline/** — a six-stage research-to-design-to-evaluation pipeline. See
+   [ux-pipeline/CLAUDE.md](ux-pipeline/CLAUDE.md); its rulebook is [rules/](rules/).
 
-Product, design, and engineering inputs arrive in many shapes — meeting notes, transcripts,
-emails, Slack threads, PRDs, spreadsheets, bullet dumps, screenshots-turned-text. This repo
-provides a repeatable way to convert any of that into consistent user stories with acceptance
-criteria.
+Both write everything a project produces into one folder, `output/<project-slug>/`.
 
-## Skills
+## Commands
 
-### UserStoryGenerator
+| Command | What it runs |
+|---|---|
+| `make test` | `harness/tests/run_tests.py` — validator self-tests |
+| `make ux-test` | rubric check + `ux-pipeline/tests/` fixtures + `output/` conformance |
+| `make lint` | `harness/lint_skill.py` — skill + eval-suite structure |
+| `make validate FILE=<f>` | `validate_stories.py --strict` on one backlog |
+| `make run` | `harness/run.py` — skill end to end on `harness/fixtures/*` (needs `claude` CLI) |
+| `make eval` | `claude plugin eval` — LLM graders (early access + API key) |
 
-Analyzes project-level inputs in **any format** and converts them into structured user stories.
+`make help` lists them. See [harness/README.md](harness/README.md) for what each layer proves.
 
-- Location: `.claude/skills/user-story-generator/SKILL.md`
-- Invoke it whenever the user asks to "generate user stories", "turn this into stories",
-  "write acceptance criteria", "break this down into a backlog", or provides raw requirements
-  material and wants it structured.
+CI ([.github/workflows/harness.yml](.github/workflows/harness.yml)) runs the self-tests,
+the validator, the lint, and the ux-pipeline checks on every push and PR. It does **not**
+run `make run`. The eval job runs only on `main` pushes, is gated on `ANTHROPIC_API_KEY`,
+and never blocks the build.
 
-**User story format (required):**
+## Writing backlogs
 
-> As a **[user-type]**, I want to **[action]** so that I can **[benefit/gain]**.
-
-Every story must also include **acceptance criteria** (Given/When/Then or a checklist).
-
-### UX pipeline (`ux-pipeline/`)
-
-The `ux-pipeline/` directory holds the LangGraph code-form of a research-to-design
-pipeline — research synthesis, strategy, ideation, page building, delivery handoff — with
-a two-tier gate (deterministic `validators/` for Tier-1, a 1–5 rubric judge for Tier-2),
-retry/escalation, a content-addressed cache for correct resume, and a direction-selection
-fork. Stages write `output/<stage>/<stage>-<slug>.{json,md}` — one folder per
-stage (`discovery/`, `strategy/`, `ideation/`, `wireframe/`, `delivery/`), the
-filename keeping the stage prefix; one kebab-case `<slug>` per run, re-runs
-overwrite. Its rulebook is `rules/CONTRACTS.md`
-(schemas + Tier-1) and `rules/rubrics/` (Tier-2 scoring, one file per stage). See
-`ux-pipeline/CLAUDE.md` for details.
-
-## Conventions
-
-- Generated stories are written to `output/delivery/` as Markdown, one file per epic
-  or per run.
-- UX pipeline stage artifacts land in a folder per stage —
-  `output/<stage>/<stage>-<slug>.{json,md}`. These are **gitignored** — they are
-  regenerated per run and never committed. The allowlist tracks only
-  `output/delivery/user-stories-*`, so any new pipeline stage is ignored automatically.
+- One file per run: `output/<project-slug>/user-stories-<date>.md`, `<project-slug>` being
+  a kebab-case name derived from the material. Ask if the material names no clear project.
+- **Always** finish by running `python3 harness/validate_stories.py --strict <file>` and
+  fixing every error. The skill's process includes this step; don't skip it.
 - Keep the story voice user-centric — describe outcomes, not implementation.
 - When inputs are ambiguous or incomplete, list open questions rather than inventing detail.
-- **Always** finish by running `python3 harness/validate_stories.py --strict <file>` and
-  fixing every error. The skill's own process includes this step.
 
-## Testing the skill
+## `output/` is gitignored except backlogs
 
-The `harness/` directory is a three-layer harness — see [harness/README.md](harness/README.md):
-
-1. `python3 harness/validate_stories.py <file>` — deterministic format check (no LLM).
-2. `python3 harness/run.py` — run the skill end to end on `harness/fixtures/*` (needs `claude` CLI).
-3. `claude plugin eval ./.claude/skills/user-story-generator` — LLM-graded eval suite
-   (early-access; no-ops where not enabled).
-
-`make test` / `make lint` / `make run` / `make eval` wrap these. CI runs layers 1–2 on
-every push.
-
-## Repo layout
-
-```
-CLAUDE.md · README.md
-Makefile                        # make test | lint | validate | run | eval
-.claude/
-  commands/generate-user-stories.md   # /generate-user-stories slash command
-  skills/user-story-generator/
-    SKILL.md                    # the UserStoryGenerator skill
-    references/                 # output template, criteria guide, quality rubric
-    examples/                   # sample input -> output
-    evals/                      # `claude plugin eval` cases (prompt.md + graders/)
-harness/
-  validate_stories.py           # deterministic validator
-  run.py                        # local end-to-end runner
-  lint_skill.py                 # skill + eval-suite structure lint
-  fixtures/                     # input bundles per scenario
-  tests/                        # validator self-tests + samples
-rules/                          # THE ux-pipeline rulebook
-  CONTRACTS.md                  # per-stage JSON schema + deterministic Tier-1 rules
-  rubrics/<stage>.md            # Tier-2 scoring rubric per stage (1–5 dims, weights, pass rule)
-ux-pipeline/                    # LangGraph code-form of the UX pipeline (see its CLAUDE.md)
-  validators/                   # deterministic Tier-1 checks, one module per stage
-  rubrics.py                    # loads rules/rubrics/, scores a 1–5 map against the pass rule
-.github/workflows/harness.yml   # CI
-inputs/                         # drop raw source material here (any format)
-output/                         # one folder per pipeline stage (all ignored except backlogs)
-  RUN-SUMMARY-<slug>.md         # per-run index, links every stage artifact
-  discovery/ strategy/ ideation/ wireframe/   # <stage>-<slug>.{json,md}
-  delivery/                     # delivery-<slug>.{json,md} + user-stories-*.md (tracked)
-```
+The allowlist tracks only `output/*/user-stories-*`. Everything else in a project
+folder — the six pipeline stage artifacts and `RUN-SUMMARY.md` — is regenerated per run
+and never committed, so any new pipeline stage is ignored automatically without touching
+[.gitignore](.gitignore). Project directories are un-ignored first, because git cannot
+re-include a file inside an excluded directory.

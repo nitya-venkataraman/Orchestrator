@@ -10,9 +10,11 @@ Implements `rules/CONTRACTS.md` § Stage 3:
   - 2-3 design directions, each with a non-empty tradeoff
   - every feature.hmw matches a Stage-2 HMW (only when the Stage-2 artifact is
     passed as context["problem_statement"])
+  - every feature carries a success_metric with a name and a target, so the RICE
+    impact claim is falsifiable rather than decorative
 
 Usage:
-    python3 validators/ideation.py output/ideation/ideation-<slug>.json
+    python3 validators/ideation.py output/<project-slug>/ideation.json
 Exit 0 = pass, 1 = violations.
 """
 from __future__ import annotations
@@ -105,6 +107,21 @@ def validate(data: dict, context: Optional[dict] = None) -> List[str]:
                 errors.append(
                     "Feature '{0}' rice_score {1} != recomputed {2}".format(label, score, expected)
                 )
+
+        # A RICE impact claims something moves; success_metric says what, and how
+        # you would know. Without it the impact score is unfalsifiable.
+        metric = f.get("success_metric")
+        if not isinstance(metric, dict):
+            errors.append(
+                "Feature '{0}' has no success_metric — an impact score with no metric "
+                "behind it cannot be checked after ship".format(label)
+            )
+        else:
+            for key in ("name", "target"):
+                if not metric.get(key):
+                    errors.append(
+                        "Feature '{0}' success_metric has no {1}".format(label, key)
+                    )
 
     directions = data.get("design_directions")
     if not isinstance(directions, list):

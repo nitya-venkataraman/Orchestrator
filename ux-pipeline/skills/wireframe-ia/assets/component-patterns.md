@@ -87,15 +87,34 @@ writes data, and `disabled` where a control is conditionally unavailable.
 - **Success** confirms completion and offers the next relevant action.
 - **Disabled** says why it is unavailable and what would enable it.
 
-## Accessibility (WCAG AA)
+## Accessibility (WCAG 2.2 AA)
 
-Per page, concrete and specific: `contrast` (4.5:1 body, 3:1 large text and
-non-text UI, named token pairs), `keyboard_focus` (tab order and the visible
-focus treatment), `labels` (visible labels, error identification, form
-instructions), `touch_targets` (against the ~44×44px minimum), `reading_order`
-(DOM order, one `h1`, no skipped heading levels).
+Per page, concrete and specific — seven keys:
+
+| Key | What it must say | Checked how |
+|---|---|---|
+| `contrast` | 4.5:1 body, 3:1 large text and non-text UI — as a ratio, or as two named colour tokens | Tier-1 requires the ratio or the token pair |
+| `touch_targets` | The size, against the minimum: 48dp Android, 44pt iOS, 44px web | Tier-1 requires a measurement that meets it |
+| `keyboard_focus` | Tab order and the visible focus treatment | Tier-2 |
+| `labels` | Visible labels, error identification, form instructions | Tier-2 |
+| `reading_order` | DOM order, one `h1`, no skipped heading levels | Tier-2 |
+| `status_messages` | How an async result reaches someone not watching that region, and whether it is polite or assertive | Tier-2 |
+| `motion` | The `prefers-reduced-motion` treatment, or that there is no motion to reduce | Tier-2 |
 
 **Never rely on colour alone** — pair it with an icon, text, or shape.
+
+**Never rely on sight alone.** Every state in `## States` that arrives
+asynchronously — loading resolving, an error appearing, a success landing —
+needs a corresponding announcement. A spinner replaced by results is a silent
+event to a screen-reader user unless something says so. Choose politeness
+deliberately: *polite* for progress and counts that must not interrupt reading,
+*assertive* only where the change alters what the visible content means (a
+failed data source, a figure that became unverifiable).
+
+**Write each page's block for that page.** Two byte-identical accessibility
+blocks are a Tier-1 violation, because different pages have different focus
+orders and different things to announce. If two pages genuinely share a
+treatment, say so in each one's own terms rather than pasting.
 
 ## Voice
 

@@ -3,7 +3,7 @@
 Stage 2 (strategy-definition) Tier-1 validator — deterministic, no LLM.
 
 Implements `rules/CONTRACTS.md` § Stage 2:
-  - exactly 2 personas, one primary and one secondary
+  - 2-3 personas: exactly one primary, one or two secondary
   - every hmw_statements[*].statement starts with "how might we"
   - 4-7 journey stages; 3-5 HMW statements
   - dropoff_risk in {high, medium, low}
@@ -11,7 +11,7 @@ Implements `rules/CONTRACTS.md` § Stage 2:
     Stage-1 artifact is passed as context["synthesized_insights"])
 
 Usage:
-    python3 validators/strategy.py output/strategy/strategy-<slug>.json
+    python3 validators/strategy.py output/<project-slug>/strategy.json
 Exit 0 = pass, 1 = violations.
 """
 from __future__ import annotations
@@ -23,6 +23,7 @@ from typing import List, Optional
 RISKS = {"high", "medium", "low"}
 MIN_STAGES, MAX_STAGES = 4, 7
 MIN_HMW, MAX_HMW = 3, 5
+MIN_PERSONAS, MAX_PERSONAS = 2, 3
 
 
 def _coerce(raw: str) -> dict:
@@ -57,11 +58,25 @@ def validate(data: dict, context: Optional[dict] = None) -> List[str]:
     if not isinstance(personas, list):
         errors.append("Missing or non-list 'personas'")
         personas = []
-    if len(personas) != 2:
-        errors.append("Expected exactly 2 personas, found {0}".format(len(personas)))
-    types = sorted(p.get("type") for p in personas if isinstance(p, dict))
-    if personas and types != ["primary", "secondary"]:
-        errors.append("Personas must be exactly one 'primary' and one 'secondary'")
+    if personas and not MIN_PERSONAS <= len(personas) <= MAX_PERSONAS:
+        errors.append(
+            "Expected {0}-{1} personas, found {2}".format(
+                MIN_PERSONAS, MAX_PERSONAS, len(personas)
+            )
+        )
+    types = [p.get("type") for p in personas if isinstance(p, dict)]
+    if personas:
+        primaries = types.count("primary")
+        secondaries = types.count("secondary")
+        if primaries != 1:
+            errors.append(
+                "Expected exactly 1 'primary' persona, found {0}".format(primaries)
+            )
+        if secondaries != len(personas) - primaries or secondaries < 1:
+            errors.append(
+                "Every persona besides the primary must be 'secondary' "
+                "(found {0} secondary of {1} personas)".format(secondaries, len(personas))
+            )
 
     known_themes = _theme_names(context)
     for p in personas:

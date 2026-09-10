@@ -12,9 +12,9 @@ Turn raw project inputs into structured user stories with acceptance criteria.
   Each story ships with testable acceptance criteria.
 
 - **`inputs/`** — drop source material here (notes, transcripts, PRDs, exports, etc.).
-- **`output/`** — one folder per pipeline stage (`discovery/`, `strategy/`,
-  `ideation/`, `wireframe/`, `delivery/`). Generated user stories land in
-  `output/delivery/`.
+- **`output/`** — one folder per project (`greenbasket/`, `amazon-addtocart/`, …),
+  each holding that project's six stage artifacts, its `RUN-SUMMARY.md`, and any
+  generated user stories.
 
 ## Usage
 

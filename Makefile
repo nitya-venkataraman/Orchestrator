@@ -2,7 +2,7 @@
 PY := python3
 SKILL := .claude/skills/user-story-generator
 
-.PHONY: help test lint validate run eval clean
+.PHONY: help test ux-test lint validate run eval clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
@@ -11,10 +11,15 @@ help: ## Show this help
 test: ## Run the validator self-tests
 	$(PY) harness/tests/run_tests.py
 
+ux-test: ## Run the ux-pipeline Tier-1 fixtures + rubric + artifact checks
+	$(PY) ux-pipeline/rubrics.py --check
+	$(PY) ux-pipeline/tests/run_tests.py
+	$(PY) ux-pipeline/tests/check_artifacts.py
+
 lint: ## Structural lint of the skill + eval suite
 	$(PY) harness/lint_skill.py
 
-validate: ## Validate a file: make validate FILE=output/delivery/user-stories-2026-09-02.md
+validate: ## Validate a file: make validate FILE=output/flight-booking/user-stories-2026-09-02.md
 	@test -n "$(FILE)" || { echo "usage: make validate FILE=path/to/stories.md"; exit 2; }
 	$(PY) harness/validate_stories.py --strict $(FILE)
 

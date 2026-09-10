@@ -1,9 +1,14 @@
 # ux-pipeline
 
 Human-in-the-loop UX design pipeline: raw research → synthesized insights → strategy →
-concepts → wireframes/IA → developer handoff. Five Claude Agent SDK skills orchestrated by
-a LangGraph state machine, with a two-tier machine gate and a human approval gate between
-every phase.
+concepts → wireframes/IA → developer handoff → evaluation plan. Six Claude Agent SDK
+skills orchestrated by a LangGraph state machine, with a two-tier machine gate and a
+human approval gate between every phase.
+
+The last stage is what stops the pipeline being purely generative. Stages 1–5 make
+claims — what users need, what the problem is, what matters, that the design works —
+and Stage 6 plans the usability test and the instrumentation that would show whether
+any of them held.
 
 The rulebook lives in a repo-level [`../rules/`](../rules/) folder:
 [`../rules/CONTRACTS.md`](../rules/CONTRACTS.md) (per-stage schemas + Tier-1 rules)
@@ -24,12 +29,14 @@ ux-pipeline/
 ├── cache.py                  # content-addressed artifact cache (workspace/cache/)
 ├── CLAUDE.md                 # architecture + conventions
 ├── validators/               # deterministic Tier-1, one module per stage + run_tier1()
+├── tests/                    # fixture suite (run_tests.py) + output/ conformance (check_artifacts.py)
 └── skills/
-    ├── discovery-synthesis/SKILL.md
-    ├── strategy-definition/SKILL.md
-    ├── ideation-concepting/SKILL.md
+    ├── discovery-synthesis/{SKILL.md, references/}
+    ├── strategy-definition/{SKILL.md, references/}
+    ├── ideation-concepting/{SKILL.md, references/}
     ├── wireframe-ia/{SKILL.md, references/, assets/}
-    └── delivery-handoff/SKILL.md
+    ├── delivery-handoff/{SKILL.md, references/}
+    └── evaluation-planning/SKILL.md
 ```
 
 `workspace/` (gitignored) holds per-run state: `run.json`, `artifacts/<stage>.json`,
@@ -47,10 +54,11 @@ Scaffold, contract-complete. Two model calls remain stubbed so the graph runs:
   it — prompt assembly (`_judge_prompt`), rubric loading (`rubrics.load_rubric`), the
   weighted mean and `pass_when` evaluation (`rubrics.evaluate`) — is real.
 
-The Tier-1 validators (including the design-system-agnostic wireframe checks), the rubric scoring, the
-cache, the retry/escalation gate, the direction + platform selection fork, and the
-`output/` + `workspace/` persistence are all real and testable now.
-Run `python3 ux-pipeline/rubrics.py --check` to validate the rubric files.
+The Tier-1 validators (including the design-system-agnostic wireframe checks), the rubric
+scoring, the cache, the retry/escalation gate, the direction + platform selection fork,
+and the per-project `output/` + `workspace/` persistence are all real and testable now.
+Run `make ux-test` — the rubric check, the Tier-1 fixture suite, and a conformance pass
+over every committed `output/` artifact. CI runs it on every push and PR.
 
 ## Dependencies
 
@@ -62,7 +70,8 @@ Run `python3 ux-pipeline/rubrics.py --check` to validate the rubric files.
 
 ```
 discovery → gate → [approve] → strategy → gate → [approve] → ideation → gate → [approve]
-   → PICK direction + platform → wireframe → gate → [approve] → delivery → gate → [approve] → complete
+   → PICK direction + platform → wireframe → gate → [approve] → delivery → gate → [approve]
+   → evaluation → gate → [approve] → complete
 ```
 
 At the machine gate: Tier-1 structural, then Tier-2 rubric (1–5 per dimension against

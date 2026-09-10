@@ -10,8 +10,8 @@ judges whether the handoff is *buildable and complete*, not whether it is well-f
 
 | Key | Weight | What "5" looks like |
 |---|---|---|
-| `story_completeness` | 0.40 | Each story names a real capability and a benefit that is an outcome, not a restatement. Acceptance criteria cover the main path plus the key edge cases, and each is a single checkable scenario. |
-| `traceability` | 0.30 | The story set collectively covers the Stage-4 IA — every screen's core purpose is exercised by at least one story — and each story ties to the right Stage-2 persona and Stage-4 screen. |
+| `story_completeness` | 0.40 | Each story names a real capability and a benefit that is an outcome, not a restatement. Acceptance criteria cover the main path plus the key edge cases, and each is a single checkable scenario. Accessibility criteria are derived from the page's own accessibility block, and any story that writes data emits an event that would actually let its metric be computed. |
+| `traceability` | 0.30 | The story set collectively covers the Stage-4 IA — every screen's core purpose is exercised by at least one story — and each story ties to the right Stage-2 persona and Stage-4 screen. The accessibility criteria trace to the specific page they cover, not to a generic checklist. |
 | `voice_consistency` | 0.30 | Microcopy matches the product voice: CTAs sentence-case, verb-first, ≤ 4 words (not ALL CAPS); error copy states what happened then what to do with no apology; empty states name the condition and offer exactly one action. |
 
 ## Score anchors
@@ -27,7 +27,7 @@ judges whether the handoff is *buildable and complete*, not whether it is well-f
 - **1** — Stories cover a subset of the product; several screens absent; persona attribution is generic or wrong.
 
 ### `voice_consistency`
-- **5** — Every string could drop into the Material UI unedited — sentence-case verb-first CTAs (≤ 3 words, not ALL CAPS), blame-free error copy in "what happened, then what to do" order, single-action empty states.
+- **5** — Every string could drop into the built UI unedited — sentence-case verb-first CTAs (≤ 4 words, not ALL CAPS), blame-free error copy in "what happened, then what to do" order, single-action empty states. Copy is plain language at the reading level the persona actually has, and no string is so tight that a 30% longer translation would break its control.
 - **3** — Mostly on-voice, but a few CTAs are ALL CAPS or over-long, strings are apologetic ("Sorry, something went wrong"), or an empty state offers two competing actions.
 - **1** — Microcopy is generic product boilerplate with no relationship to the design-system voice.
 
@@ -39,10 +39,12 @@ confirmation dialog). Before scoring, walk the Stage-4 `screens` list and confir
 a story that exercises its stated `purpose` — a screen with no story is a screen that won't
 get built to spec.
 
-`voice_consistency` is not decoration. The design system's voice rules
-(`references/material-design-system.md` §5) are as enforceable as its component set —
-"Click here", an ALL-CAPS or trailing-period CTA, or an apology in an error is a real
-violation, not a style nit.
+`voice_consistency` is not decoration. The voice rules of the design system Stage 4
+resolved — whichever one that was — are as enforceable as its component set. "Click here",
+an ALL-CAPS or trailing-period CTA, or an apology in an error is a real violation, not a
+style nit. The canonical statement of the rules is
+`ux-pipeline/skills/wireframe-ia/assets/component-patterns.md` § Voice; the handoff
+restates them rather than inventing a second dialect.
 
 ## Common failure modes
 
@@ -50,6 +52,11 @@ violation, not a style nit.
 - `benefit` == `capability` reworded.
 - Only main-path acceptance criteria; the error and empty states from Stage 4 aren't
   turned into criteria.
+- `accessibility_criteria` present on every page but interchangeable between them —
+  "the page is keyboard navigable" pasted eight times. Tier-1 only checks that they
+  exist; whether they came from *that page's* accessibility block is this rubric's job.
+- An `analytics_events` entry whose `properties` could not actually compute the metric
+  the feature claims to move (an event with no identifier, no outcome, no duration).
 - Stories for the hero screens, nothing for the drawers / dialogs / confirmations.
 - Apologetic microcopy, ALL-CAPS or over-long CTAs; empty states with zero or two actions.
 

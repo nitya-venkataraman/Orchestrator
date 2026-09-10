@@ -4,7 +4,7 @@ Typed state for the ux-pipeline LangGraph.
 The artifact fields mirror the schemas in `rules/CONTRACTS.md`. They are typed as
 `TypedDict`s so a misread field fails at author time rather than three stages
 later; at runtime they are plain JSON-serializable dicts/lists threaded through
-the graph and written to `output/<stage>/<stage>-<slug>.{json,md}`.
+the graph and written to `output/<project-slug>/<stage>.{json,md}`.
 
 `total=False` throughout: the state fills in as the run advances, and a resumed
 run rehydrates only the keys that were already approved.
@@ -54,6 +54,9 @@ class JourneyStage(TypedDict, total=False):
     emotion: str
     friction: List[str]
     dropoff_risk: Literal["high", "medium", "low"]
+    # Only where research or analytics supply a real figure — never an estimate.
+    # This is where a Stage-3 success_metric baseline is allowed to come from.
+    current_metric: str
 
 
 class HMW(TypedDict, total=False):
@@ -73,6 +76,9 @@ class Feature(TypedDict, total=False):
     confidence: float
     effort: float
     rice_score: float
+    # What moves if this works, and how you would know. Without it the RICE
+    # impact above is an unfalsifiable claim.
+    success_metric: "SuccessMetric"
 
 
 class DesignDirection(TypedDict, total=False):
@@ -208,6 +214,71 @@ class Story(TypedDict, total=False):
     benefit: str
     screen: str
     acceptance_criteria: List[AcceptanceCriterion]
+    # Stage 4's accessibility, carried across the handoff boundary as testable
+    # criteria; without these it is designed in and then dropped.
+    accessibility_criteria: List[AcceptanceCriterion]
+    analytics_events: List["AnalyticsEvent"]
+
+
+class AnalyticsEvent(TypedDict, total=False):
+    event: str
+    trigger: str
+    properties: List[str]
+
+
+# --- Stage 6: evaluation-planning ---------------------------------------------
+
+
+class HeuristicFinding(TypedDict, total=False):
+    heuristic: str
+    page: str
+    severity: Literal["high", "medium", "low", "none"]
+    finding: str
+    fix: str
+
+
+class SuccessMetric(TypedDict, total=False):
+    name: str
+    baseline: str          # a real figure, or "unknown" — never an estimate
+    target: str
+    source: str
+
+
+class TestTask(TypedDict, total=False):
+    id: str
+    scenario: str
+    journey_stage: str     # a Stage-2 journey stage
+    pages: List[str]       # Stage-4 page_names
+    success_criteria: str
+    probes: List[str]      # Stage-4 heuristic_review heuristics this task tests
+
+
+class TestParticipants(TypedDict, total=False):
+    count: int
+    segments: List[str]    # Stage-2 persona names
+    recruit_from: str
+
+
+class UsabilityTest(TypedDict, total=False):
+    objective: str
+    method: Literal["moderated", "unmoderated"]
+    participants: TestParticipants
+    tasks: List[TestTask]
+    what_would_change_the_design: str
+
+
+class MetricPlanRow(TypedDict, total=False):
+    metric: str            # a Stage-3 success_metric name
+    feature: str
+    events: List[str]      # Stage-5 analytics_events event names
+    baseline_source: str
+    read_after: str
+
+
+class EvaluationPlan(TypedDict, total=False):
+    usability_test: UsabilityTest
+    metric_plan: List[MetricPlanRow]
+    open_baselines: List[str]
 
 
 # --- The threaded state -------------------------------------------------------
@@ -219,6 +290,7 @@ Phase = Literal[
     "select_direction",
     "wireframe", "wireframe_review",
     "delivery", "delivery_review",
+    "evaluation", "evaluation_review",
     "complete",
 ]
 
@@ -260,8 +332,10 @@ class UXPipelineState(TypedDict, total=False):
     validation: Optional[ValidationSummary]
     design_tokens_applied: Optional[bool]
     figma_file_url: Optional[str]
+    heuristic_review: Optional[List[HeuristicFinding]]
     developer_handoff_stories: Optional[List[Story]]
     microcopy: Optional[Dict[str, object]]
+    evaluation_plan: Optional[EvaluationPlan]
 
     # gate state
     current_phase: Phase

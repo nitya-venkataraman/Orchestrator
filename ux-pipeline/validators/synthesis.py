@@ -11,7 +11,7 @@ Implements the Tier-1 rules in `rules/CONTRACTS.md` § Stage 1:
     as context["raw_research_data"])
 
 Usage:
-    python3 validators/synthesis.py output/discovery/discovery-synthesis-<slug>.json
+    python3 validators/synthesis.py output/<project-slug>/discovery-synthesis.json
     cat artifact.json | python3 validators/synthesis.py -
 Exit 0 = pass, 1 = violations.
 """
@@ -24,6 +24,13 @@ from typing import List, Optional
 
 SEVERITIES = {"high", "medium", "low"}
 MIN_THEMES, MAX_THEMES = 2, 6
+
+# A quote `source` must open with a participant identifier — a token carrying a
+# number (P07, Ticket-4412, Review-2891, Interview 3). Role and context may
+# follow; a personal name, an employer or an email may not. Participants were
+# promised something, and this artifact travels further than the raw corpus.
+PARTICIPANT_ID_RE = re.compile(r"^[A-Za-z]{0,12}[-_ ]?\d{1,6}\b")
+EMAIL_RE = re.compile(r"[^\s@]+@[^\s@]+\.[^\s@]+")
 
 
 def _coerce(raw: str) -> dict:
@@ -101,7 +108,48 @@ def validate(data: dict, context: Optional[dict] = None) -> List[str]:
                     )
                 )
 
+            source = q.get("source") if isinstance(q, dict) else None
+            if not source or not isinstance(source, str):
+                errors.append("Theme '{0}' has a quote with no source".format(label))
+            elif EMAIL_RE.search(source):
+                errors.append(
+                    "Theme '{0}' quote source contains an email address: {1!r} — use a "
+                    "participant identifier".format(label, source[:60])
+                )
+            elif not PARTICIPANT_ID_RE.match(source.strip()):
+                errors.append(
+                    "Theme '{0}' quote source {1!r} does not open with a participant "
+                    "identifier (P07, Ticket-4412, Interview 3) — names and employers "
+                    "do not belong in a synthesis".format(label, source[:60])
+                )
+
+    _check_corpus(data, errors)
     return errors
+
+
+def _check_corpus(data: dict, errors: List[str]) -> None:
+    """The corpus block: who this synthesis is actually built from."""
+    corpus = data.get("corpus")
+    if not isinstance(corpus, dict):
+        errors.append(
+            "corpus is missing — source_count alone cannot tell a designer whether six "
+            "themes came from six power users or sixty strangers"
+        )
+        return
+    if not (isinstance(corpus.get("method"), str) and corpus["method"].strip()):
+        errors.append("corpus.method is missing or empty")
+    count = corpus.get("participant_count")
+    if not isinstance(count, int) or isinstance(count, bool) or count < 1:
+        errors.append(
+            "corpus.participant_count must be an integer >= 1 (got {0!r})".format(count)
+        )
+    for key in ("segments", "collection_window", "known_bias"):
+        value = corpus.get(key)
+        if key == "collection_window":
+            if value is not None and not isinstance(value, str):
+                errors.append("corpus.collection_window must be a string")
+        elif value is not None and not isinstance(value, list):
+            errors.append("corpus.{0} must be a list".format(key))
 
 
 def main() -> int:

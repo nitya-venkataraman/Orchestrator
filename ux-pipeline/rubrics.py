@@ -34,6 +34,8 @@ _STAGE_TO_FILE = {
     "wireframe-ia": "wireframe-ia",
     "delivery": "delivery-handoff",
     "delivery-handoff": "delivery-handoff",
+    "evaluation": "evaluation-planning",
+    "evaluation-planning": "evaluation-planning",
 }
 
 _JSON_FENCE = re.compile(r"```json\s*(\{.*?\})\s*```", re.DOTALL)

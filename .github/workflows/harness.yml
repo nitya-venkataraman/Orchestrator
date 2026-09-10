@@ -21,15 +21,15 @@ jobs:
         run: |
           python3 harness/validate_stories.py --strict \
             .claude/skills/user-story-generator/examples/sample-output.md
-      # Only user-story backlogs. The sibling output/ folders (discovery/,
-      # strategy/, ideation/, wireframe/) hold UX pipeline stage artifacts, which
-      # are a different document type with their own validator.
-      - name: Validate any generated backlogs in output/delivery/
+      # Only user-story backlogs. Their sibling files in each project folder
+      # (discovery-synthesis, strategy, ideation, wireframe, delivery) are UX
+      # pipeline artifacts — a different document type with their own validator.
+      - name: Validate any generated backlogs in output/
         run: |
           shopt -s nullglob
-          files=(output/delivery/user-stories-*.md)
+          files=(output/*/user-stories-*.md)
           if [ ${#files[@]} -eq 0 ]; then
-            echo "no output/delivery/user-stories-*.md to check"
+            echo "no output/*/user-stories-*.md to check"
           else
             python3 harness/validate_stories.py --strict "${files[@]}"
           fi
@@ -43,6 +43,24 @@ jobs:
           python-version: "3.12"
       - name: Lint skill + eval suite structure
         run: python3 harness/lint_skill.py
+
+  ux-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Rubric structure (weights sum to 1.0, pass_when parses)
+        run: python3 ux-pipeline/rubrics.py --check
+      - name: Tier-1 validator fixtures
+        run: python3 ux-pipeline/tests/run_tests.py
+      # The committed pipeline artifacts are the regression corpus. Artifacts at
+      # the current contract are validated strictly, with their sibling stages
+      # supplied as context so the cross-stage traceability checks actually run;
+      # older ones are reported as legacy and skipped.
+      - name: Committed run artifacts still conform
+        run: python3 ux-pipeline/tests/check_artifacts.py
 
   eval:
     # `claude plugin eval` is early-access and needs an API key. This job only runs

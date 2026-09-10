@@ -1,0 +1,194 @@
+{
+  "features": [
+    {
+      "name": "Entity Precedent Timeline",
+      "description": "Searching a target name returns a chronological record of every prior touch the firm has had with that entity, its sponsors and its subsidiaries \u2014 which desk, which people, which meetings, which IC memos, which prior agreements \u2014 before any build work starts.",
+      "hmw": "How might we make a firm's own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?",
+      "reach": 120,
+      "impact": 3,
+      "confidence": 0.8,
+      "effort": 5,
+      "rice_score": 57.6,
+      "success_metric": {
+        "name": "Share of targets where prior firm contact is surfaced before manual hunting begins",
+        "baseline": "unknown",
+        "target": "80% of new assignments show precedent at orientation",
+        "source": "Instrumented at launch; no current system records this"
+      }
+    },
+    {
+      "name": "Inbox and Drive Ingestion",
+      "description": "Indexes the places firm memory actually lives \u2014 Outlook, SharePoint, shared and local drives, the credit document repository \u2014 into the precedent store, with the metadata tagging that keeps Private Equity notes invisible to Liquid Strategies unless permitted.",
+      "hmw": "How might we make a firm's own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?",
+      "reach": 120,
+      "impact": 2,
+      "confidence": 0.5,
+      "effort": 8,
+      "rice_score": 15.0,
+      "success_metric": {
+        "name": "Share of firm precedent reachable by search rather than by asking a colleague",
+        "baseline": "unknown",
+        "target": "90% of precedent sources indexed and searchable",
+        "source": "Index coverage report; no baseline exists because no search covers these stores today"
+      }
+    },
+    {
+      "name": "Credit Agreement Term Extraction",
+      "description": "Reads a credit agreement end to end and returns the figures that decide the credit: covenant definitions and thresholds, leverage ratios, the definition of EBITDA in this document, and the amortization schedule.",
+      "hmw": "How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?",
+      "reach": 120,
+      "impact": 3,
+      "confidence": 0.8,
+      "effort": 8,
+      "rice_score": 36.0,
+      "success_metric": {
+        "name": "Hours from receiving the agreement set to a committed term sheet",
+        "baseline": "Four to five hours of day one on the org chart alone",
+        "target": "Under one hour to committed terms",
+        "source": "Stage-2 journey stage 3 (associate interviews)"
+      }
+    },
+    {
+      "name": "Auto-Built Org and Guarantee Chart",
+      "description": "Derives the ultimate parent, co-issuers and guarantors from the agreement set and renders the corporate structure, marking which entities are on the hook for the debt and which subsidiaries are unrated or offshore.",
+      "hmw": "How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?",
+      "reach": 120,
+      "impact": 2,
+      "confidence": 0.5,
+      "effort": 8,
+      "rice_score": 15.0,
+      "success_metric": {
+        "name": "Hours to a verified corporate structure and guarantee package",
+        "baseline": "Four to five hours of day one on the org chart alone",
+        "target": "Under 30 minutes including verification",
+        "source": "Stage-2 journey stage 3 (associate interviews)"
+      }
+    },
+    {
+      "name": "Model Template Auto-Population",
+      "description": "Extracted figures populate the profile model directly, so financials are never re-keyed from a PDF and the template's formulas are never manually repaired.",
+      "hmw": "How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?",
+      "reach": 120,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 5,
+      "rice_score": 38.4,
+      "success_metric": {
+        "name": "Share of profile model fields re-keyed by hand from a PDF",
+        "baseline": "unknown",
+        "target": "Under 10% of fields re-keyed",
+        "source": "profile_model_populated event, fields_rekeyed_by_hand property"
+      }
+    },
+    {
+      "name": "Click-to-Source Provenance",
+      "description": "Every figure in the profile links to the exact sentence in the document it came from, shown in place without leaving the profile or opening the underlying agreement.",
+      "hmw": "How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?",
+      "reach": 120,
+      "impact": 3,
+      "confidence": 1.0,
+      "effort": 3,
+      "rice_score": 120.0,
+      "success_metric": {
+        "name": "Minutes per risk review spent reopening source documents to verify a figure",
+        "baseline": "Twenty to thirty minutes per review, verification by reopening the agreement",
+        "target": "Under five minutes per review",
+        "source": "Stage-2 journey stage 5 (reviewer interview)"
+      }
+    },
+    {
+      "name": "Add-Back and Pro-Forma Challenge Flags",
+      "description": "Flags adjustments that warrant a question rather than acceptance: an EBITDA add-back described as one-time that recurs across periods, or a vendor pull not adjusted for a recent acquisition.",
+      "hmw": "How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?",
+      "reach": 120,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 5,
+      "rice_score": 38.4,
+      "success_metric": {
+        "name": "Share of questionable add-backs raised at review rather than after close",
+        "baseline": "unknown",
+        "target": "Every recurring add-back described as one-time is flagged before sign-off",
+        "source": "addback_challenge_raised event against post-close findings"
+      }
+    },
+    {
+      "name": "Outstanding-Input Tracker",
+      "description": "The profile itself declares what it is waiting on, who owns the request, when it was made and how long it has been outstanding, so a blocked dependency is visible to everyone on the deal rather than sitting in one associate's inbox.",
+      "hmw": "How might we keep the deal clock from being held hostage to a reply that has not arrived?",
+      "reach": 120,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 3,
+      "rice_score": 64.0,
+      "success_metric": {
+        "name": "Deal-clock days lost waiting on an unowned outstanding request",
+        "baseline": "unknown",
+        "target": "No request goes unowned for more than one business day",
+        "source": "Outstanding-input ageing report once the tracker exists"
+      }
+    },
+    {
+      "name": "In-Profile Review Threads",
+      "description": "A reviewer returns a defect on the line item it concerns and the associate answers it there, so a correction never becomes a round of email and a minor fix is never absorbed silently to avoid one.",
+      "hmw": "How might we keep the deal clock from being held hostage to a reply that has not arrived?",
+      "reach": 120,
+      "impact": 1,
+      "confidence": 1.0,
+      "effort": 2,
+      "rice_score": 60.0,
+      "success_metric": {
+        "name": "Round trips to close a returned defect",
+        "baseline": "unknown",
+        "target": "One round trip for the median defect",
+        "source": "review_defect_raised event to resolution"
+      }
+    },
+    {
+      "name": "Continuous Position Health Score",
+      "description": "Ingests daily alternative signals against each booked position and scores deviation from the sector benchmark, replacing the quarterly spreadsheet cycle with a standing measure.",
+      "hmw": "How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?",
+      "reach": 40,
+      "impact": 3,
+      "confidence": 0.5,
+      "effort": 13,
+      "rice_score": 4.6,
+      "success_metric": {
+        "name": "Lead time between a deterioration signal and it reaching the MD",
+        "baseline": "Roughly three months after the event",
+        "target": "Within five business days",
+        "source": "Stage-2 journey stage 7 (MD interview)"
+      }
+    },
+    {
+      "name": "Decision-Carrying Alert Feed",
+      "description": "A ranked feed where each entry carries the three things needed to act: what changed, the firm's direct exposure, and the current distance to the covenant threshold.",
+      "hmw": "How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?",
+      "reach": 40,
+      "impact": 3,
+      "confidence": 0.8,
+      "effort": 5,
+      "rice_score": 19.2,
+      "success_metric": {
+        "name": "Share of alerts acted on without opening another system to decide",
+        "baseline": "unknown",
+        "target": "80% of alerts actioned from the feed entry alone",
+        "source": "Alert acknowledge/escalate events with source of decision"
+      }
+    }
+  ],
+  "design_directions": [
+    {
+      "name": "The Verifiable Profile",
+      "summary": "The product is the borrower profile itself, turned from a static deliverable into a live, interrogable document. Extraction fills it, provenance backs every figure, and review happens inside it. The associate stops transcribing and stops formatting for trust; the reviewer stops reopening agreements to check what she is reading.",
+      "differentiator": "Trust is the feature, not a by-product. Every other approach treats extraction as the goal and leaves the reviewer to believe the output; this one treats the reviewer's five-minute verification as the thing being built, and extraction exists to serve it.",
+      "hmws_addressed": [
+        "How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?",
+        "How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?",
+        "How might we keep the deal clock from being held hostage to a reply that has not arrived?"
+      ],
+      "tradeoff": "Does nothing for the portfolio after the deal is booked. The Managing Director's three-months-too-late problem is untouched \u2014 and he is the one who described a line of users out the door. This direction wins the workflow and leaves the buying signal unaddressed."
+    }
+  ],
+  "contract_version": "2.0"
+}

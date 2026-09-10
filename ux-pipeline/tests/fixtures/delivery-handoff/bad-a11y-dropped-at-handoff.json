@@ -1,0 +1,596 @@
+{
+  "stories": [
+    {
+      "id": "US-1",
+      "persona": "The Screening Associate",
+      "capability": "see every profile assigned to me ordered by how much of its window is left, with its blocking reason on the row",
+      "benefit": "a stalled dependency is visible when I arrive rather than discovered at the deadline",
+      "screen": "01 - Screening Queue",
+      "acceptance_criteria": [
+        {
+          "given": "I have four profiles assigned and one is waiting on a sponsor input",
+          "when": "I open the screening queue",
+          "then": "the blocked profile shows a blocking chip naming the outstanding input, and the queue is ordered with the tightest remaining window first"
+        },
+        {
+          "given": "a profile's deadline has already passed",
+          "when": "I view it in the queue",
+          "then": "its clock reads overdue with the elapsed time, and never a negative remaining value"
+        },
+        {
+          "given": "I have no profiles assigned",
+          "when": "I open the screening queue",
+          "then": "I see an empty state naming what will appear here and offering to start a new profile, visibly different from a filter that matched nothing"
+        }
+      ]
+    },
+    {
+      "id": "US-2",
+      "persona": "The Screening Associate",
+      "capability": "re-send an outstanding request from the queue without opening the profile",
+      "benefit": "chasing a blocked dependency costs one action instead of a context switch",
+      "screen": "01 - Screening Queue",
+      "acceptance_criteria": [
+        {
+          "given": "an input has been outstanding for 26 hours",
+          "when": "I chase it from the outstanding-input panel",
+          "then": "the request is re-sent, the item is stamped with the new time and moves to awaiting, and I stay on the queue"
+        },
+        {
+          "given": "I re-sent the same request 40 minutes ago",
+          "when": "I view that item",
+          "then": "the chase control is disabled and states when it was last sent, rather than being silently inert"
+        }
+      ]
+    },
+    {
+      "id": "US-3",
+      "persona": "The Screening Associate",
+      "capability": "search a target name and see every prior contact this firm has had with it, its sponsors and its subsidiaries",
+      "benefit": "I stop re-underwriting a company the firm has already met",
+      "screen": "02 - Precedent Search",
+      "acceptance_criteria": [
+        {
+          "given": "the London private equity desk met this borrower's CFO in 2024",
+          "when": "I search the entity name",
+          "then": "that meeting appears on the precedent timeline with its desk, date and the debt constraints noted at the time"
+        },
+        {
+          "given": "no repository holds any prior contact",
+          "when": "the search completes",
+          "then": "I am told plainly that all five repositories were searched, which they were and when each was last indexed, so an absence reads as a finding rather than a failure"
+        },
+        {
+          "given": "the mailbox index has not refreshed for longer than its freshness threshold",
+          "when": "I view results",
+          "then": "a coverage indicator declares that source stale rather than presenting its results as current"
+        }
+      ],
+      "accessibility_criteria": [
+        {
+          "given": "I use a screen reader and search a target name",
+          "when": "one repository responds and another is still searching",
+          "then": "each completion is announced politely with its source and match count, and an unreachable repository is announced assertively, because a missing source changes what the result set means"
+        }
+      ]
+    },
+    {
+      "id": "US-4",
+      "persona": "The Screening Associate",
+      "capability": "see that a precedent record exists on another desk even when I may not read it",
+      "benefit": "I know the firm holds relevant knowledge and can request it, instead of concluding there is none",
+      "screen": "02 - Precedent Search",
+      "acceptance_criteria": [
+        {
+          "given": "a matching record belongs to a desk walled from mine",
+          "when": "I view the precedent timeline",
+          "then": "the entry shows its desk and date but never its content, and offers to request access"
+        },
+        {
+          "given": "I request access to a walled record",
+          "when": "the request is submitted",
+          "then": "it is logged against the owning desk and I see its pending state, and no content is disclosed before it is granted"
+        }
+      ]
+    },
+    {
+      "id": "US-5",
+      "persona": "The Screening Associate",
+      "capability": "have covenant definitions, leverage ratios, the EBITDA definition and the amortisation schedule extracted from a credit agreement and shown beside the sentence they came from",
+      "benefit": "I reconcile figures instead of re-typing them, and nothing enters the model unreviewed",
+      "screen": "03 - Document Extraction",
+      "acceptance_criteria": [
+        {
+          "given": "I upload a 300-page credit agreement",
+          "when": "extraction runs",
+          "then": "terms appear as they are found with per-page progress, rather than a single blocking wait, and each term shows its extraction confidence"
+        },
+        {
+          "given": "I select an extracted term",
+          "when": "the source panel updates",
+          "then": "it scrolls to and highlights the citing passage, showing the document, page and clause"
+        },
+        {
+          "given": "the agreement is a scanned image with no text layer",
+          "when": "extraction completes",
+          "then": "I am told that specifically, and offered manual entry with source attachment still available, rather than being shown zero terms"
+        }
+      ],
+      "accessibility_criteria": [
+        {
+          "given": "I review extracted terms with a screen reader",
+          "when": "a term is extracted below the commit confidence threshold",
+          "then": "the term and its confidence are announced together, and the low confidence is conveyed by text rather than by colour alone"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "extraction_terms_committed",
+          "trigger": "the associate commits a reviewed extraction batch",
+          "properties": [
+            "document_id",
+            "term_count",
+            "mean_confidence",
+            "manual_corrections"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-6",
+      "persona": "The Screening Associate",
+      "capability": "be stopped from committing terms while two documents define the same term differently",
+      "benefit": "a conflict is resolved deliberately instead of the first value silently winning",
+      "screen": "03 - Document Extraction",
+      "acceptance_criteria": [
+        {
+          "given": "two uploaded documents state different total leverage covenants",
+          "when": "I attempt to commit",
+          "then": "commit is disabled and names the number of unresolved conflicts, and each conflict shows both values with their sources"
+        },
+        {
+          "given": "I resolve a conflict by choosing one source",
+          "when": "I commit",
+          "then": "only accepted rows are written, and each committed figure retains the source offset it came from"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "extraction_conflict_blocked",
+          "trigger": "a commit is blocked by two documents defining one term differently",
+          "properties": [
+            "document_ids",
+            "term",
+            "resolution"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-7",
+      "persona": "The Screening Associate",
+      "capability": "have the profile model populated from committed extractions rather than re-keyed from PDFs",
+      "benefit": "I reach the leverage math and the thesis while there is still time to think about them",
+      "screen": "04 - Borrower Profile",
+      "acceptance_criteria": [
+        {
+          "given": "I have committed the extracted terms",
+          "when": "I open the borrower profile",
+          "then": "the key metrics band and the financial model are populated, and no figure required manual transcription"
+        },
+        {
+          "given": "a vendor feed fails during the build",
+          "when": "I view an affected figure",
+          "then": "it renders as unavailable with the reason, the last known value and its date, and never as zero or an empty cell"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "profile_model_populated",
+          "trigger": "a profile model is populated from committed extractions",
+          "properties": [
+            "profile_id",
+            "fields_populated",
+            "fields_rekeyed_by_hand"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-8",
+      "persona": "The Screening Associate",
+      "capability": "be shown a challenge flag when an add-back described as one-time also appears in prior periods",
+      "benefit": "I answer the reviewer's objection before she raises it, instead of anticipating it through formatting",
+      "screen": "04 - Borrower Profile",
+      "acceptance_criteria": [
+        {
+          "given": "a 5.0m consulting fee is added back as one-time and the same fee appears in the two prior years",
+          "when": "the profile computes adjusted EBITDA",
+          "then": "a challenge flag is raised on that add-back listing the prior occurrences as its evidence"
+        },
+        {
+          "given": "a vendor pull has not been adjusted for an acquisition that closed after the pull date",
+          "when": "the profile loads",
+          "then": "a challenge flag names the acquisition and its date"
+        },
+        {
+          "given": "the borrower has no prior periods",
+          "when": "the profile loads",
+          "then": "recurrence detection reports that it could not run, rather than reporting no recurring add-backs"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "addback_challenge_raised",
+          "trigger": "a one-time add-back is flagged as recurring in prior periods",
+          "properties": [
+            "profile_id",
+            "period_count",
+            "analyst_action"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-9",
+      "persona": "The Screening Associate",
+      "capability": "open the source of any figure in the profile without leaving the page",
+      "benefit": "a number is never something I have to take on trust",
+      "screen": "04 - Borrower Profile",
+      "acceptance_criteria": [
+        {
+          "given": "I select a figure extracted from a document",
+          "when": "the provenance popover opens",
+          "then": "it shows the citing sentence in its surrounding paragraph with the document, page and clause, and a link that opens the agreement at that position"
+        },
+        {
+          "given": "I select a figure that came from a vendor feed rather than a document",
+          "when": "the provenance popover opens",
+          "then": "it names the feed and the timestamp of the pull instead of a sentence"
+        },
+        {
+          "given": "a figure's source cannot be resolved",
+          "when": "I select it",
+          "then": "the popover states that the source could not be located, visibly distinct from a popover that is still loading"
+        }
+      ],
+      "accessibility_criteria": [
+        {
+          "given": "I open a figure's provenance with a keyboard",
+          "when": "the provenance popover opens",
+          "then": "focus moves into it, Escape closes it and returns focus to the figure I opened it from, and the popover's target area is at least 44x44px"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "figure_provenance_opened",
+          "trigger": "a figure's source is opened from the profile",
+          "properties": [
+            "profile_id",
+            "figure",
+            "source_type"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-10",
+      "persona": "The Credit Risk Reviewer",
+      "capability": "see the corporate structure and guarantee package derived from the agreements rather than drawn by hand",
+      "benefit": "I can establish who is on the hook for the debt in the first minutes of a review",
+      "screen": "05 - Corporate Structure",
+      "acceptance_criteria": [
+        {
+          "given": "the agreement set establishes a parent, an issuer, two co-issuers and a non-guarantor subsidiary",
+          "when": "I open corporate structure",
+          "then": "each entity shows its role, jurisdiction and guarantee position, with unrated offshore subsidiaries marked by label and shape, not colour alone"
+        },
+        {
+          "given": "one branch cannot be derived from the available documents",
+          "when": "I view the structure",
+          "then": "that branch is shown explicitly as unverified rather than omitted, and confirm is disabled while it remains so"
+        },
+        {
+          "given": "no structural clauses are found in any document",
+          "when": "I open the page",
+          "then": "I am told which documents were searched and offered manual construction, rather than shown an empty canvas implying a flat structure"
+        }
+      ],
+      "accessibility_criteria": [
+        {
+          "given": "I read the corporate structure with a screen reader",
+          "when": "derivation stops with unresolved branches",
+          "then": "the accessible tree conveys the same parent/subsidiary relationships as the canvas, and unresolved branches are announced as unverified rather than omitted"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "structure_derived",
+          "trigger": "a corporate structure is derived from the agreements",
+          "properties": [
+            "profile_id",
+            "entities_resolved",
+            "branches_unverified",
+            "manual_edits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-11",
+      "persona": "The Credit Risk Reviewer",
+      "capability": "have the review open on total leverage, then liquidity runway, then the guarantee package, in that order",
+      "benefit": "my review starts where I always start instead of where the document happens to begin",
+      "screen": "06 - Risk Review",
+      "acceptance_criteria": [
+        {
+          "given": "a profile has been submitted",
+          "when": "I open the risk review",
+          "then": "the first-read band presents those three in that order, and the company overview is collapsed at the bottom"
+        },
+        {
+          "given": "the full model is still loading",
+          "when": "the first-read band has resolved",
+          "then": "I can begin reading and verifying while the rest arrives"
+        }
+      ],
+      "accessibility_criteria": [
+        {
+          "given": "I open a risk review with a screen reader",
+          "when": "the first-read band finishes loading before the rest of the model",
+          "then": "it announces that it is ready to read, and each figure states its verification status as text, never by colour alone"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "review_first_read_opened",
+          "trigger": "the reviewer opens a risk review",
+          "properties": [
+            "profile_id",
+            "seconds_to_first_read_ready"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-12",
+      "persona": "The Credit Risk Reviewer",
+      "capability": "return a defect as a thread on the figure it concerns",
+      "benefit": "a correction never becomes a round of email, and a small fix I absorb myself stops being invisible",
+      "screen": "06 - Risk Review",
+      "acceptance_criteria": [
+        {
+          "given": "I find that the leverage math is wrong",
+          "when": "I post a blocking thread on that figure",
+          "then": "the associate sees it against the figure rather than as a message, and the profile records it as blocking"
+        },
+        {
+          "given": "I fix a minor formatting defect myself",
+          "when": "the fix is saved",
+          "then": "it is recorded as a reviewer edit with the associate's original still visible, so the rework is visible rather than absorbed silently"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "review_defect_raised",
+          "trigger": "a defect thread is opened on a figure",
+          "properties": [
+            "profile_id",
+            "figure",
+            "defect_type"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-13",
+      "persona": "The Credit Risk Reviewer",
+      "capability": "be prevented from signing off while a first-read figure cannot be verified",
+      "benefit": "my signature never sits behind a number whose source is broken",
+      "screen": "06 - Risk Review",
+      "acceptance_criteria": [
+        {
+          "given": "a figure in the first-read band has an unresolvable source",
+          "when": "I attempt to sign off",
+          "then": "sign-off is disabled, the control names the specific blocker, and the reason is available to assistive technology rather than only visible"
+        },
+        {
+          "given": "every blocking thread is resolved and every first-read source resolves",
+          "when": "I sign off",
+          "then": "the sign-off is recorded against me individually with a timestamp, the associate is notified, and the committee packet is marked ready"
+        }
+      ],
+      "analytics_events": [
+        {
+          "event": "signoff_blocked_unverifiable",
+          "trigger": "sign-off is prevented by an unverifiable first-read figure",
+          "properties": [
+            "profile_id",
+            "figure",
+            "reason"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "US-14",
+      "persona": "The Managing Director",
+      "capability": "see at most five positions that need me today, each stating what changed, our exposure and the distance to breach",
+      "benefit": "I am told what to do about a position rather than shown fifty things that are true about it",
+      "screen": "07 - Portfolio Watch",
+      "acceptance_criteria": [
+        {
+          "given": "more than five positions deviate from their benchmark",
+          "when": "I open portfolio watch",
+          "then": "exactly five appear, ranked, and a sixth displaces the weakest rather than lengthening the list"
+        },
+        {
+          "given": "a position's transit times have risen 14% and it sits 0.30x from its covenant",
+          "when": "I read its attention item",
+          "then": "the item carries the change, the direct exposure figure and the distance to the threshold in one sentence"
+        },
+        {
+          "given": "nothing is outside tolerance",
+          "when": "I open portfolio watch",
+          "then": "I am told that explicitly, with the number of positions monitored and when signals last refreshed, so silence is distinguishable from a system that is not running"
+        }
+      ],
+      "accessibility_criteria": [
+        {
+          "given": "I use a screen reader on the portfolio watch",
+          "when": "the attention band resolves",
+          "then": "its item count and the computation time of the scores are announced politely, so I am never left believing a stale score is current"
+        }
+      ]
+    },
+    {
+      "id": "US-15",
+      "persona": "The Managing Director",
+      "capability": "never be shown a health score computed from stale feeds as though it were current",
+      "benefit": "I do not act on a number that stopped being true days ago",
+      "screen": "07 - Portfolio Watch",
+      "acceptance_criteria": [
+        {
+          "given": "the scoring pipeline is unavailable",
+          "when": "I open portfolio watch",
+          "then": "the last computed scores render with their computation time stated and a persistent banner that they are not current"
+        },
+        {
+          "given": "a signal feed has stopped updating",
+          "when": "scores are computed",
+          "then": "that position's score confidence is degraded rather than the score being frozen at its last value"
+        },
+        {
+          "given": "a position was booked before the platform existed and has no extracted covenant threshold",
+          "when": "I view it",
+          "then": "it reports as not measurable, never as comfortable headroom"
+        }
+      ]
+    },
+    {
+      "id": "US-16",
+      "persona": "The Managing Director",
+      "capability": "open the clause that defines the covenant a distance-to-breach was measured against",
+      "benefit": "I can check the definition behind the number instead of trusting the calculation",
+      "screen": "08 - Position Detail",
+      "acceptance_criteria": [
+        {
+          "given": "a position is 0.30x from its total leverage covenant",
+          "when": "I select that covenant",
+          "then": "the clause extracted at underwriting opens, showing the sentence, the document and the page"
+        },
+        {
+          "given": "the covenant was amended after booking",
+          "when": "I view it",
+          "then": "the amended threshold is shown and the change is marked, rather than the original standing silently"
+        },
+        {
+          "given": "the source clause cannot be resolved",
+          "when": "I view the covenant",
+          "then": "the threshold is still shown and explicitly marked as unsourced, because withholding it would be worse than showing it unverified"
+        }
+      ],
+      "accessibility_criteria": [
+        {
+          "given": "I open a covenant clause with a keyboard from the position detail",
+          "when": "the clause opens and I dismiss it",
+          "then": "focus moves to the clause and returns to the covenant row on dismiss, and a covenant with no extracted threshold is announced as not measurable with its reason rather than passing silently"
+        }
+      ]
+    },
+    {
+      "id": "US-17",
+      "persona": "The Managing Director",
+      "capability": "acknowledge a signal or escalate it to workout review, with either recorded",
+      "benefit": "seeing a problem and acting on it are distinguishable afterwards",
+      "screen": "08 - Position Detail",
+      "acceptance_criteria": [
+        {
+          "given": "I have read an attention item",
+          "when": "I acknowledge it",
+          "then": "the acknowledgement is timestamped against me, the item moves to recently acknowledged, and the signal and its reason are retained rather than deleted"
+        },
+        {
+          "given": "an acknowledged position deteriorates further",
+          "when": "scores refresh",
+          "then": "it returns to the attention band rather than remaining acknowledged"
+        },
+        {
+          "given": "I do not hold workout authority",
+          "when": "I view the escalation control",
+          "then": "it is disabled and names the role required, rather than being hidden"
+        }
+      ]
+    }
+  ],
+  "microcopy": {
+    "cta_primary": "Open profile",
+    "cta_secondary": "Chase outstanding input",
+    "cta_destructive": "Escalate to workout",
+    "per_screen_cta": {
+      "01 - Screening Queue": {
+        "cta_primary": "Open profile",
+        "cta_secondary": "Start new profile"
+      },
+      "02 - Precedent Search": {
+        "cta_primary": "Attach to profile",
+        "cta_secondary": "Request access"
+      },
+      "03 - Document Extraction": {
+        "cta_primary": "Commit terms",
+        "cta_secondary": "Upload another document"
+      },
+      "04 - Borrower Profile": {
+        "cta_primary": "Submit for review",
+        "cta_secondary": "Request input"
+      },
+      "05 - Corporate Structure": {
+        "cta_primary": "Confirm structure",
+        "cta_secondary": "Flag concern"
+      },
+      "06 - Risk Review": {
+        "cta_primary": "Sign off",
+        "cta_secondary": "Return with comments"
+      },
+      "07 - Portfolio Watch": {
+        "cta_primary": "Open position",
+        "cta_secondary": "Acknowledge"
+      },
+      "08 - Position Detail": {
+        "cta_primary": "Acknowledge signal",
+        "cta_secondary": "Open clause"
+      }
+    },
+    "empty_states": {
+      "01 - Screening Queue": "No profiles assigned to you. Start a new profile to begin.",
+      "02 - Precedent Search": "No prior contact found. All five repositories were searched \u2014 CRM, credit documents, SharePoint, shared drives and mailboxes. Widen the search to sponsor and subsidiary names.",
+      "03 - Document Extraction": "No terms extracted. This usually means a scanned document with no text layer. You can enter terms manually and still attach the source passage.",
+      "04 - Borrower Profile": "Nothing committed yet. Upload a credit agreement to populate the model.",
+      "05 - Corporate Structure": "No structure could be derived from the documents searched. Upload the guarantee and security deed.",
+      "06 - Risk Review": "No challenge flags and no open threads. Add-back recurrence, pro-forma adjustment and source resolution were all checked and passed.",
+      "07 - Portfolio Watch": "Nothing needs your attention today. 40 positions monitored, signals refreshed 14 minutes ago.",
+      "08 - Position Detail": "This position is within tolerance on every covenant. Last checked 14 minutes ago."
+    },
+    "error_states": {
+      "01 - Screening Queue": "The queue could not load. Your filter has been kept \u2014 try again.",
+      "02 - Precedent Search": "One repository did not respond. These results are incomplete, and the missing source is named above.",
+      "03 - Document Extraction": "Extraction is unavailable. Your uploaded documents have been kept \u2014 nothing has been lost.",
+      "04 - Borrower Profile": "This figure is unavailable because its feed failed. The last known value and its date are shown instead.",
+      "05 - Corporate Structure": "One branch could not be derived. It is marked unverified rather than left out.",
+      "06 - Risk Review": "This figure's source could not be resolved, so it cannot be verified. Sign-off is blocked while it sits in the first read.",
+      "07 - Portfolio Watch": "Scores are not current. The scoring pipeline is unavailable; these were computed at 06:12 today.",
+      "08 - Position Detail": "No covenant threshold was extracted for this position, so headroom is not measurable. It is not zero, and it is not comfortable."
+    },
+    "confirmations": {
+      "01 - Screening Queue": "Request re-sent. The item is now awaiting a reply.",
+      "02 - Precedent Search": "4 precedent entries attached to the profile.",
+      "03 - Document Extraction": "12 terms committed. The model has been populated.",
+      "04 - Borrower Profile": "Submitted for review. The assigned reviewer has been notified.",
+      "05 - Corporate Structure": "Structure confirmed. Your sign-off on the guarantee package is recorded.",
+      "06 - Risk Review": "Signed off. The committee packet is marked ready.",
+      "07 - Portfolio Watch": "Acknowledged. The signal and its reason have been kept.",
+      "08 - Position Detail": "Escalated to workout review. The credit team has been notified."
+    }
+  },
+  "contract_version": "2.0"
+}

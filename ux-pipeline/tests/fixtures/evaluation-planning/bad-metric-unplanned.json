@@ -1,0 +1,160 @@
+{
+  "contract_version": "2.0",
+  "usability_test": {
+    "objective": "Decide whether the extract-verify-review chain can be trusted end to end before build: whether an associate will commit machine-extracted terms without re-keying them, and whether a reviewer will accept a figure on provenance alone rather than reopening the agreement. If either answer is no, the time savings the business case rests on do not exist, whatever the rest of the design does.",
+    "method": "moderated",
+    "participants": {
+      "count": 9,
+      "segments": [
+        "The Screening Associate",
+        "The Credit Risk Reviewer",
+        "The Managing Director"
+      ],
+      "recruit_from": "Four associates and three reviewers from mid-market credit desks who build profiles by hand today, plus two MDs with booked-portfolio responsibility. Recruited through the two desks that took part in discovery, excluding the eleven already interviewed so the design is not tested on the people who described the problem."
+    },
+    "tasks": [
+      {
+        "id": "T1",
+        "scenario": "You've picked up a new borrower this morning and the credit committee meets Thursday. Get as far as you can toward being ready.",
+        "journey_stage": "Assignment and orientation (Associate)",
+        "pages": [
+          "01 - Screening Queue",
+          "02 - Precedent Search"
+        ],
+        "success_criteria": "Participant establishes what the firm already knows about the entity before starting original work, unaided, and can say afterwards what the blocking input was without being prompted.",
+        "probes": [
+          "Match between system and the real world",
+          "Recognition rather than recall"
+        ]
+      },
+      {
+        "id": "T2",
+        "scenario": "Here is the credit agreement for that borrower. You need the covenant package and the leverage definitions in a state you'd be willing to put your name to.",
+        "journey_stage": "Extracting terms from source documents (Associate)",
+        "pages": [
+          "03 - Document Extraction"
+        ],
+        "success_criteria": "Participant commits terms rather than re-keying them, and when asked which figures they checked individually, names the low-confidence ones rather than 'all of them' or 'none'. Time to commit recorded against the four-to-five-hour baseline.",
+        "probes": [
+          "Flexibility and efficiency of use",
+          "Error prevention"
+        ]
+      },
+      {
+        "id": "T3",
+        "scenario": "Two of the documents in that set define EBITDA differently. Get the profile to a state you'd submit.",
+        "journey_stage": "Extracting terms from source documents (Associate)",
+        "pages": [
+          "03 - Document Extraction",
+          "04 - Borrower Profile"
+        ],
+        "success_criteria": "Participant notices the conflict without being told it exists, and resolves it deliberately rather than by accepting whichever value the interface offered first.",
+        "probes": [
+          "Error prevention",
+          "Help and documentation"
+        ]
+      },
+      {
+        "id": "T4",
+        "scenario": "You're reviewing this profile. Decide whether you'd sign it off.",
+        "journey_stage": "Risk review and verification (Credit Risk Reviewer)",
+        "pages": [
+          "06 - Risk Review",
+          "04 - Borrower Profile",
+          "05 - Corporate Structure"
+        ],
+        "success_criteria": "Participant verifies at least three figures via provenance rather than opening the source agreement, and reaches a sign-off decision inside ten minutes against the twenty-to-thirty-minute baseline.",
+        "probes": [
+          "Recognition rather than recall",
+          "Visibility of system status"
+        ]
+      },
+      {
+        "id": "T5",
+        "scenario": "Sign this profile off. Then: you've realised you signed the wrong one.",
+        "journey_stage": "Risk review and verification (Credit Risk Reviewer)",
+        "pages": [
+          "06 - Risk Review"
+        ],
+        "success_criteria": "Participant recovers without assistance and without contacting an administrator. Whether they noticed the confirmation before confirming is recorded separately \u2014 a confirmation people click through is not a safeguard.",
+        "probes": [
+          "User control and freedom"
+        ]
+      },
+      {
+        "id": "T6",
+        "scenario": "A figure on this review can't be traced to a source clause. Do what you'd normally do.",
+        "journey_stage": "Defect return and rework loop (Reviewer and Associate)",
+        "pages": [
+          "06 - Risk Review",
+          "04 - Borrower Profile"
+        ],
+        "success_criteria": "Participant returns the defect against the specific figure rather than as a general comment, and does not attempt to sign off around it.",
+        "probes": [
+          "Help users recognize, diagnose and recover from errors"
+        ]
+      },
+      {
+        "id": "T7",
+        "scenario": "It's Monday morning and you have twenty minutes before your first meeting. Tell me what in the portfolio needs you this week.",
+        "journey_stage": "Post-close portfolio monitoring (Managing Director)",
+        "pages": [
+          "07 - Portfolio Watch",
+          "08 - Position Detail"
+        ],
+        "success_criteria": "Participant acts on or dismisses each attention item from the feed entry alone, and correctly states whether the scores they acted on were current \u2014 the stale-score case is included in the fixture data.",
+        "probes": [
+          "Consistency and standards",
+          "Visibility of system status"
+        ]
+      }
+    ],
+    "what_would_change_the_design": "If associates in T2 re-key rather than commit, extraction confidence is not doing its job and the reconciliation UI on 03 is rebuilt before build starts \u2014 the feature's whole premise fails, not a detail of it. If reviewers in T4 reopen the agreement instead of using provenance, the click-to-source treatment on 04/06 is redesigned and the review-time target is withdrawn from the business case rather than quietly missed. If two or more participants in T5 confirm sign-off without reading the dialog, the 10-minute reversal window becomes the primary safeguard and the dialog is demoted, because a confirmation people click through is decoration. If T7 participants act on stale scores believing them current, the staleness treatment on 07 is escalated from a banner to a blocking state."
+  },
+  "metric_plan": [
+    {
+      "metric": "Hours from receiving the agreement set to a committed term sheet",
+      "feature": "Credit Agreement Term Extraction",
+      "events": [
+        "extraction_terms_committed"
+      ],
+      "baseline_source": "Stage-2 journey stage 3 \u2014 four to five hours of day one, from associate interviews",
+      "read_after": "20 committed agreements, roughly six weeks at current deal flow"
+    },
+    {
+      "metric": "Hours to a verified corporate structure and guarantee package",
+      "feature": "Auto-Built Org and Guarantee Chart",
+      "events": [
+        "structure_derived"
+      ],
+      "baseline_source": "Stage-2 journey stage 3 \u2014 the same four-to-five-hour figure, which is org-chart time specifically",
+      "read_after": "20 derived structures; manual_edits per structure is the honest read, not derivation count"
+    },
+    {
+      "metric": "Minutes per risk review spent reopening source documents to verify a figure",
+      "feature": "Click-to-Source Provenance",
+      "events": [
+        "figure_provenance_opened",
+        "review_first_read_opened"
+      ],
+      "baseline_source": "Stage-2 journey stage 5 \u2014 twenty to thirty minutes per review, from the reviewer interview",
+      "read_after": "30 completed reviews, roughly one quarter"
+    },
+    {
+      "metric": "Lead time between a deterioration signal and it reaching the MD",
+      "feature": "Continuous Position Health Score",
+      "events": [],
+      "baseline_source": "Stage-2 journey stage 7 \u2014 signals surfacing roughly three months late, from the MD interview. Read from the scoring pipeline's own signal-to-surface log, not from a UI event: the metric is about when the system knew, not when someone looked.",
+      "read_after": "Two quarters \u2014 the baseline is a three-month lag, so a shorter window cannot show movement"
+    }
+  ],
+  "open_baselines": [
+    "Share of targets where prior firm contact is surfaced before manual hunting begins \u2014 needs a precedent_surfaced event on 02, absent from Stage 5. Owner: the delivery stage, before build.",
+    "Share of firm precedent reachable by search rather than by asking a colleague \u2014 needs the store inventory from discovery turned into a denominator. Owner: platform, at first index pass.",
+    "Share of profile model fields re-keyed by hand from a PDF \u2014 establishes itself from the fields_rekeyed_by_hand property on first use; no retrospective read possible.",
+    "Share of questionable add-backs raised at review rather than after close \u2014 needs a retrospective read of post-close findings to supply the denominator. Owner: credit risk, one quarter.",
+    "Deal-clock days lost waiting on an unowned outstanding request \u2014 not recorded anywhere today; the tracker establishes its own baseline from first use.",
+    "Round trips to close a returned defect \u2014 the current email loop is not countable; first 20 threads establish it.",
+    "Share of alerts acted on without opening another system to decide \u2014 needs acknowledge and escalate events on 07/08, absent from Stage 5. Owner: the delivery stage, before build."
+  ]
+}

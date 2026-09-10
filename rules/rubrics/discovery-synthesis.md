@@ -49,6 +49,13 @@ behavior, the "because" is invention — score 3 and flag it.
 - Six themes that are really three (clustered by wording).
 - Empty `gaps` array on a thin or single-source corpus — usually means the synthesis
   wasn't looking for what's missing.
+- A `corpus.known_bias` that lists no bias. Every corpus has one: support tickets
+  over-represent failure, sales calls over-represent enthusiasm, interviews record what
+  people say they do rather than what they do, and three participants cannot size
+  anything. Naming it is a finding, not a disclaimer.
+- `severity` that tracks how strongly the quotes are worded rather than frequency ×
+  consequence — a universally-mentioned minor irritation scored high, or a rare
+  catastrophic case scored low.
 - The highest-severity issue in the source appears only as a supporting quote under an
   unrelated theme.
 
