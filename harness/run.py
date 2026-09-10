@@ -39,7 +39,8 @@ Use the user-story-generator skill.
 
 Read every file in the `inputs/` directory of this project and convert the material into
 a structured user-story backlog. Follow the skill's output template exactly. Write the
-result to `output/delivery/{name}.md`. Then run the skill's validate step and fix any errors.
+result to `output/{name}/user-stories-{name}.md`. Then run the skill's validate step and fix
+any errors.
 """
 
 
@@ -78,7 +79,7 @@ def run_fixture(name: str, model: str | None, timeout: int, keep: bool) -> dict:
         if proc.returncode != 0:
             result["error"] = (proc.stderr or proc.stdout or "").strip()[-2000:]
 
-        produced = sorted((work / "output").glob("*.md"))
+        produced = sorted((work / "output").rglob("*.md"))
         result["output_files"] = [p.name for p in produced]
         if not produced:
             result["status"] = "no-output"

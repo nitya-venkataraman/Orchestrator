@@ -8,7 +8,7 @@ allowed_tools: [Read, Write, Bash, Glob]
 ---
 
 Use the user-story-generator skill to turn the inputs below into a backlog.
-Write the result to `output/delivery/stories.md` using the skill's output template.
+Write the result to `output/demo/stories.md` using the skill's output template.
 
 --- INPUT 1: kickoff meeting notes ---
 

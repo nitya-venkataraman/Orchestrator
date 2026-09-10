@@ -8,7 +8,7 @@ allowed_tools: [Read, Write, Bash, Glob]
 ---
 
 Use the user-story-generator skill on the THREE inputs below (an email, a CSV, and a chat
-export). Write the backlog to `output/delivery/stories.md` using the skill's output template.
+export). Write the backlog to `output/demo/stories.md` using the skill's output template.
 The `_Generated: … · Sources: …_` line must name all three inputs.
 
 --- INPUT A: email (email-thread.txt) ---

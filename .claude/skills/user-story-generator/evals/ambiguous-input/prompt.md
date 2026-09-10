@@ -8,7 +8,7 @@ allowed_tools: [Read, Write, Bash, Glob]
 ---
 
 Use the user-story-generator skill on this single input. Write the result to
-`output/delivery/stories.md` using the skill's output template.
+`output/demo/stories.md` using the skill's output template.
 
 --- INPUT: Slack DM from the founder ---
 

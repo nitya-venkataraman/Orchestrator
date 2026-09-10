@@ -16,8 +16,8 @@ Errors fail the check (exit 1). Softer issues are warnings and only fail with
 --strict. Pure standard library, no dependencies.
 
 Usage:
-    python3 harness/validate_stories.py output/delivery/user-stories-2026-09-02.md
-    python3 harness/validate_stories.py --strict --json output/delivery/*.md
+    python3 harness/validate_stories.py output/flight-booking/user-stories-2026-09-02.md
+    python3 harness/validate_stories.py --strict --json output/*/user-stories-*.md
 """
 
 from __future__ import annotations

@@ -46,13 +46,15 @@ If no input is provided, ask the user to paste the material or drop files in `in
    [references/acceptance-criteria-guide.md](references/acceptance-criteria-guide.md).
 6. **Flag gaps** – Where inputs are silent or contradictory, add an "Open questions"
    list instead of guessing. Do not invent scope, personas, or numbers.
-7. **Write output** – Save to `output/delivery/user-stories-<YYYY-MM-DD>.md` following
+7. **Write output** – Derive a kebab-case `<project-slug>` from the input material (e.g.
+   `flight-booking`); if the material names no clear project, ask before writing. Save to
+   `output/<project-slug>/user-stories-<YYYY-MM-DD>.md` following
    [references/output-template.md](references/output-template.md). Also summarize in chat.
 8. **Validate** – Run the harness validator and fix every error it reports before
    presenting results:
 
    ```bash
-   python3 harness/validate_stories.py --strict output/delivery/user-stories-<YYYY-MM-DD>.md
+   python3 harness/validate_stories.py --strict output/<project-slug>/user-stories-<YYYY-MM-DD>.md
    ```
 
    Then self-check against [references/rubric.md](references/rubric.md).
@@ -88,5 +90,5 @@ A worked input → output example is in [examples/](examples/).
 - [ ] Every story has at least 2 testable acceptance criteria.
 - [ ] Personas are specific; "user" only used when truly generic.
 - [ ] Assumptions and gaps are in "Open questions", not invented into stories.
-- [ ] Output file written to `output/delivery/`.
+- [ ] Output file written to `output/<project-slug>/`.
 - [ ] `python3 harness/validate_stories.py --strict <file>` passes.

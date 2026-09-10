@@ -17,11 +17,12 @@ __pycache__/
 /workspace/
 /workspace.bak-*/
 
-# UX pipeline stage artifacts — regenerated per run, never committed.
-# Allowlist: only user-story backlogs (the UserStoryGenerator deliverable) are
-# tracked, so future pipeline stages stay ignored without touching this file.
+# UX pipeline artifacts — one folder per project, regenerated per run, never
+# committed. Allowlist: only user-story backlogs (the UserStoryGenerator
+# deliverable) are tracked, in any project folder. Project directories must be
+# un-ignored first — git cannot re-include a file inside an excluded directory.
 output/*
 !output/.gitkeep
-!output/delivery/
-output/delivery/*
-!output/delivery/user-stories-*
+!output/*/
+output/*/*
+!output/*/user-stories-*

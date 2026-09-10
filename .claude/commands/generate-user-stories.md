@@ -16,11 +16,12 @@ Then:
 1. Read every input source and list them.
 2. Produce the backlog per the skill's output template
    (`.claude/skills/user-story-generator/references/output-template.md`), writing to
-   `output/delivery/user-stories-<today>.md`.
+   `output/<project-slug>/user-stories-<today>.md` — `<project-slug>` being a kebab-case name
+   derived from the material. Ask me if the material names no clear project.
 3. Run the validator and fix every error before showing me the result:
 
    ```bash
-   python3 harness/validate_stories.py --strict output/delivery/user-stories-<today>.md
+   python3 harness/validate_stories.py --strict output/<project-slug>/user-stories-<today>.md
    ```
 
 4. In your reply: the output file path, a one-line summary (epics / story count /
