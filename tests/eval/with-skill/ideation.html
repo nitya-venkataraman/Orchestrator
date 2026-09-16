@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NexusIntel — Ideation (with skill)</title>
+<style>
+:root{
+  --bg:#f7f7f5; --surface:#ffffff; --sunken:#f0efec;
+  --ink:#16181d; --ink-2:#4a4f59; --ink-3:#767d8a;
+  --line:#dcdcd6; --line-2:#c6c6be;
+  --accent:#1f4f7a; --accent-soft:#e3edf5;
+  --warn:#7a4a12; --warn-soft:#f6ecdd;
+  --dot:#1f4f7a;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161a; --surface:#1c1f25; --sunken:#22262d;
+    --ink:#e9eaec; --ink-2:#b0b5be; --ink-3:#858c98;
+    --line:#2e333b; --line-2:#3d434d;
+    --accent:#7fb2dd; --accent-soft:#1d2c39;
+    --warn:#e0b478; --warn-soft:#33271a;
+    --dot:#7fb2dd;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:40px 24px 96px}
+h1{font-size:28px;line-height:1.2;letter-spacing:-.015em;margin:0 0 6px}
+h2{font-size:19px;letter-spacing:-.01em;margin:0 0 4px}
+h3{font-size:16px;margin:0 0 6px}
+h4{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin:14px 0 4px}
+h4.cost{color:var(--warn)}
+p{margin:0 0 8px}
+section{margin-top:44px}
+.sec-head{border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:20px}
+.sec-head p{color:var(--ink-2);font-size:13.5px;margin:0}
+.empty{color:var(--ink-3);font-style:italic}
+
+.prov{
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:18px 20px;margin-top:14px;
+}
+.prov dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:13px}
+.prov dt{color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;padding-top:3px}
+.prov dd{margin:0;color:var(--ink-2)}
+.banner{
+  background:var(--warn-soft);border:1px solid var(--warn);border-left-width:3px;
+  border-radius:8px;padding:14px 16px;margin-top:14px;color:var(--warn);font-size:13.5px;
+}
+.banner strong{color:var(--warn)}
+
+.cards{display:grid;gap:14px}
+.personas{grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.directions{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card header{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card ul{margin:0;padding-left:17px;color:var(--ink-2);font-size:13.5px}
+.card li{margin-bottom:4px}
+.context{color:var(--ink-2);font-size:13.5px}
+blockquote{
+  margin:12px 0;padding:8px 0 8px 14px;border-left:2px solid var(--line-2);
+  color:var(--ink-2);font-style:italic;font-size:13.5px;
+}
+.summary{color:var(--ink-2);font-size:14px}
+.direction p{font-size:13.5px;color:var(--ink-2)}
+.tag{
+  display:inline-block;background:var(--accent-soft);color:var(--accent);
+  border-radius:4px;padding:2px 7px;font-size:10.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+
+.hmws{list-style:none;margin:0;padding:0;counter-reset:none}
+.hmws li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.hmws li:last-child{border-bottom:0}
+.hmw-n{
+  flex:0 0 auto;color:var(--accent);font-weight:700;font-size:11px;
+  letter-spacing:.06em;padding-top:3px;font-variant-numeric:tabular-nums;
+}
+.hmw-s{margin:0;font-size:14.5px}
+.hmw-d{margin:2px 0 0;color:var(--ink-3);font-size:12px}
+
+.controls{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.controls label{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+select{
+  font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line-2);
+  border-radius:6px;background:var(--surface);color:var(--ink);
+}
+.count{font-size:12.5px;color:var(--ink-3);margin-left:auto;font-variant-numeric:tabular-nums}
+
+.t-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:13.5px}
+thead th{
+  background:var(--sunken);border-bottom:1px solid var(--line-2);
+  padding:0;text-align:left;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--ink-3);white-space:nowrap;position:sticky;top:0;
+}
+thead th button{
+  all:unset;display:block;width:100%;box-sizing:border-box;padding:10px 12px;
+  cursor:pointer;font:inherit;color:inherit;
+}
+thead th button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+thead th.n button{text-align:right}
+thead th[aria-sort]{color:var(--accent)}
+thead th[aria-sort="descending"] button::after{content:" ↓"}
+thead th[aria-sort="ascending"] button::after{content:" ↑"}
+tbody td{border-bottom:1px solid var(--line);padding:12px;vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+td.rice{font-weight:700;color:var(--ink)}
+td.rank{width:34px}
+.dot-n{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;background:var(--accent-soft);
+  color:var(--accent);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+}
+td.name{max-width:520px}
+.desc{color:var(--ink-2);font-size:13px;margin:5px 0 0}
+.addresses{color:var(--ink-3);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;margin:6px 0 0}
+.metric{
+  margin:10px 0 0;padding-top:8px;border-top:1px dashed var(--line-2);
+  display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:12px;
+}
+.metric dt{color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-size:10px;padding-top:2px}
+.metric dd{margin:0;color:var(--ink-2)}
+
+.matrix{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.matrix svg{display:block;width:100%;height:auto;overflow:visible}
+.ax-line{stroke:var(--line-2);stroke-width:1}
+.ax-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.ax-t{fill:var(--ink-3);font-size:11px;font-variant-numeric:tabular-nums}
+.ax-lab{fill:var(--ink-3);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+.pt{fill:var(--dot);fill-opacity:.18;stroke:var(--dot);stroke-width:1.5}
+.pt-n{fill:var(--dot);font-size:11px;font-weight:700;text-anchor:middle;font-variant-numeric:tabular-nums}
+.note{color:var(--ink-3);font-size:12.5px;margin-top:12px}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12px}
+</style>
+</head><body>
+<div class="wrap">
+
+<header>
+  <h1>NexusIntel — Ideation (with skill)</h1>
+  <div class="prov">
+    <dl><dt>Run</dt><dd>With the <code>superlap-ideation</code> skill — Stage 3 of the six-stage UX pipeline</dd><dt>Source</dt><dd><code>output/nexusintel/ideation.json</code> + <code>strategy.json</code> · contract 2.0</dd><dt>Generated</dt><dd>2026-09-10, human-approved. Rendered 2026-09-11 — figures are read, never recomputed.</dd><dt>Gate</dt><dd>Tier-1 validator 0 errors · judge 0.87 against a 0.70 threshold (<code>hmw_linkage</code> 0.95 · <code>rice_integrity</code> 0.72 · <code>direction_distinctness</code> 0.92)</dd><dt>RICE scale</dt><dd>Reach is an assumption, not a measurement: no participant gave a volume figure, so 120 stands for quarterly profile builds and 40 for monitored positions. <strong>Not the same scale as the without-skill run</strong> — compare orderings, not magnitudes.</dd></dl>
+  </div>
+  
+</header>
+
+<section>
+  <div class="sec-head">
+    <h2>Who this is for</h2>
+    <p>The people the features below are meant to serve.</p>
+  </div>
+  <div class="cards personas"><article class="card persona"><header><h3>The Screening Associate</h3><span class="tag">primary</span></header><p class="context">The analyst who assembles the foundational borrower profile end to end, on a 48-72 hour clock, before anyone senior sees it. Opens with the entity name and no context: checks Capital IQ and Bloomberg to establish public or private, then the internal CRM, Salesforce and the credit document repository for any prior firm contact. Builds the org chart by hand from PDF credit agreements and pitch books, re-keys financials into an Excel template, and only reaches the actual risk analysis late on the second night. Interviewed directly; every trait below is his own account of his own work.</p><blockquote>I feel like a glorified data entry clerk for the first two days.</blockquote><h4>Goals</h4><ul><li>Reach the leverage math and the investment thesis while there is still time to think about them, instead of at midnight on day two</li><li>Establish on day one whether the firm has touched this client, its sponsors or its subsidiaries before</li><li>Get the covenant definitions, debt schedule and EBITDA definition out of the credit agreement without reading 300 pages</li><li>Hand the reviewer a profile that survives first contact, so no rework loop starts</li><li>Stop the clock running while he waits on a sponsor reply he cannot chase directly</li></ul><h4>Frustrations</h4><ul><li>Roughly 70% of the window goes to finding and formatting data and only 30% to analysis</li><li>Mapping the ultimate parent, co-issuers and guarantors of a PE-backed structure alone consumes 4 to 5 hours of the first day</li><li>Financials arrive as PDFs to be copied by hand into a template whose formulas break</li><li>An incomplete submission from the sponsor stalls him for 24 hours while his own deadline keeps moving</li><li>Time spent on font consistency is time spent anticipating a reviewer&#x27;s objection rather than answering it</li></ul></article><article class="card persona"><header><h3>The Credit Risk Reviewer</h3><span class="tag">secondary</span></header><p class="context">The director who signs off — or does not — on the finished profile, in a 20 to 30 minute initial review that gates the Credit Committee date. Reads in a fixed order: total leverage ratio and how adjusted EBITDA was built, then liquidity runway across cash and revolver capacity, then the corporate structure and guarantee package. Skips the company history outright. Interviewed directly.</p><blockquote>If I catch an error like that, I lose trust in the whole profile.</blockquote><h4>Goals</h4><ul><li>Confirm in the first minutes who is actually on the hook for the debt and whether cash is leaking to unrated offshore subsidiaries</li><li>Check an add-back or a pro-forma adjustment against its source without reopening the underlying agreement</li><li>Complete an initial review in five minutes rather than thirty, with more confidence rather than less</li><li>Return a defect without triggering a rework loop that moves the committee date</li></ul><h4>Frustrations</h4><ul><li>Vendor pulls accepted without adjusting for pro-forma numbers from a recent acquisition</li><li>Management EBITDA add-backs taken at face value — a &#x27;one-time&#x27; fee that recurred three years running</li><li>A single caught error costs her confidence in the whole file, not just the line it appeared on</li><li>Static PDFs and Word documents that cannot be interrogated, so verification means reopening a 300-page agreement herself</li><li>Fixing small defects personally to avoid a round of email that would cost more than the fix</li></ul></article><article class="card persona"><header><h3>The Managing Director</h3><span class="tag">secondary</span></header><p class="context">Runs large-scale corporate lending and opportunistic credit, and carries the position after the deal is booked. Frames the team&#x27;s constraint as speed and informational symmetry rather than capital allocation. Consumes the Associate&#x27;s screening work as a decision input and the portfolio&#x27;s risk posture as a standing feed. Interviewed directly. Deployment isolation is his stated precondition for adoption at all.</p><blockquote>We lose massive leverage by not knowing what the firm already knows.</blockquote><h4>Goals</h4><ul><li>Issue term sheets faster than competing lenders, because speed is what wins the deal in this market</li><li>See what another desk already learned about a target at the moment of screening, not after</li><li>Catch distress while a workout or refinancing can still be structured — see smoke before there is a fire</li><li>Receive a risk signal that already contains the decision: the issue, the exposure, and the trigger point</li><li>Keep proprietary deal data inside the firm&#x27;s own cloud perimeter</li></ul><h4>Frustrations</h4><ul><li>Initial vetting takes three days because the inputs are scattered across filings, private databases, relationship logs and macro feeds</li><li>Another desk&#x27;s prior coverage sits in a legacy PDF or a personal Outlook inbox, invisible exactly when it would create leverage</li><li>Covenant compliance is keyed quarterly into spreadsheets, so a breach surfaces about three months after the fact</li><li>Monitoring products present fifty simultaneous flags and leave the interpretation to him</li></ul></article></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Problems worth solving</h2>
+    <p>Each feature answers exactly one of these.</p>
+  </div>
+  <ol class="hmws"><li><span class="hmw-n">HMW1</span><div><p class="hmw-s">How might we make a firm&#x27;s own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?</p><p class="hmw-d">Firm memory hunted manually</p></div></li><li><span class="hmw-n">HMW2</span><div><p class="hmw-s">How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?</p><p class="hmw-d">Deal terms trapped in documents</p></div></li><li><span class="hmw-n">HMW3</span><div><p class="hmw-s">How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?</p><p class="hmw-d">One error voids the profile</p></div></li><li><span class="hmw-n">HMW4</span><div><p class="hmw-s">How might we keep the deal clock from being held hostage to a reply that has not arrived?</p><p class="hmw-d">Email round-trips burn the deadline</p></div></li><li><span class="hmw-n">HMW5</span><div><p class="hmw-s">How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?</p><p class="hmw-d">Late, undifferentiated risk signals</p></div></li></ol>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Feature backlog</h2>
+    <p>Ranked by RICE. Sort any column; filter to one problem to see what
+       competes within it.</p>
+  </div>
+  <div class="controls">
+    <label for="hmw-filter">Filter</label>
+    <select id="hmw-filter"><option value="">All problems</option><option value="How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?">One error voids the profile</option><option value="How might we keep the deal clock from being held hostage to a reply that has not arrived?">Email round-trips burn the deadline</option><option value="How might we make a firm&#x27;s own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?">Firm memory hunted manually</option><option value="How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?">Deal terms trapped in documents</option><option value="How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?">Late, undifferentiated risk signals</option></select>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="t-wrap">
+    <table id="rice">
+      <thead><tr><th data-key="rank" class=""><button type="button">#</button></th><th data-key="name" class=""><button type="button">Feature</button></th><th data-key="reach" class="n"><button type="button">Reach</button></th><th data-key="impact" class="n"><button type="button">Impact</button></th><th data-key="confidence" class="n"><button type="button">Conf.</button></th><th data-key="effort" class="n"><button type="button">Effort</button></th><th data-key="rice_score" class="n" aria-sort="descending"><button type="button">RICE</button></th></tr></thead>
+      <tbody><tr data-hmw="How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?" data-rank="1"><td class="rank"><span class="dot-n">1</span></td><td class="name"><strong>Click-to-Source Provenance</strong><p class="desc">Every figure in the profile links to the exact sentence in the document it came from, shown in place without leaving the profile or opening the underlying agreement.</p><p class="addresses">One error voids the profile</p><dl class="metric"><dt>Success metric</dt><dd>Minutes per risk review spent reopening source documents to verify a figure</dd><dt>Baseline</dt><dd>Twenty to thirty minutes per review, verification by reopening the agreement</dd><dt>Target</dt><dd>Under five minutes per review</dd></dl></td><td class="n">120</td><td class="n">3</td><td class="n">1</td><td class="n">3</td><td class="n rice">120</td></tr><tr data-hmw="How might we keep the deal clock from being held hostage to a reply that has not arrived?" data-rank="2"><td class="rank"><span class="dot-n">2</span></td><td class="name"><strong>Outstanding-Input Tracker</strong><p class="desc">The profile itself declares what it is waiting on, who owns the request, when it was made and how long it has been outstanding, so a blocked dependency is visible to everyone on the deal rather than sitting in one associate&#x27;s inbox.</p><p class="addresses">Email round-trips burn the deadline</p><dl class="metric"><dt>Success metric</dt><dd>Deal-clock days lost waiting on an unowned outstanding request</dd><dt>Baseline</dt><dd>unknown</dd><dt>Target</dt><dd>No request goes unowned for more than one business day</dd></dl></td><td class="n">120</td><td class="n">2</td><td class="n">0.8</td><td class="n">3</td><td class="n rice">64</td></tr><tr data-hmw="How might we keep the deal clock from being held hostage to a reply that has not arrived?" data-rank="3"><td class="rank"><span class="dot-n">3</span></td><td class="name"><strong>In-Profile Review Threads</strong><p class="desc">A reviewer returns a defect on the line item it concerns and the associate answers it there, so a correction never becomes a round of email and a minor fix is never absorbed silently to avoid one.</p><p class="addresses">Email round-trips burn the deadline</p><dl class="metric"><dt>Success metric</dt><dd>Round trips to close a returned defect</dd><dt>Baseline</dt><dd>unknown</dd><dt>Target</dt><dd>One round trip for the median defect</dd></dl></td><td class="n">120</td><td class="n">1</td><td class="n">1</td><td class="n">2</td><td class="n rice">60</td></tr><tr data-hmw="How might we make a firm&#x27;s own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?" data-rank="4"><td class="rank"><span class="dot-n">4</span></td><td class="name"><strong>Entity Precedent Timeline</strong><p class="desc">Searching a target name returns a chronological record of every prior touch the firm has had with that entity, its sponsors and its subsidiaries — which desk, which people, which meetings, which IC memos, which prior agreements — before any build work starts.</p><p class="addresses">Firm memory hunted manually</p><dl class="metric"><dt>Success metric</dt><dd>Share of targets where prior firm contact is surfaced before manual hunting begins</dd><dt>Baseline</dt><dd>unknown</dd><dt>Target</dt><dd>80% of new assignments show precedent at orientation</dd></dl></td><td class="n">120</td><td class="n">3</td><td class="n">0.8</td><td class="n">5</td><td class="n rice">57.6</td></tr><tr data-hmw="How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?" data-rank="5"><td class="rank"><span class="dot-n">5</span></td><td class="name"><strong>Model Template Auto-Population</strong><p class="desc">Extracted figures populate the profile model directly, so financials are never re-keyed from a PDF and the template&#x27;s formulas are never manually repaired.</p><p class="addresses">Deal terms trapped in documents</p><dl class="metric"><dt>Success metric</dt><dd>Share of profile model fields re-keyed by hand from a PDF</dd><dt>Baseline</dt><dd>unknown</dd><dt>Target</dt><dd>Under 10% of fields re-keyed</dd></dl></td><td class="n">120</td><td class="n">2</td><td class="n">0.8</td><td class="n">5</td><td class="n rice">38.4</td></tr><tr data-hmw="How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?" data-rank="6"><td class="rank"><span class="dot-n">6</span></td><td class="name"><strong>Add-Back and Pro-Forma Challenge Flags</strong><p class="desc">Flags adjustments that warrant a question rather than acceptance: an EBITDA add-back described as one-time that recurs across periods, or a vendor pull not adjusted for a recent acquisition.</p><p class="addresses">One error voids the profile</p><dl class="metric"><dt>Success metric</dt><dd>Share of questionable add-backs raised at review rather than after close</dd><dt>Baseline</dt><dd>unknown</dd><dt>Target</dt><dd>Every recurring add-back described as one-time is flagged before sign-off</dd></dl></td><td class="n">120</td><td class="n">2</td><td class="n">0.8</td><td class="n">5</td><td class="n rice">38.4</td></tr><tr data-hmw="How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?" data-rank="7"><td class="rank"><span class="dot-n">7</span></td><td class="name"><strong>Credit Agreement Term Extraction</strong><p class="desc">Reads a credit agreement end to end and returns the figures that decide the credit: covenant definitions and thresholds, leverage ratios, the definition of EBITDA in this document, and the amortization schedule.</p><p class="addresses">Deal terms trapped in documents</p><dl class="metric"><dt>Success metric</dt><dd>Hours from receiving the agreement set to a committed term sheet</dd><dt>Baseline</dt><dd>Four to five hours of day one on the org chart alone</dd><dt>Target</dt><dd>Under one hour to committed terms</dd></dl></td><td class="n">120</td><td class="n">3</td><td class="n">0.8</td><td class="n">8</td><td class="n rice">36</td></tr><tr data-hmw="How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?" data-rank="8"><td class="rank"><span class="dot-n">8</span></td><td class="name"><strong>Decision-Carrying Alert Feed</strong><p class="desc">A ranked feed where each entry carries the three things needed to act: what changed, the firm&#x27;s direct exposure, and the current distance to the covenant threshold.</p><p class="addresses">Late, undifferentiated risk signals</p><dl class="metric"><dt>Success metric</dt><dd>Share of alerts acted on without opening another system to decide</dd><dt>Baseline</dt><dd>unknown</dd><dt>Target</dt><dd>80% of alerts actioned from the feed entry alone</dd></dl></td><td class="n">40</td><td class="n">3</td><td class="n">0.8</td><td class="n">5</td><td class="n rice">19.2</td></tr><tr data-hmw="How might we make a firm&#x27;s own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?" data-rank="9"><td class="rank"><span class="dot-n">9</span></td><td class="name"><strong>Inbox and Drive Ingestion</strong><p class="desc">Indexes the places firm memory actually lives — Outlook, SharePoint, shared and local drives, the credit document repository — into the precedent store, with the metadata tagging that keeps Private Equity notes invisible to Liquid Strategies unless permitted.</p><p class="addresses">Firm memory hunted manually</p><dl class="metric"><dt>Success metric</dt><dd>Share of firm precedent reachable by search rather than by asking a colleague</dd><dt>Baseline</dt><dd>unknown</dd><dt>Target</dt><dd>90% of precedent sources indexed and searchable</dd></dl></td><td class="n">120</td><td class="n">2</td><td class="n">0.5</td><td class="n">8</td><td class="n rice">15</td></tr><tr data-hmw="How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?" data-rank="10"><td class="rank"><span class="dot-n">10</span></td><td class="name"><strong>Auto-Built Org and Guarantee Chart</strong><p class="desc">Derives the ultimate parent, co-issuers and guarantors from the agreement set and renders the corporate structure, marking which entities are on the hook for the debt and which subsidiaries are unrated or offshore.</p><p class="addresses">Deal terms trapped in documents</p><dl class="metric"><dt>Success metric</dt><dd>Hours to a verified corporate structure and guarantee package</dd><dt>Baseline</dt><dd>Four to five hours of day one on the org chart alone</dd><dt>Target</dt><dd>Under 30 minutes including verification</dd></dl></td><td class="n">120</td><td class="n">2</td><td class="n">0.5</td><td class="n">8</td><td class="n rice">15</td></tr><tr data-hmw="How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?" data-rank="11"><td class="rank"><span class="dot-n">11</span></td><td class="name"><strong>Continuous Position Health Score</strong><p class="desc">Ingests daily alternative signals against each booked position and scores deviation from the sector benchmark, replacing the quarterly spreadsheet cycle with a standing measure.</p><p class="addresses">Late, undifferentiated risk signals</p><dl class="metric"><dt>Success metric</dt><dd>Lead time between a deterioration signal and it reaching the MD</dd><dt>Baseline</dt><dd>Roughly three months after the event</dd><dt>Target</dt><dd>Within five business days</dd></dl></td><td class="n">40</td><td class="n">3</td><td class="n">0.5</td><td class="n">13</td><td class="n rice">4.6</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Impact against effort</h2>
+    <p>The same features, positioned. Bubble area carries RICE; the number in
+       each bubble is its rank in the table above.</p>
+  </div>
+  <div class="matrix">
+    <svg id="matrix-svg" role="img"
+         aria-label="Scatter plot of features by impact and effort. The same
+                     figures are in the sortable table above."></svg>
+    <p class="note">Effort is spaced by its distinct values rather than
+      linearly, so a single high-effort item does not squash the rest against
+      the axis. Read positions as ordering, not as distance.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Design directions</h2>
+    <p>Different bets about how to solve the problem, not feature bundles.
+       No direction is recommended here — that choice is yours.</p>
+  </div>
+  <div class="cards directions"><article class="card direction"><h3>The Verifiable Profile</h3><p class="summary">The product is the borrower profile itself, turned from a static deliverable into a live, interrogable document. Extraction fills it, provenance backs every figure, and review happens inside it. The associate stops transcribing and stops formatting for trust; the reviewer stops reopening agreements to check what she is reading.</p><h4>Differentiator</h4><p>Trust is the feature, not a by-product. Every other approach treats extraction as the goal and leaves the reviewer to believe the output; this one treats the reviewer&#x27;s five-minute verification as the thing being built, and extraction exists to serve it.</p><h4 class="cost">Tradeoff</h4><p>Does nothing for the portfolio after the deal is booked. The Managing Director&#x27;s three-months-too-late problem is untouched — and he is the one who described a line of users out the door. This direction wins the workflow and leaves the buying signal unaddressed.</p><div class="tags"><span class="tag">Deal terms trapped in documents</span><span class="tag">One error voids the profile</span><span class="tag">Email round-trips burn the deadline</span></div></article><article class="card direction"><h3>The Firm&#x27;s Memory</h3><p class="summary">The product is the cross-asset knowledge graph. The entry point is a target name and the payload is everything the firm already knows about it, drawn from CRM, repositories, drives and inboxes across every desk. Extraction and provenance are how the graph gets populated and trusted, not ends in themselves.</p><h4>Differentiator</h4><p>It is the only capability no incumbent has. Per the brief&#x27;s own competitive read, DealCloud carries the CRM but cannot search unstructured internal content, and Preqin and PitchBook have no internal context at all. This is the one direction a competitor cannot answer by shipping a feature.</p><h4 class="cost">Tradeoff</h4><p>Cold start. Value on day one is near zero and grows with corpus coverage and adoption, in a firm that expects immediate leverage — and the associate&#x27;s 48-72 hour build barely moves until the graph is dense. It also carries the heaviest compliance surface: the RBAC wall between Private Equity and Liquid Strategies is load-bearing here, and getting it wrong is an insider-trading problem, not a bug.</p><div class="tags"><span class="tag">Firm memory hunted manually</span><span class="tag">Deal terms trapped in documents</span></div></article><article class="card direction"><h3>The Standing Watch</h3><p class="summary">The product is continuous monitoring of booked positions. The pre-close profile is not the deliverable but the baseline: the covenant thresholds and exposure figures extracted at underwriting become the reference the daily signal is measured against, so screening work is retained rather than filed.</p><h4>Differentiator</h4><p>It is the only direction that closes the gap between a borrower&#x27;s condition changing and the firm knowing, and the only one aimed squarely at the persona who controls the budget. It also reframes the profile build as an investment that keeps paying rather than a document that is archived.</p><h4 class="cost">Tradeoff</h4><p>It bets on the thinnest evidence in the corpus. Post-close monitoring was raised by one participant of three, while the associate&#x27;s build and the reviewer&#x27;s rework — five consecutive high-drop-off journey stages — are largely out of scope. It is also the highest technical risk: the alternative-data signals it depends on were named by the product team, not by any user, and no participant was ever asked what false-positive rate they would tolerate.</p><div class="tags"><span class="tag">Late, undifferentiated risk signals</span><span class="tag">One error voids the profile</span></div></article></div>
+</section>
+
+<footer>
+  Rendered by <code>tests/eval/render.py</code>. Both sides of this comparison
+  use this same renderer, so any difference between the two pages is a
+  difference in the artifact, not in the presentation.
+</footer>
+
+</div>
+<script>window.__FEATURES__ = [{"rank": 1, "name": "Click-to-Source Provenance", "hmw": "How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?", "reach": 120, "impact": 3, "confidence": 1.0, "effort": 3, "rice_score": 120.0}, {"rank": 2, "name": "Outstanding-Input Tracker", "hmw": "How might we keep the deal clock from being held hostage to a reply that has not arrived?", "reach": 120, "impact": 2, "confidence": 0.8, "effort": 3, "rice_score": 64.0}, {"rank": 3, "name": "In-Profile Review Threads", "hmw": "How might we keep the deal clock from being held hostage to a reply that has not arrived?", "reach": 120, "impact": 1, "confidence": 1.0, "effort": 2, "rice_score": 60.0}, {"rank": 4, "name": "Entity Precedent Timeline", "hmw": "How might we make a firm's own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?", "reach": 120, "impact": 3, "confidence": 0.8, "effort": 5, "rice_score": 57.6}, {"rank": 5, "name": "Model Template Auto-Population", "hmw": "How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?", "reach": 120, "impact": 2, "confidence": 0.8, "effort": 5, "rice_score": 38.4}, {"rank": 6, "name": "Add-Back and Pro-Forma Challenge Flags", "hmw": "How might we let a reviewer satisfy themselves that a figure is right without leaving the profile they are reading?", "reach": 120, "impact": 2, "confidence": 0.8, "effort": 5, "rice_score": 38.4}, {"rank": 7, "name": "Credit Agreement Term Extraction", "hmw": "How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?", "reach": 120, "impact": 3, "confidence": 0.8, "effort": 8, "rice_score": 36.0}, {"rank": 8, "name": "Decision-Carrying Alert Feed", "hmw": "How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?", "reach": 40, "impact": 3, "confidence": 0.8, "effort": 5, "rice_score": 19.2}, {"rank": 9, "name": "Inbox and Drive Ingestion", "hmw": "How might we make a firm's own prior contact with a target visible at the moment someone starts evaluating it, including the contact nobody remembers?", "reach": 120, "impact": 2, "confidence": 0.5, "effort": 8, "rice_score": 15.0}, {"rank": 10, "name": "Auto-Built Org and Guarantee Chart", "hmw": "How might we shorten the distance between a term written into a credit agreement and a number an analyst can act on?", "reach": 120, "impact": 2, "confidence": 0.5, "effort": 8, "rice_score": 15.0}, {"rank": 11, "name": "Continuous Position Health Score", "hmw": "How might we make a portfolio signal arrive early enough, and specific enough, to change what a Managing Director does that day?", "reach": 40, "impact": 3, "confidence": 0.5, "effort": 13, "rice_score": 4.6}];</script>
+<script>
+(function(){
+  var data = window.__FEATURES__ || [];
+  var table = document.getElementById('rice');
+  var tbody = table.querySelector('tbody');
+  var filter = document.getElementById('hmw-filter');
+  var count = document.getElementById('count');
+  var sortKey = 'rice_score', sortDir = -1;
+
+  function visible(){
+    var f = filter.value;
+    return data.filter(function(d){ return !f || d.hmw === f; });
+  }
+
+  function sortRows(){
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+    rows.sort(function(a, b){
+      if (sortKey === 'rank') {
+        return (+a.dataset.rank - +b.dataset.rank) * (sortDir === -1 ? 1 : -1);
+      }
+      var da = data[+a.dataset.rank - 1], db = data[+b.dataset.rank - 1];
+      var va = da[sortKey], vb = db[sortKey];
+      if (typeof va === 'string' || typeof vb === 'string') {
+        return String(va).localeCompare(String(vb)) * -sortDir;
+      }
+      return (va - vb) * sortDir;
+    });
+    rows.forEach(function(r){ tbody.appendChild(r); });
+  }
+
+  function applyFilter(){
+    var f = filter.value, shown = 0;
+    Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function(r){
+      var on = !f || r.dataset.hmw === f;
+      r.hidden = !on;
+      if (on) shown++;
+    });
+    count.textContent = shown + ' of ' + data.length + ' features';
+    drawMatrix();
+  }
+
+  // --- impact / effort matrix -------------------------------------------
+  // Effort is spaced by its distinct values, not linearly: a 13-point item
+  // next to a run of 3s and 5s would otherwise sit alone in the far margin
+  // and squash everything else against the axis.
+  function drawMatrix(){
+    var pts = visible();
+    var svg = document.getElementById('matrix-svg');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    if (!pts.length) return;
+
+    var W = 720, H = 420, L = 58, R = 26, T = 22, B = 52;
+    var iw = W - L - R, ih = H - T - B;
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(n, a){
+      var x = document.createElementNS(NS, n);
+      for (var k in a) x.setAttribute(k, a[k]);
+      return x;
+    }
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+    var efforts = data.map(function(d){ return d.effort; })
+                      .filter(function(v, i, a){ return a.indexOf(v) === i; })
+                      .sort(function(a, b){ return a - b; });
+    var impacts = data.map(function(d){ return d.impact; })
+                      .filter(function(v, i, a){ return a.indexOf(v) === i; })
+                      .sort(function(a, b){ return a - b; });
+    function px(v){
+      var i = efforts.indexOf(v);
+      return L + (efforts.length < 2 ? iw / 2 : (i / (efforts.length - 1)) * iw);
+    }
+    function py(v){
+      var i = impacts.indexOf(v);
+      return T + ih - (impacts.length < 2 ? ih / 2 : (i / (impacts.length - 1)) * ih);
+    }
+    var maxR = Math.max.apply(null, data.map(function(d){ return d.rice_score; }));
+    function pr(v){ return 9 + 17 * Math.sqrt(Math.max(v, 0) / (maxR || 1)); }
+
+    impacts.forEach(function(v){
+      var y = py(v);
+      svg.appendChild(el('line', {x1:L, y1:y, x2:L+iw, y2:y, 'class':'ax-grid'}));
+      var t = el('text', {x:L-12, y:y+4, 'class':'ax-t', 'text-anchor':'end'});
+      t.textContent = v; svg.appendChild(t);
+    });
+    efforts.forEach(function(v){
+      var x = px(v);
+      var t = el('text', {x:x, y:T+ih+22, 'class':'ax-t', 'text-anchor':'middle'});
+      t.textContent = v; svg.appendChild(t);
+    });
+    svg.appendChild(el('line', {x1:L, y1:T+ih, x2:L+iw, y2:T+ih, 'class':'ax-line'}));
+    svg.appendChild(el('line', {x1:L, y1:T, x2:L, y2:T+ih, 'class':'ax-line'}));
+    var xl = el('text', {x:L+iw/2, y:T+ih+44, 'class':'ax-lab', 'text-anchor':'middle'});
+    xl.textContent = 'Effort →'; svg.appendChild(xl);
+    var yl = el('text', {x:0, y:0, 'class':'ax-lab', 'text-anchor':'middle',
+                         transform:'translate(16,' + (T+ih/2) + ') rotate(-90)'});
+    yl.textContent = 'Impact →'; svg.appendChild(yl);
+
+    // Features that share an impact and an effort land on exactly the same
+    // coordinate and hide each other completely. Fan a coincident group out
+    // around its shared point instead, by a radius wide enough to clear the
+    // biggest bubble in it.
+    var groups = {}, offset = {};
+    pts.forEach(function(d){
+      var k = d.impact + '|' + d.effort;
+      (groups[k] = groups[k] || []).push(d);
+    });
+    Object.keys(groups).forEach(function(k){
+      var g = groups[k];
+      if (g.length < 2) return;
+      var spread = Math.max.apply(null, g.map(function(d){ return pr(d.rice_score); })) * 0.95;
+      g.forEach(function(d, i){
+        var a = -Math.PI / 2 + (i * 2 * Math.PI / g.length);
+        offset[d.rank] = [Math.cos(a) * spread, Math.sin(a) * spread];
+      });
+    });
+
+    // Biggest first, so a large bubble never hides a small one it overlaps.
+    pts.slice().sort(function(a, b){ return b.rice_score - a.rice_score; })
+       .forEach(function(d){
+      var off = offset[d.rank] || [0, 0];
+      var x = px(d.effort) + off[0], y = py(d.impact) + off[1];
+      var c = el('circle', {cx:x, cy:y, r:pr(d.rice_score), 'class':'pt'});
+      var ttl = document.createElementNS(NS, 'title');
+      ttl.textContent = d.rank + '. ' + d.name + ' — RICE ' + d.rice_score +
+                        ' (R ' + d.reach + ' · I ' + d.impact +
+                        ' · C ' + d.confidence + ' · E ' + d.effort + ')';
+      c.appendChild(ttl);
+      svg.appendChild(c);
+      var n = el('text', {x:x, y:y+4, 'class':'pt-n'});
+      n.textContent = d.rank;
+      n.appendChild(ttl.cloneNode(true));
+      svg.appendChild(n);
+    });
+  }
+
+  Array.prototype.forEach.call(table.querySelectorAll('thead th[data-key]'), function(th){
+    th.querySelector('button').addEventListener('click', function(){
+      var key = th.dataset.key;
+      sortDir = (key === sortKey) ? -sortDir : (key === 'name' ? 1 : -1);
+      sortKey = key;
+      Array.prototype.forEach.call(table.querySelectorAll('thead th'), function(o){
+        o.removeAttribute('aria-sort');
+      });
+      th.setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
+      sortRows();
+    });
+  });
+
+  filter.addEventListener('change', applyFilter);
+  applyFilter();
+})();
+</script>
+</body></html>

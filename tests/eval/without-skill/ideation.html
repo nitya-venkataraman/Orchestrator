@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NexusIntel — Ideation (without skill)</title>
+<style>
+:root{
+  --bg:#f7f7f5; --surface:#ffffff; --sunken:#f0efec;
+  --ink:#16181d; --ink-2:#4a4f59; --ink-3:#767d8a;
+  --line:#dcdcd6; --line-2:#c6c6be;
+  --accent:#1f4f7a; --accent-soft:#e3edf5;
+  --warn:#7a4a12; --warn-soft:#f6ecdd;
+  --dot:#1f4f7a;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161a; --surface:#1c1f25; --sunken:#22262d;
+    --ink:#e9eaec; --ink-2:#b0b5be; --ink-3:#858c98;
+    --line:#2e333b; --line-2:#3d434d;
+    --accent:#7fb2dd; --accent-soft:#1d2c39;
+    --warn:#e0b478; --warn-soft:#33271a;
+    --dot:#7fb2dd;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:40px 24px 96px}
+h1{font-size:28px;line-height:1.2;letter-spacing:-.015em;margin:0 0 6px}
+h2{font-size:19px;letter-spacing:-.01em;margin:0 0 4px}
+h3{font-size:16px;margin:0 0 6px}
+h4{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin:14px 0 4px}
+h4.cost{color:var(--warn)}
+p{margin:0 0 8px}
+section{margin-top:44px}
+.sec-head{border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:20px}
+.sec-head p{color:var(--ink-2);font-size:13.5px;margin:0}
+.empty{color:var(--ink-3);font-style:italic}
+
+.prov{
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:18px 20px;margin-top:14px;
+}
+.prov dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:13px}
+.prov dt{color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;padding-top:3px}
+.prov dd{margin:0;color:var(--ink-2)}
+.banner{
+  background:var(--warn-soft);border:1px solid var(--warn);border-left-width:3px;
+  border-radius:8px;padding:14px 16px;margin-top:14px;color:var(--warn);font-size:13.5px;
+}
+.banner strong{color:var(--warn)}
+
+.cards{display:grid;gap:14px}
+.personas{grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.directions{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card header{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card ul{margin:0;padding-left:17px;color:var(--ink-2);font-size:13.5px}
+.card li{margin-bottom:4px}
+.context{color:var(--ink-2);font-size:13.5px}
+blockquote{
+  margin:12px 0;padding:8px 0 8px 14px;border-left:2px solid var(--line-2);
+  color:var(--ink-2);font-style:italic;font-size:13.5px;
+}
+.summary{color:var(--ink-2);font-size:14px}
+.direction p{font-size:13.5px;color:var(--ink-2)}
+.tag{
+  display:inline-block;background:var(--accent-soft);color:var(--accent);
+  border-radius:4px;padding:2px 7px;font-size:10.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+
+.hmws{list-style:none;margin:0;padding:0;counter-reset:none}
+.hmws li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.hmws li:last-child{border-bottom:0}
+.hmw-n{
+  flex:0 0 auto;color:var(--accent);font-weight:700;font-size:11px;
+  letter-spacing:.06em;padding-top:3px;font-variant-numeric:tabular-nums;
+}
+.hmw-s{margin:0;font-size:14.5px}
+.hmw-d{margin:2px 0 0;color:var(--ink-3);font-size:12px}
+
+.controls{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.controls label{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+select{
+  font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line-2);
+  border-radius:6px;background:var(--surface);color:var(--ink);
+}
+.count{font-size:12.5px;color:var(--ink-3);margin-left:auto;font-variant-numeric:tabular-nums}
+
+.t-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:13.5px}
+thead th{
+  background:var(--sunken);border-bottom:1px solid var(--line-2);
+  padding:0;text-align:left;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--ink-3);white-space:nowrap;position:sticky;top:0;
+}
+thead th button{
+  all:unset;display:block;width:100%;box-sizing:border-box;padding:10px 12px;
+  cursor:pointer;font:inherit;color:inherit;
+}
+thead th button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+thead th.n button{text-align:right}
+thead th[aria-sort]{color:var(--accent)}
+thead th[aria-sort="descending"] button::after{content:" ↓"}
+thead th[aria-sort="ascending"] button::after{content:" ↑"}
+tbody td{border-bottom:1px solid var(--line);padding:12px;vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+td.rice{font-weight:700;color:var(--ink)}
+td.rank{width:34px}
+.dot-n{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;background:var(--accent-soft);
+  color:var(--accent);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+}
+td.name{max-width:520px}
+.desc{color:var(--ink-2);font-size:13px;margin:5px 0 0}
+.addresses{color:var(--ink-3);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;margin:6px 0 0}
+.metric{
+  margin:10px 0 0;padding-top:8px;border-top:1px dashed var(--line-2);
+  display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:12px;
+}
+.metric dt{color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-size:10px;padding-top:2px}
+.metric dd{margin:0;color:var(--ink-2)}
+
+.matrix{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.matrix svg{display:block;width:100%;height:auto;overflow:visible}
+.ax-line{stroke:var(--line-2);stroke-width:1}
+.ax-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.ax-t{fill:var(--ink-3);font-size:11px;font-variant-numeric:tabular-nums}
+.ax-lab{fill:var(--ink-3);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+.pt{fill:var(--dot);fill-opacity:.18;stroke:var(--dot);stroke-width:1.5}
+.pt-n{fill:var(--dot);font-size:11px;font-weight:700;text-anchor:middle;font-variant-numeric:tabular-nums}
+.note{color:var(--ink-3);font-size:12.5px;margin-top:12px}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12px}
+</style>
+</head><body>
+<div class="wrap">
+
+<header>
+  <h1>NexusIntel — Ideation (without skill)</h1>
+  <div class="prov">
+    <dl><dt>Run</dt><dd>No skill. A senior-product-designer ideation pass over the raw brief, run clean-room.</dd><dt>Source</dt><dd><code>tests/eval/without-skill/ideation.raw.json</code> — the brief and its three interview transcripts, nothing else</dd><dt>Generated</dt><dd>2026-09-11</dd><dt>Gate</dt><dd>None. No validator, no rubric, no human approval.</dd><dt>RICE scale</dt><dd>Set by this run, and <strong>not the same scale as the with-skill run</strong>: reach is users touched per quarter across a deployed firm, effort is person-months, impact runs 0.25–3. Compare the ordering between the two pages, never the magnitudes.</dd></dl>
+  </div>
+  <div class="banner" role="note">This page was produced <strong>without</strong> the pipeline skill, its rubric, its Tier-1 validator or a human gate, and it never saw the approved artifact. The arithmetic reconciles on inspection, but nothing here has been checked by anything other than the model that wrote it, and the reach figures are estimates the research does not supply. It is the control arm of a comparison, not an approved deliverable.</div>
+</header>
+
+<section>
+  <div class="sec-head">
+    <h2>Who this is for</h2>
+    <p>The people the features below are meant to serve.</p>
+  </div>
+  <div class="cards personas"><article class="card persona"><header><h3>Marcus Vance, Managing Director, Private Credit</h3><span class="tag">primary</span></header><p class="context">Marcus runs large-scale corporate lending and opportunistic credit at a major alternative asset manager. He does not build analysis; he decides on it, and he decides under time pressure, because the market has moved toward privately negotiated, bespoke structures where the firm that can issue a term sheet first tends to win. His day is a stream of partial signals arriving from incompatible places: public filings, private databases, relationship logs, macro feeds, and his own team&#x27;s memory. Once a deal is booked he switches from offense to defense and inherits a monitoring regime he openly distrusts, because it runs on quarterly covenant submissions that borrowers type into spreadsheets. He describes his current posture as reactive and says that by the time a breach shows up in that data he is three months too late to structure a workout. He is allergic to dashboards with fifty flashing lights and evaluates any new tool on two axes only: does it tell him something he can act on today, and does the firm&#x27;s proprietary data stay inside the firm&#x27;s own perimeter.</p><h4>Goals</h4><ul><li>Compress initial vetting of a mid-market borrower from roughly three days to something closer to thirty minutes</li><li>Issue term sheets fast enough to win competitive, privately negotiated deals</li><li>Know what his own firm already knows about a target before anyone spends an hour on it</li><li>See credit deterioration while there is still time to restructure or refinance, not after the breach</li><li>Receive a small number of alerts that each state the issue, the firm&#x27;s dollar exposure, and the exact distance to a covenant trip</li><li>Keep proprietary deal data isolated inside the firm&#x27;s own cloud environment</li></ul><h4>Frustrations</h4><ul><li>Data he needs is scattered across filings, private databases, relationship logs, and macro feeds with no common entry point</li><li>Prior work by other teams sits in legacy PDFs on internal drives or inside an individual&#x27;s Outlook inbox and is effectively lost to the firm</li><li>Associates burn 48 to 72 hours building a foundational profile before he can form a view</li><li>Quarterly covenant reporting is a lagging indicator that surfaces problems only after the window to act has closed</li><li>Monitoring dashboards flood him with noise instead of a ranked, decision-ready feed</li><li>Any platform that requires his data to leave the firm&#x27;s perimeter is a non-starter regardless of its capability</li></ul></article><article class="card persona"><header><h3>Alex Mercer, Investment and Portfolio Associate</h3><span class="tag">primary</span></header><p class="context">Alex is the person the 48-to-72-hour profile build actually happens to. Assignment triggers a familiar opening move: a tracking spreadsheet, then Capital IQ and Bloomberg to establish whether the entity is public or private, then the internal CRM, Salesforce, and the credit document repository to find out whether the firm has ever touched this client, its sponsors, or its subsidiaries. By Alex&#x27;s own estimate the split is roughly seventy percent finding and formatting data against thirty percent actual analysis, which means the investment thesis, the leverage metrics, and the industry read get written late on the second night because the first day went entirely to data scrubbing. The single worst block is corporate structure: for a sponsor-backed private borrower, hunting the ultimate parent and mapping co-issuers and guarantors out of hundreds of pages of credit agreements and pitch books eats four to five hours and ends in a hand-drawn PowerPoint chart. Alex&#x27;s other constant is dependency risk; an incomplete document set from the sponsor stops the model dead while the deadline keeps moving, and the fix is an email chain through the deal team that may take a day to come back. Alex describes the resulting role as a glorified data entry clerk and has one clear wish: an AI that reads the credit agreement and fills in the template.</p><h4>Goals</h4><ul><li>Spend the majority of the build window on analysis rather than on locating and reformatting data</li><li>Produce a corporate structure and guarantee map without manually parsing credit agreements</li><li>Auto-populate the financial template with covenants, EBITDA definitions, and amortization schedules pulled from source documents</li><li>Deliver a profile the Credit Risk Officer accepts on the first pass</li><li>Keep the build progressing even when a sponsor document set arrives incomplete</li></ul><h4>Frustrations</h4><ul><li>Roughly seventy percent of the window goes to finding and formatting rather than analyzing</li><li>Four to five hours per deal disappear into manually building an org chart in PowerPoint</li><li>Private and mid-market entities are thinly covered by Capital IQ, forcing PDF-by-PDF reconstruction</li><li>Copying financials out of PDFs into an Excel template breaks formulas and invites formatting complaints</li><li>A missing cash flow statement or footnote set stops all progress while the clock keeps running</li><li>Thesis and risk work gets pushed to night two, when judgment is at its worst</li></ul></article><article class="card persona"><header><h3>Elena Rostova, Director of Credit Risk and Portfolio Operations</h3><span class="tag">secondary</span></header><p class="context">Elena is the gate between a finished profile and the credit committee, and she works in twenty to thirty minute passes. Her review is deliberately narrow: total leverage and exactly how adjusted EBITDA was built, particularly the add-backs; then liquidity runway in cash and revolver capacity; then corporate structure and the guarantee package, so she knows who is actually on the hook and whether unrated offshore subsidiaries are leaking cash. She skips company history entirely, because founding dates do not tell her what cash flow looks like over the next twenty-four months. What she catches most often is not sloppiness but misplaced trust: an associate accepting a Capital IQ pull without adjusting for pro-forma effects of a recent acquisition, or waving through a one-time consulting fee that has appeared in each of the last three years. A single error of that kind costs her confidence in the entire document, and then she has a choice between silently fixing it herself to avoid email ping-pong or sending it back and triggering a rush-rework loop that postpones her sign-off, postpones the credit committee, and puts a live transaction&#x27;s closing date at risk. Her stated ideal is not a better PDF but a dynamic web view where clicking a leverage ratio shows the exact sentence in the source credit agreement it came from, which she believes would cut her review to five minutes.</p><h4>Goals</h4><ul><li>Verify any figure against its source sentence without reopening a 300-page document</li><li>Reach a confident sign-off in as little as five minutes per profile</li><li>See add-backs, pro-forma adjustments, and their history surfaced rather than buried</li><li>Understand the guarantee package and identify cash leakage through unrated subsidiaries quickly</li><li>Protect the credit committee calendar and the closing date from avoidable rework</li></ul><h4>Frustrations</h4><ul><li>Static PDFs and Word documents make verification expensive, so trust becomes a judgment about the associate rather than the data</li><li>Associates inherit vendor data uncritically, leaving pro-forma and add-back errors for her to catch</li><li>One material error destroys her confidence in an otherwise well-built profile</li><li>Sending work back triggers a rush-rework loop that cascades into a postponed credit committee</li><li>Minor fixes fall to her because chasing them by email costs more time than doing them</li></ul></article><article class="card persona"><header><h3>Information Barrier Owner, Compliance and Platform Security</h3><span class="tag">secondary</span></header><p class="context">This persona is inferred from the product requirements document&#x27;s security architecture section rather than from any interview, so their goals below are read off stated technical requirements and not off observed behavior. They own the conditions under which a cross-asset intelligence layer is allowed to exist at all. The platform&#x27;s premise is that Private Equity, Credit, Infrastructure, and Real Estate teams can draw on one another&#x27;s history, and this persona&#x27;s job is to ensure that drawing on it never becomes an unmanaged flow of material non-public information between a private-side deal team and a public liquid strategies desk. Their instruments are single-tenant deployment inside the firm&#x27;s own cloud, role-based access control driven by metadata tagging at the document level, and a hard requirement that foundational models run on local inference with no retention of prompts, search histories, or ingested documents. Marcus&#x27;s comment that security is the precondition for adoption is the commercial expression of this persona&#x27;s veto.</p><h4>Goals</h4><ul><li>Keep the entire platform and all inference inside the firm&#x27;s own cloud perimeter</li><li>Enforce document-level access control so private-side deal notes stay invisible to public-side teams unless explicitly permitted</li><li>Ensure prompts, search histories, and ingested documents are never retained or used for external model training</li><li>Allow firm-wide synthesis to proceed without creating a compliance or insider-trading exposure</li></ul><h4>Frustrations</h4><ul><li>A search layer that indexes everything is by default a system that leaks everything</li><li>Access decisions depend on metadata tagging quality across legacy repositories that were never tagged for this purpose</li><li>Generative answers can reconstruct restricted content from permitted fragments, which conventional access controls do not catch</li></ul></article></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Problems worth solving</h2>
+    <p>Each feature answers exactly one of these.</p>
+  </div>
+  <ol class="hmws"><li><span class="hmw-n">HMW1</span><div><p class="hmw-s">How might we surface what our firm already knows about a target company the moment someone types its name?</p><p class="hmw-d">Institutional memory buried in silos</p></div></li><li><span class="hmw-n">HMW2</span><div><p class="hmw-s">How might we turn a 300-page credit agreement into structured, usable terms without a human reading it?</p><p class="hmw-d">Manual extraction from long documents</p></div></li><li><span class="hmw-n">HMW3</span><div><p class="hmw-s">How might we let an associate see a borrower&#x27;s full corporate and guarantee structure without building it by hand?</p><p class="hmw-d">Org-chart archaeology</p></div></li><li><span class="hmw-n">HMW4</span><div><p class="hmw-s">How might we see credit deterioration forming instead of confirming it a quarter later?</p><p class="hmw-d">Lagging quarterly risk data</p></div></li><li><span class="hmw-n">HMW5</span><div><p class="hmw-s">How might we make every alert tell an MD the problem, our exposure, and the trigger point in one glance?</p><p class="hmw-d">Alert noise versus decision-ready signal</p></div></li><li><span class="hmw-n">HMW6</span><div><p class="hmw-s">How might we let a reviewer verify any number back to its source sentence in one click?</p><p class="hmw-d">Unverifiable figures slow the review</p></div></li><li><span class="hmw-n">HMW7</span><div><p class="hmw-s">How might we make a profile&#x27;s shakiest assumptions visible before a reviewer has to hunt for them?</p><p class="hmw-d">Unchallenged add-backs and stale vendor pulls</p></div></li><li><span class="hmw-n">HMW8</span><div><p class="hmw-s">How might we stop a single math error from cascading into a delayed credit committee?</p><p class="hmw-d">Rush-rework loop</p></div></li><li><span class="hmw-n">HMW9</span><div><p class="hmw-s">How might we keep a profile moving while it waits on documents that have not arrived?</p><p class="hmw-d">Blocked external dependencies</p></div></li><li><span class="hmw-n">HMW10</span><div><p class="hmw-s">How might we give teams firm-wide context without breaking the information barriers that keep them compliant?</p><p class="hmw-d">Cross-team synthesis versus compliance walls</p></div></li><li><span class="hmw-n">HMW11</span><div><p class="hmw-s">How might we deliver a profile as something a reviewer can interrogate rather than read?</p><p class="hmw-d">Static deliverable format</p></div></li></ol>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Feature backlog</h2>
+    <p>Ranked by RICE. Sort any column; filter to one problem to see what
+       competes within it.</p>
+  </div>
+  <div class="controls">
+    <label for="hmw-filter">Filter</label>
+    <select id="hmw-filter"><option value="">All problems</option><option value="How might we let a reviewer verify any number back to its source sentence in one click?">Unverifiable figures slow the review</option><option value="How might we make every alert tell an MD the problem, our exposure, and the trigger point in one glance?">Alert noise versus decision-ready signal</option><option value="How might we surface what our firm already knows about a target company the moment someone types its name?">Institutional memory buried in silos</option><option value="How might we stop a single math error from cascading into a delayed credit committee?">Rush-rework loop</option><option value="How might we give teams firm-wide context without breaking the information barriers that keep them compliant?">Cross-team synthesis versus compliance walls</option><option value="How might we turn a 300-page credit agreement into structured, usable terms without a human reading it?">Manual extraction from long documents</option><option value="How might we make a profile&#x27;s shakiest assumptions visible before a reviewer has to hunt for them?">Unchallenged add-backs and stale vendor pulls</option><option value="How might we deliver a profile as something a reviewer can interrogate rather than read?">Static deliverable format</option><option value="How might we keep a profile moving while it waits on documents that have not arrived?">Blocked external dependencies</option><option value="How might we see credit deterioration forming instead of confirming it a quarter later?">Lagging quarterly risk data</option><option value="How might we let an associate see a borrower&#x27;s full corporate and guarantee structure without building it by hand?">Org-chart archaeology</option></select>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="t-wrap">
+    <table id="rice">
+      <thead><tr><th data-key="rank" class=""><button type="button">#</button></th><th data-key="name" class=""><button type="button">Feature</button></th><th data-key="reach" class="n"><button type="button">Reach</button></th><th data-key="impact" class="n"><button type="button">Impact</button></th><th data-key="confidence" class="n"><button type="button">Conf.</button></th><th data-key="effort" class="n"><button type="button">Effort</button></th><th data-key="rice_score" class="n" aria-sort="descending"><button type="button">RICE</button></th></tr></thead>
+      <tbody><tr data-hmw="How might we let a reviewer verify any number back to its source sentence in one click?" data-rank="1"><td class="rank"><span class="dot-n">1</span></td><td class="name"><strong>Click-to-Source Provenance</strong><p class="desc">Every figure in a profile stays bound to the sentence it came from. Clicking a leverage ratio opens the exact clause in the credit agreement or the exact line in the filing, with the derivation shown. Verification stops being a decision about whether to trust the author and becomes a two-second check, which is what collapses a thirty-minute review toward five.</p><p class="addresses">Unverifiable figures slow the review</p></td><td class="n">300</td><td class="n">3</td><td class="n">0.9</td><td class="n">7</td><td class="n rice">115.7</td></tr><tr data-hmw="How might we make every alert tell an MD the problem, our exposure, and the trigger point in one glance?" data-rank="2"><td class="rank"><span class="dot-n">2</span></td><td class="name"><strong>Exposure-First Alert Feed</strong><p class="desc">A short ranked feed rather than a dashboard. Every item states the specific event, the firm&#x27;s dollar exposure to it, and the exact distance to the nearest covenant threshold, with one click through to the underlying position. An MD can triage the whole feed standing up and know which two credits deserve a conversation today.</p><p class="addresses">Alert noise versus decision-ready signal</p></td><td class="n">250</td><td class="n">3</td><td class="n">0.7</td><td class="n">6</td><td class="n rice">87.5</td></tr><tr data-hmw="How might we surface what our firm already knows about a target company the moment someone types its name?" data-rank="3"><td class="rank"><span class="dot-n">3</span></td><td class="name"><strong>Firm Memory Lookup</strong><p class="desc">Typing an entity name returns a single relationship timeline of everything the firm has already done around that company, its sponsors, and its subsidiaries: past meetings and who attended, constraints noted at the time, summaries of prior investment committee memos, and the current owner of that relationship. The associate starts a build already knowing whether the work has effectively been done before, and the MD gets the firm&#x27;s accumulated leverage instead of a cold start.</p><p class="addresses">Institutional memory buried in silos</p></td><td class="n">400</td><td class="n">3</td><td class="n">0.8</td><td class="n">12</td><td class="n rice">80</td></tr><tr data-hmw="How might we stop a single math error from cascading into a delayed credit committee?" data-rank="4"><td class="rank"><span class="dot-n">4</span></td><td class="name"><strong>Pre-Submit Readiness Check</strong><p class="desc">Before an associate hands a profile over, the system re-derives the leverage math, checks the model against the source terms, and lists what is missing or internally inconsistent. Errors that would have come back as a rework loop get caught while the author still has the context in their head, protecting the reviewer&#x27;s sign-off date and the committee calendar behind it.</p><p class="addresses">Rush-rework loop</p></td><td class="n">150</td><td class="n">2</td><td class="n">0.8</td><td class="n">5</td><td class="n rice">48</td></tr><tr data-hmw="How might we give teams firm-wide context without breaking the information barriers that keep them compliant?" data-rank="5"><td class="rank"><span class="dot-n">5</span></td><td class="name"><strong>Permission-Aware Synthesis</strong><p class="desc">Firm-wide answers respect document-level access rules, and where restricted material exists the user is told that relevant context exists and who can grant access, rather than either seeing it or being silently shown an incomplete picture. Cross-asset intelligence becomes usable inside a firm that must maintain information barriers, and the compliance owner gets an auditable record of what was surfaced to whom.</p><p class="addresses">Cross-team synthesis versus compliance walls</p></td><td class="n">400</td><td class="n">2</td><td class="n">0.6</td><td class="n">11</td><td class="n rice">43.6</td></tr><tr data-hmw="How might we turn a 300-page credit agreement into structured, usable terms without a human reading it?" data-rank="6"><td class="rank"><span class="dot-n">6</span></td><td class="name"><strong>Credit Agreement Term Extraction</strong><p class="desc">Long-form loan documents are read by a model tuned for private credit structures and returned as structured terms: leverage ratios, the negotiated definition of EBITDA, amortization schedule, covenant levels and cure rights, each written straight into the working template. The day that an associate currently spends transcribing from PDFs stops being spent.</p><p class="addresses">Manual extraction from long documents</p></td><td class="n">120</td><td class="n">3</td><td class="n">0.8</td><td class="n">9</td><td class="n rice">32</td></tr><tr data-hmw="How might we make a profile&#x27;s shakiest assumptions visible before a reviewer has to hunt for them?" data-rank="7"><td class="rank"><span class="dot-n">7</span></td><td class="name"><strong>Assumption Challenge Panel</strong><p class="desc">The profile surfaces its own weak points before a reviewer has to find them: add-backs listed with the number of prior periods in which the same item appeared, vendor-sourced figures marked where a recent acquisition means they are not pro-forma, and management-supplied adjustments separated from reported results. The recurring one-time consulting fee announces itself.</p><p class="addresses">Unchallenged add-backs and stale vendor pulls</p></td><td class="n">180</td><td class="n">2</td><td class="n">0.7</td><td class="n">8</td><td class="n rice">31.5</td></tr><tr data-hmw="How might we deliver a profile as something a reviewer can interrogate rather than read?" data-rank="8"><td class="rank"><span class="dot-n">8</span></td><td class="name"><strong>Live Profile Workspace</strong><p class="desc">The deliverable becomes a web-based profile that the reviewer navigates instead of a static document they read end to end. Sections can be expanded, figures traced, and the reviewer&#x27;s own path through leverage, liquidity, and structure is the primary layout, with narrative history demoted. Updates to underlying data flow into the live profile rather than requiring a new version to be circulated.</p><p class="addresses">Static deliverable format</p></td><td class="n">300</td><td class="n">2</td><td class="n">0.7</td><td class="n">14</td><td class="n rice">30</td></tr><tr data-hmw="How might we keep a profile moving while it waits on documents that have not arrived?" data-rank="9"><td class="rank"><span class="dot-n">9</span></td><td class="name"><strong>Open Items Tracker</strong><p class="desc">Missing inputs are registered as explicit open items on the profile with an owner and an age, so an absent cash flow statement or footnote set is a visible, chaseable gap rather than a silent stall. The rest of the build proceeds around the hole, and the profile can be circulated with its incompleteness stated rather than hidden.</p><p class="addresses">Blocked external dependencies</p></td><td class="n">120</td><td class="n">1</td><td class="n">0.8</td><td class="n">4</td><td class="n rice">24</td></tr><tr data-hmw="How might we see credit deterioration forming instead of confirming it a quarter later?" data-rank="10"><td class="rank"><span class="dot-n">10</span></td><td class="name"><strong>Continuous Credit Health Score</strong><p class="desc">Each portfolio credit carries a score that moves daily on alternative signals rather than on quarterly borrower submissions: logistics and transit times, hiring and executive turnover, payables behavior, sector benchmarks. Deviation beyond a set threshold against the sector benchmark marks the asset for attention, so deterioration shows up as a trend line months before it appears in a compliance certificate.</p><p class="addresses">Lagging quarterly risk data</p></td><td class="n">250</td><td class="n">3</td><td class="n">0.5</td><td class="n">18</td><td class="n rice">20.8</td></tr><tr data-hmw="How might we let an associate see a borrower&#x27;s full corporate and guarantee structure without building it by hand?" data-rank="11"><td class="rank"><span class="dot-n">11</span></td><td class="name"><strong>Structure and Guarantee Map</strong><p class="desc">The corporate structure assembles itself from filings and loan documentation into a navigable chart: ultimate parent, co-issuers, guarantors, and entities outside the guarantee perimeter shown distinctly. It answers, without four hours of manual drafting, the question both the associate and the risk officer need answered first, which is who is actually on the hook for this debt.</p><p class="addresses">Org-chart archaeology</p></td><td class="n">120</td><td class="n">2</td><td class="n">0.6</td><td class="n">10</td><td class="n rice">14.4</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Impact against effort</h2>
+    <p>The same features, positioned. Bubble area carries RICE; the number in
+       each bubble is its rank in the table above.</p>
+  </div>
+  <div class="matrix">
+    <svg id="matrix-svg" role="img"
+         aria-label="Scatter plot of features by impact and effort. The same
+                     figures are in the sortable table above."></svg>
+    <p class="note">Effort is spaced by its distinct values rather than
+      linearly, so a single high-effort item does not squash the rest against
+      the axis. Read positions as ordering, not as distance.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Design directions</h2>
+    <p>Different bets about how to solve the problem, not feature bundles.
+       No direction is recommended here — that choice is yours.</p>
+  </div>
+  <div class="cards directions"><article class="card direction"><h3>Firm Memory</h3><p class="summary">Build the product as the firm&#x27;s institutional recall. One entity search is the front door to everything the organization has ever learned about a company, its sponsors, and its subsidiaries, drawn out of legacy repositories, mail archives, and the CRM and rendered as a relationship timeline with owners attached. Every later workflow, from screening to monitoring, hangs off that spine, and the system gets more valuable each time anyone uses it because their work becomes part of the record.</p><h4>Differentiator</h4><p>The asset is internal and unpurchasable. Competitors sell external market data that every rival firm can also buy; this bet makes the product a store of proprietary advantage that compounds with tenure and cannot be replicated by a competitor&#x27;s subscription.</p><h4 class="cost">Tradeoff</h4><p>It is worth almost nothing on day one. Value depends on ingesting a messy legacy corpus and on access-control tagging that nobody ever applied to those documents, so the deployment is long, the compliance surface is at its widest, and the benefit is a hard-to-attribute improvement in judgment rather than a number anyone can put in a renewal case.</p><div class="tags"><span class="tag">Institutional memory buried in silos</span><span class="tag">Cross-team synthesis versus compliance walls</span><span class="tag">Org-chart archaeology</span></div></article><article class="card direction"><h3>The Verifiable Profile</h3><p class="summary">Treat the deal profile itself as the product. Documents are read into a structured, live profile where every figure stays bound to its source sentence, weak assumptions are flagged on the face of the document, the math is re-derived before submission, and the reviewer interrogates a web workspace instead of a static file. The target is the whole path from assignment to sign-off, compressing both the build and the review loop it feeds.</p><h4>Differentiator</h4><p>It attacks the only cost in this research that anyone has actually quantified, and it is the one bet that serves the builder and the reviewer with the same artifact. Success is legible in days of associate time returned and in rework loops that no longer postpone a committee.</p><h4 class="cost">Tradeoff</h4><p>It is an efficiency tool, not an investment edge, so it competes on cost savings rather than on alpha and is easier to defund. Extraction has to be near-perfect from the first week: one wrong leverage figure with a confident source link costs more trust than a hundred correct ones earn, and the reviewer&#x27;s escape hatch of reopening the PDF is always one click away. The workspace also has to bend to each firm&#x27;s templates and house conventions, which makes every deployment partly bespoke.</p><div class="tags"><span class="tag">Manual extraction from long documents</span><span class="tag">Unverifiable figures slow the review</span><span class="tag">Unchallenged add-backs and stale vendor pulls</span><span class="tag">Rush-rework loop</span><span class="tag">Static deliverable format</span><span class="tag">Blocked external dependencies</span><span class="tag">Org-chart archaeology</span></div></article><article class="card direction"><h3>Early Warning Room</h3><p class="summary">Aim the product at the portfolio rather than the pipeline. Alternative signals stream in daily against every booked credit, deviation from sector benchmarks drives a moving health score, and the interface a decision-maker actually touches is a short ranked feed in which each item carries the event, the dollar exposure, and the exact distance to a covenant trip. The promise is converting a lagging quarterly process into a leading one and buying back the months that currently separate a problem from its discovery.</p><h4>Differentiator</h4><p>It is the only direction that changes an outcome rather than a cost. A workout structured three months early is worth more than every hour of associate time in the other bets combined, and it is aimed straight at the person who signs the contract, which makes it the easiest to sell and the easiest to price on risk avoided.</p><h4 class="cost">Tradeoff</h4><p>The whole bet rests on alternative signals predicting credit distress, which this research asserts but does not demonstrate, and the failure mode is asymmetric: a few false alarms and the MD who said he does not want fifty flashing lights stops opening the feed, after which nothing recovers it. It also carries recurring alternative-data cost, and when it works the result is a non-event, which is notoriously hard to claim credit for at renewal.</p><div class="tags"><span class="tag">Lagging quarterly risk data</span><span class="tag">Alert noise versus decision-ready signal</span></div></article></div>
+</section>
+
+<footer>
+  Rendered by <code>tests/eval/render.py</code>. Both sides of this comparison
+  use this same renderer, so any difference between the two pages is a
+  difference in the artifact, not in the presentation.
+</footer>
+
+</div>
+<script>window.__FEATURES__ = [{"rank": 1, "name": "Click-to-Source Provenance", "hmw": "How might we let a reviewer verify any number back to its source sentence in one click?", "reach": 300, "impact": 3, "confidence": 0.9, "effort": 7, "rice_score": 115.7}, {"rank": 2, "name": "Exposure-First Alert Feed", "hmw": "How might we make every alert tell an MD the problem, our exposure, and the trigger point in one glance?", "reach": 250, "impact": 3, "confidence": 0.7, "effort": 6, "rice_score": 87.5}, {"rank": 3, "name": "Firm Memory Lookup", "hmw": "How might we surface what our firm already knows about a target company the moment someone types its name?", "reach": 400, "impact": 3, "confidence": 0.8, "effort": 12, "rice_score": 80.0}, {"rank": 4, "name": "Pre-Submit Readiness Check", "hmw": "How might we stop a single math error from cascading into a delayed credit committee?", "reach": 150, "impact": 2, "confidence": 0.8, "effort": 5, "rice_score": 48.0}, {"rank": 5, "name": "Permission-Aware Synthesis", "hmw": "How might we give teams firm-wide context without breaking the information barriers that keep them compliant?", "reach": 400, "impact": 2, "confidence": 0.6, "effort": 11, "rice_score": 43.6}, {"rank": 6, "name": "Credit Agreement Term Extraction", "hmw": "How might we turn a 300-page credit agreement into structured, usable terms without a human reading it?", "reach": 120, "impact": 3, "confidence": 0.8, "effort": 9, "rice_score": 32.0}, {"rank": 7, "name": "Assumption Challenge Panel", "hmw": "How might we make a profile's shakiest assumptions visible before a reviewer has to hunt for them?", "reach": 180, "impact": 2, "confidence": 0.7, "effort": 8, "rice_score": 31.5}, {"rank": 8, "name": "Live Profile Workspace", "hmw": "How might we deliver a profile as something a reviewer can interrogate rather than read?", "reach": 300, "impact": 2, "confidence": 0.7, "effort": 14, "rice_score": 30.0}, {"rank": 9, "name": "Open Items Tracker", "hmw": "How might we keep a profile moving while it waits on documents that have not arrived?", "reach": 120, "impact": 1, "confidence": 0.8, "effort": 4, "rice_score": 24.0}, {"rank": 10, "name": "Continuous Credit Health Score", "hmw": "How might we see credit deterioration forming instead of confirming it a quarter later?", "reach": 250, "impact": 3, "confidence": 0.5, "effort": 18, "rice_score": 20.8}, {"rank": 11, "name": "Structure and Guarantee Map", "hmw": "How might we let an associate see a borrower's full corporate and guarantee structure without building it by hand?", "reach": 120, "impact": 2, "confidence": 0.6, "effort": 10, "rice_score": 14.4}];</script>
+<script>
+(function(){
+  var data = window.__FEATURES__ || [];
+  var table = document.getElementById('rice');
+  var tbody = table.querySelector('tbody');
+  var filter = document.getElementById('hmw-filter');
+  var count = document.getElementById('count');
+  var sortKey = 'rice_score', sortDir = -1;
+
+  function visible(){
+    var f = filter.value;
+    return data.filter(function(d){ return !f || d.hmw === f; });
+  }
+
+  function sortRows(){
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+    rows.sort(function(a, b){
+      if (sortKey === 'rank') {
+        return (+a.dataset.rank - +b.dataset.rank) * (sortDir === -1 ? 1 : -1);
+      }
+      var da = data[+a.dataset.rank - 1], db = data[+b.dataset.rank - 1];
+      var va = da[sortKey], vb = db[sortKey];
+      if (typeof va === 'string' || typeof vb === 'string') {
+        return String(va).localeCompare(String(vb)) * -sortDir;
+      }
+      return (va - vb) * sortDir;
+    });
+    rows.forEach(function(r){ tbody.appendChild(r); });
+  }
+
+  function applyFilter(){
+    var f = filter.value, shown = 0;
+    Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function(r){
+      var on = !f || r.dataset.hmw === f;
+      r.hidden = !on;
+      if (on) shown++;
+    });
+    count.textContent = shown + ' of ' + data.length + ' features';
+    drawMatrix();
+  }
+
+  // --- impact / effort matrix -------------------------------------------
+  // Effort is spaced by its distinct values, not linearly: a 13-point item
+  // next to a run of 3s and 5s would otherwise sit alone in the far margin
+  // and squash everything else against the axis.
+  function drawMatrix(){
+    var pts = visible();
+    var svg = document.getElementById('matrix-svg');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    if (!pts.length) return;
+
+    var W = 720, H = 420, L = 58, R = 26, T = 22, B = 52;
+    var iw = W - L - R, ih = H - T - B;
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(n, a){
+      var x = document.createElementNS(NS, n);
+      for (var k in a) x.setAttribute(k, a[k]);
+      return x;
+    }
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+    var efforts = data.map(function(d){ return d.effort; })
+                      .filter(function(v, i, a){ return a.indexOf(v) === i; })
+                      .sort(function(a, b){ return a - b; });
+    var impacts = data.map(function(d){ return d.impact; })
+                      .filter(function(v, i, a){ return a.indexOf(v) === i; })
+                      .sort(function(a, b){ return a - b; });
+    function px(v){
+      var i = efforts.indexOf(v);
+      return L + (efforts.length < 2 ? iw / 2 : (i / (efforts.length - 1)) * iw);
+    }
+    function py(v){
+      var i = impacts.indexOf(v);
+      return T + ih - (impacts.length < 2 ? ih / 2 : (i / (impacts.length - 1)) * ih);
+    }
+    var maxR = Math.max.apply(null, data.map(function(d){ return d.rice_score; }));
+    function pr(v){ return 9 + 17 * Math.sqrt(Math.max(v, 0) / (maxR || 1)); }
+
+    impacts.forEach(function(v){
+      var y = py(v);
+      svg.appendChild(el('line', {x1:L, y1:y, x2:L+iw, y2:y, 'class':'ax-grid'}));
+      var t = el('text', {x:L-12, y:y+4, 'class':'ax-t', 'text-anchor':'end'});
+      t.textContent = v; svg.appendChild(t);
+    });
+    efforts.forEach(function(v){
+      var x = px(v);
+      var t = el('text', {x:x, y:T+ih+22, 'class':'ax-t', 'text-anchor':'middle'});
+      t.textContent = v; svg.appendChild(t);
+    });
+    svg.appendChild(el('line', {x1:L, y1:T+ih, x2:L+iw, y2:T+ih, 'class':'ax-line'}));
+    svg.appendChild(el('line', {x1:L, y1:T, x2:L, y2:T+ih, 'class':'ax-line'}));
+    var xl = el('text', {x:L+iw/2, y:T+ih+44, 'class':'ax-lab', 'text-anchor':'middle'});
+    xl.textContent = 'Effort →'; svg.appendChild(xl);
+    var yl = el('text', {x:0, y:0, 'class':'ax-lab', 'text-anchor':'middle',
+                         transform:'translate(16,' + (T+ih/2) + ') rotate(-90)'});
+    yl.textContent = 'Impact →'; svg.appendChild(yl);
+
+    // Features that share an impact and an effort land on exactly the same
+    // coordinate and hide each other completely. Fan a coincident group out
+    // around its shared point instead, by a radius wide enough to clear the
+    // biggest bubble in it.
+    var groups = {}, offset = {};
+    pts.forEach(function(d){
+      var k = d.impact + '|' + d.effort;
+      (groups[k] = groups[k] || []).push(d);
+    });
+    Object.keys(groups).forEach(function(k){
+      var g = groups[k];
+      if (g.length < 2) return;
+      var spread = Math.max.apply(null, g.map(function(d){ return pr(d.rice_score); })) * 0.95;
+      g.forEach(function(d, i){
+        var a = -Math.PI / 2 + (i * 2 * Math.PI / g.length);
+        offset[d.rank] = [Math.cos(a) * spread, Math.sin(a) * spread];
+      });
+    });
+
+    // Biggest first, so a large bubble never hides a small one it overlaps.
+    pts.slice().sort(function(a, b){ return b.rice_score - a.rice_score; })
+       .forEach(function(d){
+      var off = offset[d.rank] || [0, 0];
+      var x = px(d.effort) + off[0], y = py(d.impact) + off[1];
+      var c = el('circle', {cx:x, cy:y, r:pr(d.rice_score), 'class':'pt'});
+      var ttl = document.createElementNS(NS, 'title');
+      ttl.textContent = d.rank + '. ' + d.name + ' — RICE ' + d.rice_score +
+                        ' (R ' + d.reach + ' · I ' + d.impact +
+                        ' · C ' + d.confidence + ' · E ' + d.effort + ')';
+      c.appendChild(ttl);
+      svg.appendChild(c);
+      var n = el('text', {x:x, y:y+4, 'class':'pt-n'});
+      n.textContent = d.rank;
+      n.appendChild(ttl.cloneNode(true));
+      svg.appendChild(n);
+    });
+  }
+
+  Array.prototype.forEach.call(table.querySelectorAll('thead th[data-key]'), function(th){
+    th.querySelector('button').addEventListener('click', function(){
+      var key = th.dataset.key;
+      sortDir = (key === sortKey) ? -sortDir : (key === 'name' ? 1 : -1);
+      sortKey = key;
+      Array.prototype.forEach.call(table.querySelectorAll('thead th'), function(o){
+        o.removeAttribute('aria-sort');
+      });
+      th.setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
+      sortRows();
+    });
+  });
+
+  filter.addEventListener('change', applyFilter);
+  applyFilter();
+})();
+</script>
+</body></html>
