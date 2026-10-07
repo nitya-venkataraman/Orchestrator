@@ -1,12 +1,12 @@
 ---
 name: delivery-handoff
-description: Use this skill to translate approved wireframes/IA into developer-ready Jira user stories, acceptance criteria, and UX microcopy. Triggered as Node 5 (final) of the UX pipeline.
+description: Use this skill to translate approved wireframes/IA into developer-ready Jira user stories, acceptance criteria, and UX microcopy. Triggered as Node 6 (final) of the UX pipeline.
 ---
 
 # Delivery & Handoff
 
 ## Steps
-1. Read `sitemap` and `wireframe_specs`.
+1. Read `sitemap`, `wireframe_specs`, and the approved `hifi_screens`. Link each story to the hi-fi frame(s) it covers (`figma_url`), and carry every entry in `design_system_gaps` into the stories' open items.
 2. Write Jira-style user stories: "As a [persona], I want [capability], so that [benefit]" + explicit Acceptance Criteria (Given/When/Then).
 3. Generate microcopy: button labels, empty states, error states, confirmation messages — matching the brand voice (bold, high-contrast, uppercase CTA convention from the design system).
 

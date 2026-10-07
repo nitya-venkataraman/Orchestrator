@@ -1,8 +1,9 @@
 # ux-pipeline
 
 Human-in-the-loop UX design pipeline: raw research → synthesized insights → strategy →
-concepts → wireframes/IA → developer handoff. Five Claude Agent SDK skills orchestrated by
-a LangGraph state machine, with a human approval gate between every phase.
+concepts → wireframes/IA → high-fidelity Figma screens → developer handoff. Six Claude
+Agent SDK skills orchestrated by a LangGraph state machine, with a human approval gate
+between every phase.
 
 ## Layout
 
@@ -20,6 +21,9 @@ ux-pipeline/
     │   ├── SKILL.md
     │   ├── references/superlap-design-tokens.json
     │   └── assets/component-patterns.md
+    ├── hifi-design/
+    │   ├── SKILL.md
+    │   └── references/hifi-checklist.md
     └── delivery-handoff/SKILL.md
 ```
 
@@ -33,11 +37,20 @@ into `graph.compile()` in `orchestrator.py` so the HITL interrupts survive resta
 
 - `langgraph`
 - Claude Agent SDK (for `claude_skill_client.py`)
+- Figma MCP server (for `hifi-design`), authorised for the wireframe and design-system files
+
+## High-fidelity design (`hifi-design`)
+
+Inputs: a Figma wireframe URL and a Figma design-system URL, set as `figma_wireframe_url`
+and `figma_design_system_url` in the initial state or passed as `state_updates` when
+approving the wireframe gate. Output: a `Hi-Fi — <concept>` page in the wireframe file,
+built only from the design system's components and variables, plus `hifi_screens`
+(one entry per frame, with Figma links) and `design_system_gaps`.
 
 ## Flow
 
 ```
-discovery → [approve] → strategy → [approve] → ideation → [approve] → wireframe → [approve] → delivery → [approve] → complete
+discovery → [approve] → strategy → [approve] → ideation → [approve] → wireframe → [approve] → hifi → [approve] → delivery → [approve] → complete
 ```
 
 At each gate: approve to advance, or return revision feedback to re-run the same phase.

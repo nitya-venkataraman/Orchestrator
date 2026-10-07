@@ -25,13 +25,18 @@ def wireframe_node(state: UXPipelineState) -> dict:
     return {**result, "current_phase": "wireframe_review"}
 
 
+def hifi_node(state: UXPipelineState) -> dict:
+    result = invoke_skill("hifi-design", state)
+    return {**result, "current_phase": "hifi_review"}
+
+
 def delivery_node(state: UXPipelineState) -> dict:
     result = invoke_skill("delivery-handoff", state)
     return {**result, "current_phase": "delivery_review"}
 
 
 def next_phase(state: UXPipelineState) -> str:
-    order = ["discovery", "strategy", "ideation", "wireframe", "delivery", "complete"]
+    order = ["discovery", "strategy", "ideation", "wireframe", "hifi", "delivery", "complete"]
     current = state["current_phase"].replace("_review", "")
     idx = order.index(current)
     return order[idx + 1] if idx + 1 < len(order) else END
@@ -43,7 +48,11 @@ def human_review_gate(state: UXPipelineState) -> Command:
         "message": f"Review output for phase '{state['current_phase']}'. Approve, request revision, or reject?",
     })
     if decision.get("approved"):
-        return Command(update={"approved": True, "feedback_loop": None}, goto=next_phase(state))
+        # Human-supplied inputs for later phases, e.g. selected_concept or the
+        # figma_wireframe_url / figma_design_system_url that hifi-design needs.
+        updates = decision.get("state_updates", {})
+        return Command(update={**updates, "approved": True, "feedback_loop": None},
+                       goto=next_phase(state))
     return Command(
         update={"approved": False, "feedback_loop": decision.get("feedback")},
         goto=state["current_phase"].replace("_review", ""),
@@ -55,10 +64,11 @@ builder.add_node("discovery", discovery_node)
 builder.add_node("strategy", strategy_node)
 builder.add_node("ideation", ideation_node)
 builder.add_node("wireframe", wireframe_node)
+builder.add_node("hifi", hifi_node)
 builder.add_node("delivery", delivery_node)
 builder.add_node("human_review", human_review_gate)
 
-for node in ["discovery", "strategy", "ideation", "wireframe", "delivery"]:
+for node in ["discovery", "strategy", "ideation", "wireframe", "hifi", "delivery"]:
     builder.add_edge(node, "human_review")
 
 builder.set_entry_point("discovery")

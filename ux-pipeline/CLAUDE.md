@@ -7,13 +7,14 @@ orchestrated as a LangGraph state machine with an approval gate between every ph
 ## Architecture
 
 ```
-discovery → [HITL] → strategy → [HITL] → ideation → [HITL] → wireframe → [HITL] → delivery → [HITL] → complete
+discovery → [HITL] → strategy → [HITL] → ideation → [HITL] → wireframe → [HITL] → hifi → [HITL] → delivery → [HITL] → complete
 ```
 
 - **`state.py`** — `UXPipelineState`, the `TypedDict` threaded through every node.
 - **`orchestrator.py`** — LangGraph graph. One node per phase, all routed through a shared
   `human_review_gate` that uses `interrupt()` to pause for approval. Approve → advance;
-  request revision → re-run the same phase with `feedback_loop` set.
+  request revision → re-run the same phase with `feedback_loop` set. An approval may carry
+  `state_updates` (e.g. `selected_concept`, or the Figma URLs `hifi-design` needs).
 - **`claude_skill_client.py`** — `invoke_skill(name, state)`. Loads `skills/<name>/SKILL.md`
   plus any `references/` and `assets/` files, and (once wired) calls the Claude Agent SDK
   with that skill mounted. Currently raises `NotImplementedError` — plug in your SDK client.
@@ -26,7 +27,8 @@ discovery → [HITL] → strategy → [HITL] → ideation → [HITL] → wirefra
 | `strategy-definition` | 2 | `synthesized_insights` | `persona_profile`, `journey_map`, `problem_statement` |
 | `ideation-concepting` | 3 | `problem_statement`, `persona_profile` | `feature_matrix`, `concept_proposals` |
 | `wireframe-ia` | 4 | `selected_concept` | `sitemap`, `wireframe_specs`, `design_tokens_applied` |
-| `delivery-handoff` | 5 | `sitemap`, `wireframe_specs` | `developer_handoff_stories`, `microcopy` |
+| `hifi-design` | 5 | `figma_wireframe_url`, `figma_design_system_url`, `selected_concept`, `wireframe_specs` | `hifi_screens`, `hifi_figma_page_url`, `design_system_gaps` |
+| `delivery-handoff` | 6 | `sitemap`, `wireframe_specs`, `hifi_screens` | `developer_handoff_stories`, `microcopy` |
 
 ## Conventions
 
@@ -37,12 +39,17 @@ discovery → [HITL] → strategy → [HITL] → ideation → [HITL] → wirefra
 - **The design system is law.** `wireframe-ia` maps every color, size, space, and radius to
   `skills/wireframe-ia/references/superlap-design-tokens.json`. A need outside the token set
   is reported as a "Design System Gap", never solved with a new hex value.
+- **`hifi-design` uses the Figma design system only.** It reads the wireframe and the design
+  system from Figma (via the Figma MCP server), builds hi-fi frames on a new `Hi-Fi — …` page
+  in the wireframe file from DS component instances and variables, and ignores
+  `superlap-design-tokens.json`. Unmatched needs go to `design_system_gaps`.
 - Skill I/O is a JSON-serializable dict matching the "Output contract" in each `SKILL.md`.
 
 ## Working on this repo
 
 - Add a phase → new `skills/<name>/SKILL.md`, new node in `orchestrator.py`, extend the
-  `order` list in `next_phase()` and the `current_phase` literal in `state.py`.
+  `order` list in `next_phase()` and the `current_phase` literal in `state.py`. If the skill
+  needs an MCP server, add it to `SKILL_MCP_SERVERS` in `claude_skill_client.py`.
 - `graph.compile(checkpointer=...)` is currently `None`. For HITL pause/resume that survives
   a process restart, pass a persistent checkpointer (e.g. `SqliteSaver`).
 - The Superlap design tokens were extracted verbatim from the source brand analysis. Scope

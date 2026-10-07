@@ -14,6 +14,11 @@ class UXPipelineState(TypedDict):
     sitemap: Optional[str]
     wireframe_specs: Optional[str]
     design_tokens_applied: Optional[bool]
+    figma_wireframe_url: Optional[str]
+    figma_design_system_url: Optional[str]
+    hifi_screens: Optional[List[dict]]
+    hifi_figma_page_url: Optional[str]
+    design_system_gaps: Optional[List[dict]]
     developer_handoff_stories: Optional[str]
     microcopy: Optional[str]
     current_phase: Literal[
@@ -21,6 +26,7 @@ class UXPipelineState(TypedDict):
         "strategy", "strategy_review",
         "ideation", "ideation_review",
         "wireframe", "wireframe_review",
+        "hifi", "hifi_review",
         "delivery", "delivery_review",
         "complete"
     ]
