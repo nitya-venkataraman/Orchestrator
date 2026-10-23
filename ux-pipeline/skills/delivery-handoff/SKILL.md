@@ -1,13 +1,13 @@
 ---
 name: delivery-handoff
-description: Use this skill to translate approved wireframes/IA into developer-ready Jira user stories, acceptance criteria, and UX microcopy. Triggered as Node 5 of the UX pipeline; Node 6 then plans how the design gets evaluated.
+description: Use this skill to translate approved wireframes/IA into developer-ready Jira user stories, acceptance criteria, and UX microcopy. Triggered as Node 6 of the UX pipeline; Node 7 then plans how the design gets evaluated.
 allowed-tools: Read, Write, Bash
 ---
 
 # Delivery & Handoff
 
 ## Steps
-1. Read `sitemap`, `wireframe_specs`, and `persona_profile` from state, and load
+1. Read `sitemap`, `wireframe_specs`, `persona_profile` and `hifi_screens` from state, and load
    `references/handoff-checklist.md` — what "buildable" includes, how to derive
    accessibility criteria from a page's own block, what makes an analytics event
    computable, and the content-design rules beyond voice.
@@ -31,7 +31,14 @@ allowed-tools: Read, Write, Bash
    error copy that states what happened then what to do with no apology; empty states
    that offer exactly one action). Plain language at the persona's reading level, and
    no string so tight that a 30% longer translation breaks its control.
-6. **Self-check.** Run `python3 ux-pipeline/validators/delivery.py <your .json>` and fix every
+6. **Link the hi-fi.** In `delivery.md`, each story's block carries a `Hi-fi:` line with
+   the `figma_url` of the `hifi_screens` entry whose name starts with the story's
+   `screen`, so a developer lands on the designed frame, not the wireframe. Under an
+   **Open items** heading, list every `hifi_design_system_gaps` entry — a gap is a
+   component or variable the build will have to decide about. Neither goes in
+   `delivery.json`; the story schema is unchanged. If `hifi_screens` is empty (the hi-fi
+   stage was blocked), say so under Open items rather than linking the wireframe.
+7. **Self-check.** Run `python3 ux-pipeline/validators/delivery.py <your .json>` and fix every
    violation before returning.
 
 ## Output contract
@@ -47,6 +54,6 @@ shape and the Tier-1 rules. Tier-2 scores it 1–5 per dimension against
    - `output/<project-slug>/delivery.md` — human-readable: one block per story (`### US-<n>: …`
      with the As-a/I-want/so-that sentence, a Given/When/Then acceptance-criteria
      list, then its accessibility criteria and analytics events where it has them),
-     then microcopy tables grouped by screen.
+     then microcopy tables grouped by screen, then Open items.
    Overwrite on re-run; never suffix a timestamp.
 3. The Markdown is the surface shown at the HITL gate — not the JSON.

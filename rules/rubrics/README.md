@@ -59,6 +59,7 @@ stage's next attempt. The gate allows 2 such retries, then escalates to the huma
 | 2 — strategy-definition | [`strategy-definition.md`](strategy-definition.md) | default |
 | 3 — ideation-concepting | [`ideation-concepting.md`](ideation-concepting.md) | looser — every dim ≥ 3 and weighted mean ≥ 3.7 |
 | 4 — wireframe-ia | [`wireframe-ia.md`](wireframe-ia.md) | stricter — `ds_compliance` must be 5 |
+| 4b — hifi-design | [`hifi-design.md`](hifi-design.md) | stricter — `ds_fidelity` must be 5 |
 | 5 — delivery-handoff | [`delivery-handoff.md`](delivery-handoff.md) | default |
 
 ## Keeping in sync

@@ -1,6 +1,6 @@
 ---
 name: evaluation-planning
-description: Use this skill to turn an approved design and handoff into a usability test plan and a measurement plan — the tasks that would show whether the design works, and the instrumentation that would show whether it worked. Triggered as Node 6 (final) of the UX pipeline.
+description: Use this skill to turn an approved design and handoff into a usability test plan and a measurement plan — the tasks that would show whether the design works, and the instrumentation that would show whether it worked. Triggered as Node 7 (final) of the UX pipeline.
 allowed-tools: Read, Write, Bash
 ---
 

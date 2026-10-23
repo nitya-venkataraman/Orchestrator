@@ -289,6 +289,7 @@ Phase = Literal[
     "ideation", "ideation_review",
     "select_direction",
     "wireframe", "wireframe_review",
+    "hifi", "hifi_review",
     "delivery", "delivery_review",
     "evaluation", "evaluation_review",
     "complete",
@@ -336,6 +337,18 @@ class UXPipelineState(TypedDict, total=False):
     developer_handoff_stories: Optional[List[Story]]
     microcopy: Optional[Dict[str, object]]
     evaluation_plan: Optional[EvaluationPlan]
+
+    # stage 4b: hifi-design — the two URLs are inputs the designer supplies at the
+    # wireframe gate; the Figma design system is this stage's only style source.
+    figma_wireframe_url: Optional[str]
+    figma_design_system_url: Optional[str]
+    hifi_screens: Optional[List[dict]]
+    hifi_figma_page_url: Optional[str]
+    # Not `design_system_gaps`: that key is the wireframe stage's own, and a rerun of
+    # this stage must not overwrite it.
+    hifi_design_system_gaps: Optional[List[dict]]
+    # Set instead of the above when a required Figma URL is missing; nothing is built.
+    hifi_blocking_gaps: Optional[List[str]]
 
     # gate state
     current_phase: Phase

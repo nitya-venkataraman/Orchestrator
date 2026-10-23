@@ -43,6 +43,7 @@ STAGES = [
     ("strategy.json", "strategy-definition", {"synthesized_insights": "discovery-synthesis.json"}),
     ("ideation.json", "ideation-concepting", {"problem_statement": "strategy.json"}),
     ("wireframe.json", "wireframe-ia", {}),  # self-contained; no upstream needed
+    ("hifi.json", "hifi-design", {"wireframe_specs": "wireframe.json"}),
     ("delivery.json", "delivery-handoff",
      {"persona_profile": "strategy.json", "wireframe_specs": "wireframe.json"}),
     ("evaluation.json", "evaluation-planning",

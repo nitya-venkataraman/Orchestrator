@@ -1,11 +1,11 @@
 # ux-pipeline
 
 Human-in-the-loop UX design pipeline: raw research → synthesized insights → strategy →
-concepts → wireframes/IA → developer handoff → evaluation plan. Six Claude Agent SDK
+concepts → wireframes/IA → hi-fi screens → developer handoff → evaluation plan. Seven Claude Agent SDK
 skills orchestrated by a LangGraph state machine, with a two-tier machine gate and a
 human approval gate between every phase.
 
-The last stage is what stops the pipeline being purely generative. Stages 1–5 make
+The last stage is what stops the pipeline being purely generative. The earlier stages make
 claims — what users need, what the problem is, what matters, that the design works —
 and Stage 6 plans the usability test and the instrumentation that would show whether
 any of them held.
@@ -35,6 +35,7 @@ ux-pipeline/
     ├── strategy-definition/{SKILL.md, references/}
     ├── ideation-concepting/{SKILL.md, references/}
     ├── wireframe-ia/{SKILL.md, references/, assets/}
+    ├── hifi-design/{SKILL.md, references/}
     ├── delivery-handoff/{SKILL.md, references/}
     └── evaluation-planning/SKILL.md
 ```
@@ -65,12 +66,15 @@ over every committed `output/` artifact. CI runs it on every push and PR.
 - `langgraph`
 - `langgraph-checkpoint-sqlite` — durable HITL resume
 - Claude Agent SDK — for `claude_skill_client.py`
+- Figma MCP connector — `hifi-design` reads the wireframe and the design system and
+  builds the hi-fi screens through it (`SKILL_MCP_SERVERS`)
 
 ## Flow
 
 ```
 discovery → gate → [approve] → strategy → gate → [approve] → ideation → gate → [approve]
-   → PICK direction + platform → wireframe → gate → [approve] → delivery → gate → [approve]
+   → PICK direction + platform → wireframe → gate → [approve; supply the Figma wireframe + design-system URLs]
+   → hifi → gate → [approve] → delivery → gate → [approve]
    → evaluation → gate → [approve] → complete
 ```
 

@@ -19,15 +19,15 @@ diagram, layout tree and dependencies, see [README.md](README.md).
 
 ## Stage vocabularies — check which one you need
 
-Four different names exist for the same six stages. Getting this wrong produces a
+Four different names exist for the same seven stages. Getting this wrong produces a
 path that silently doesn't resolve.
 
 | Context | Names |
 |---|---|
-| Orchestrator keys (`ORDER`, `SKILL`) | `discovery` · `strategy` · `ideation` · `wireframe` · `delivery` · `evaluation` |
-| Skill dirs **and** rubric files | `discovery-synthesis` · `strategy-definition` · `ideation-concepting` · `wireframe-ia` · `delivery-handoff` · `evaluation-planning` |
-| `output/<project-slug>/` filenames | `discovery-synthesis` · `strategy` · `ideation` · `wireframe` · `delivery` · `evaluation` — a **mix** of the two above |
-| `validators/` modules | `synthesis.py` · `strategy.py` · `ideation.py` · `wireframe.py` · `delivery.py` · `evaluation.py` |
+| Orchestrator keys (`ORDER`, `SKILL`) | `discovery` · `strategy` · `ideation` · `wireframe` · `hifi` · `delivery` · `evaluation` |
+| Skill dirs **and** rubric files | `discovery-synthesis` · `strategy-definition` · `ideation-concepting` · `wireframe-ia` · `hifi-design` · `delivery-handoff` · `evaluation-planning` |
+| `output/<project-slug>/` filenames | `discovery-synthesis` · `strategy` · `ideation` · `wireframe` · `hifi` · `delivery` · `evaluation` — a **mix** of the two above |
+| `validators/` modules | `synthesis.py` · `strategy.py` · `ideation.py` · `wireframe.py` · `hifi.py` · `delivery.py` · `evaluation.py` |
 
 So a rubric is `../rules/rubrics/<skill-name>.md` — `wireframe-ia.md`, never
 `wireframe.md`. `rubrics.py` accepts either the stage key or the skill name via
@@ -62,8 +62,13 @@ Per-stage inputs and outputs are specified in [`../rules/CONTRACTS.md`](../rules
 | `strategy-definition` | 2 | `strategy.{json,md}` |
 | `ideation-concepting` | 3 | `ideation.{json,md}` |
 | `wireframe-ia` | 4 | `wireframe.{json,md}` |
-| `delivery-handoff` | 5 | `delivery.{json,md}` |
-| `evaluation-planning` | 6 | `evaluation.{json,md}` |
+| `hifi-design` | 4b (Node 5) | `hifi.{json,md}` |
+| `delivery-handoff` | 5 (Node 6) | `delivery.{json,md}` |
+| `evaluation-planning` | 6 (Node 7) | `evaluation.{json,md}` |
+
+`hifi-design` sits between wireframe and delivery and is numbered "4b" in the rulebook so
+the Stage 5 and 6 numbers that the validators, rubrics, diagnostics and committed
+artifacts quote stay stable; the SKILL descriptions use the pipeline node number.
 
 ## Invariants — don't break these
 
@@ -117,11 +122,19 @@ Per-stage inputs and outputs are specified in [`../rules/CONTRACTS.md`](../rules
   `design_system_gaps` entry, never an invented role.
 - **Show Markdown at the gate, never a raw JSON dump.** Each stage renders its result as
   Markdown and shows that to the human.
-- **Persist both formats.** All six stages write into one folder per project —
+- **Persist both formats.** All seven stages write into one folder per project —
   `output/<project-slug>/<stage>.{json,md}` — reusing the run's kebab-case
   `<project-slug>` and overwriting on re-run, never a timestamp suffix. The run index
   goes beside them as `output/<project-slug>/RUN-SUMMARY.md`, linking its siblings by
   bare filename.
+- **`hifi-design` uses the Figma design system and nothing else.** It takes
+  `figma_wireframe_url` + `figma_design_system_url` (both required; the designer supplies
+  them at the wireframe gate), builds a `Hi-Fi — <concept>` page in the wireframe file
+  from design-system instances with bound variables, and never edits the wireframe page.
+  A need the system cannot express is a `hifi_design_system_gaps` entry — never a raw
+  value, never a detached instance, never `superlap-design-tokens.json`. A missing URL is
+  a `hifi_blocking_gaps` entry, not an invention. It needs the Figma MCP server
+  (`SKILL_MCP_SERVERS` in `claude_skill_client.py`).
 - **`wireframe-ia` also renders to Figma.** One new **high-fidelity** file per run: real
   components, Auto Layout, variables bound to the resolved system's tokens, variants for
   meaningful states, and **prototype connections** for every `prototype_flows` entry. The

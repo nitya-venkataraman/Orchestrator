@@ -11,7 +11,9 @@ exhausted -> the artifact is escalated to the human anyway, flagged with what
 the gate objected to.
 
 After ideation is approved the graph forks to `select_direction`: a human picks
-one design direction before wireframing.
+one design direction before wireframing. After wireframing, the `hifi` node turns the
+wireframe and a Figma design system into high-fidelity screens; the designer supplies
+the two Figma URLs at the wireframe gate.
 
 State, artifacts, and the audit trail live under `workspace/` so a run survives
 the process. `graph` is compiled with a SqliteSaver checkpointer when available.
@@ -41,12 +43,13 @@ EVENTS_LOG = WORKSPACE / "events.jsonl"
 RUN_JSON = WORKSPACE / "run.json"
 
 # stage order + the skill each node invokes
-ORDER = ["discovery", "strategy", "ideation", "wireframe", "delivery", "evaluation"]
+ORDER = ["discovery", "strategy", "ideation", "wireframe", "hifi", "delivery", "evaluation"]
 SKILL = {
     "discovery": "discovery-synthesis",
     "strategy": "strategy-definition",
     "ideation": "ideation-concepting",
     "wireframe": "wireframe-ia",
+    "hifi": "hifi-design",
     "delivery": "delivery-handoff",
     "evaluation": "evaluation-planning",
 }
@@ -91,6 +94,7 @@ def _artifact_key(stage: str) -> str:
         "strategy": "persona_profile",  # strategy writes 3 keys; this is the anchor
         "ideation": "feature_matrix",
         "wireframe": "wireframe_specs",
+        "hifi": "hifi_screens",
         "delivery": "developer_handoff_stories",
         "evaluation": "evaluation_plan",
     }[stage]
@@ -128,6 +132,17 @@ def _collect_artifact(stage: str, state: UXPipelineState) -> dict:
             "validation": state.get("validation") or {},
             "design_tokens_applied": state.get("design_tokens_applied"),
             "figma_file_url": state.get("figma_file_url"),
+        }
+    if stage == "hifi":
+        # The artifact key is `design_system_gaps`; the state key is
+        # `hifi_design_system_gaps` so the wireframe stage's own gaps survive a rerun.
+        return {
+            "figma_wireframe_url": state.get("figma_wireframe_url"),
+            "figma_design_system_url": state.get("figma_design_system_url"),
+            "hifi_figma_page_url": state.get("hifi_figma_page_url"),
+            "hifi_screens": state.get("hifi_screens") or [],
+            "design_system_gaps": state.get("hifi_design_system_gaps") or [],
+            "blocking_gaps": state.get("hifi_blocking_gaps") or [],
         }
     if stage == "delivery":
         return {
@@ -231,6 +246,9 @@ def _input_hash(stage: str, state: UXPipelineState, attempt: int) -> str:
         state.get("target_surface") if stage == "wireframe" else None,
         state.get("mobile_platform") if stage == "wireframe" else None,
         state.get("design_system_input") if stage == "wireframe" else None,
+        # the hi-fi stage is shaped by which Figma files it reads, and only that stage
+        state.get("figma_wireframe_url") if stage == "hifi" else None,
+        state.get("figma_design_system_url") if stage == "hifi" else None,
         attempt,
     )
 
@@ -311,6 +329,10 @@ def ideation_node(state: UXPipelineState) -> dict:
 
 def wireframe_node(state: UXPipelineState) -> dict:
     return _run_stage("wireframe", state)
+
+
+def hifi_node(state: UXPipelineState) -> dict:
+    return _run_stage("hifi", state)
 
 
 def delivery_node(state: UXPipelineState) -> dict:
@@ -422,11 +444,27 @@ def human_review_gate(state: UXPipelineState) -> Command:
         nxt = next_stage(stage)
         if stage == "ideation":
             nxt = "select_direction"
+        extra = {}
+        if stage == "wireframe":
+            # The hi-fi stage needs the wireframe file and the Figma design system.
+            # The wireframe's own render is the default for the first; the designer
+            # supplies the second here if they did not at kickoff.
+            wireframe_url = (decision.get("figma_wireframe_url")
+                             or state.get("figma_wireframe_url")
+                             or state.get("figma_file_url"))
+            design_system_url = (decision.get("figma_design_system_url")
+                                 or state.get("figma_design_system_url"))
+            record["figma_wireframe_url"] = wireframe_url
+            record["figma_design_system_url"] = design_system_url
+            _save_run(record)
+            extra = {"figma_wireframe_url": wireframe_url,
+                     "figma_design_system_url": design_system_url}
         return Command(
             update={
                 "approved": True, "escalated": False, "feedback_loop": None,
                 "attempts": attempts, "stage_status": status,
                 "current_phase": nxt if nxt != "complete" else "complete",
+                **extra,
             },
             goto=END if nxt == "complete" else nxt,
         )
@@ -509,6 +547,7 @@ builder.add_node("discovery", discovery_node)
 builder.add_node("strategy", strategy_node)
 builder.add_node("ideation", ideation_node)
 builder.add_node("wireframe", wireframe_node)
+builder.add_node("hifi", hifi_node)
 builder.add_node("delivery", delivery_node)
 builder.add_node("evaluation", evaluation_node)
 builder.add_node("gate", gate_node)

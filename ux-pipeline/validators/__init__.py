@@ -9,15 +9,15 @@ failed.
 
 `run_tier1(stage, artifact, context)` is the single entry point the orchestrator
 calls. `stage` accepts either the graph node name (`discovery`, `strategy`,
-`ideation`, `wireframe`, `delivery`, `evaluation`) or the skill name
+`ideation`, `wireframe`, `hifi`, `delivery`, `evaluation`) or the skill name
 (`discovery-synthesis`, `strategy-definition`, `ideation-concepting`,
-`wireframe-ia`, `delivery-handoff`, `evaluation-planning`).
+`wireframe-ia`, `hifi-design`, `delivery-handoff`, `evaluation-planning`).
 """
 from __future__ import annotations
 
 from typing import List, Optional
 
-from . import synthesis, strategy, ideation, wireframe, delivery, evaluation
+from . import synthesis, strategy, ideation, wireframe, hifi, delivery, evaluation
 
 # The contract these validators implement — `rules/CONTRACTS.md` § Contract
 # versioning. Artifacts stamp the version they were produced under so a run from
@@ -36,6 +36,8 @@ _BY_STAGE = {
     "ideation-concepting": ideation,
     "wireframe": wireframe,
     "wireframe-ia": wireframe,
+    "hifi": hifi,
+    "hifi-design": hifi,
     "delivery": delivery,
     "delivery-handoff": delivery,
     "evaluation": evaluation,
@@ -68,5 +70,5 @@ def is_current(artifact: dict) -> bool:
 
 __all__ = [
     "run_tier1", "artifact_version", "is_current", "CONTRACT_VERSION",
-    "synthesis", "strategy", "ideation", "wireframe", "delivery", "evaluation",
+    "synthesis", "strategy", "ideation", "wireframe", "hifi", "delivery", "evaluation",
 ]

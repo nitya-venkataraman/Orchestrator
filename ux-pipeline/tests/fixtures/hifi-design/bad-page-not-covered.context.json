@@ -1,0 +1,12 @@
+{
+  "wireframe_specs": {
+    "pages": [
+      {
+        "page_name": "01 - Example Queue"
+      },
+      {
+        "page_name": "02 - Example Detail"
+      }
+    ]
+  }
+}

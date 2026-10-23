@@ -32,6 +32,8 @@ _STAGE_TO_FILE = {
     "ideation-concepting": "ideation-concepting",
     "wireframe": "wireframe-ia",
     "wireframe-ia": "wireframe-ia",
+    "hifi": "hifi-design",
+    "hifi-design": "hifi-design",
     "delivery": "delivery-handoff",
     "delivery-handoff": "delivery-handoff",
     "evaluation": "evaluation-planning",

@@ -27,12 +27,24 @@ _CONTEXT_KEYS: Dict[str, List[str]] = {
         "selected_direction", "target_surface", "mobile_platform",
         "design_system_input",
     ],
-    "delivery-handoff": ["sitemap", "wireframe_specs", "persona_profile"],
+    "hifi-design": [
+        "figma_wireframe_url", "figma_design_system_url", "figma_file_url",
+        "selected_concept", "sitemap", "wireframe_specs",
+    ],
+    "delivery-handoff": [
+        "sitemap", "wireframe_specs", "persona_profile",
+        "hifi_screens", "hifi_design_system_gaps",
+    ],
     "evaluation-planning": [
         "journey_map", "persona_profile", "feature_matrix", "wireframe_specs",
         "heuristic_review", "developer_handoff_stories",
     ],
 }
+
+
+# MCP servers a skill needs mounted when it is invoked. Only skills that reach out to
+# an external tool are listed.
+SKILL_MCP_SERVERS: Dict[str, List[str]] = {"hifi-design": ["figma"]}
 
 
 def _load_attachments(skill_name: str) -> Dict[str, str]:
@@ -60,6 +72,7 @@ def build_payload(skill_name: str, state: dict) -> dict:
         "context": context,
         "feedback_loop": state.get("feedback_loop"),
         "attempt": (state.get("attempts") or {}).get(skill_name, 0),
+        "mcp_servers": SKILL_MCP_SERVERS.get(skill_name, []),
     }
 
 
@@ -70,16 +83,18 @@ def invoke_skill(skill_name: str, state: dict) -> dict:
     # response = anthropic_client.messages.create(
     #     model="claude-...",
     #     container={"skills": [skill_name]},
+    #     mcp_servers=payload["mcp_servers"],  # hifi-design needs the Figma MCP server
     #     messages=[{"role": "user", "content": json.dumps(payload)}],
     # )
     # return json.loads(response.content)
 
     raise NotImplementedError(
         "Wire this to your Claude Agent SDK client. Skill '{0}' payload ready: "
-        "{1} attachment(s), context keys {2}, feedback_loop={3!r}.".format(
+        "{1} attachment(s), context keys {2}, feedback_loop={3!r}, mcp_servers={4}.".format(
             skill_name,
             len(payload["attachments"]),
             sorted(payload["context"].keys()),
             payload["feedback_loop"],
+            payload["mcp_servers"],
         )
     )

@@ -74,6 +74,14 @@ EXPECTED_BAD: Dict[Case, str] = {
     # The pre-page-builder artifact shape. Kept as a fixture so the schema it
     # drifted to can never quietly come back.
     ("wireframe-ia", "bad-legacy-schema.json"): "Missing required key: 'pages'",
+    # --- Stage 4b ---
+    ("hifi-design", "bad-no-design-system-url.json"): "figma_design_system_url is missing or not a Figma URL",
+    ("hifi-design", "bad-node-id-dash.json"): "is not a Figma node id",
+    ("hifi-design", "bad-no-states.json"): "has no states",
+    ("hifi-design", "bad-raw-colour-component.json"): "is a raw colour value",
+    ("hifi-design", "bad-gap-no-reason.json"): "has no 'reason'",
+    ("hifi-design", "bad-blocked-with-screens.json"): "hifi_screens is not empty",
+    ("hifi-design", "bad-page-not-covered.json"): "has no hi-fi screen",
     # --- Stage 5 ---
     ("delivery-handoff", "bad-no-criteria.json"): "has no acceptance_criteria",
     ("delivery-handoff", "bad-allcaps-cta.json"): "is ALL CAPS",
@@ -99,6 +107,7 @@ CONTEXT_ONLY: Set[Case] = {
     ("discovery-synthesis", "bad-quote-not-verbatim.json"),
     ("strategy-definition", "bad-ungrounded-persona.json"),
     ("ideation-concepting", "bad-unknown-hmw.json"),
+    ("hifi-design", "bad-page-not-covered.json"),
     ("delivery-handoff", "bad-unknown-persona.json"),
     ("delivery-handoff", "bad-uncovered-screen.json"),
     ("delivery-handoff", "bad-a11y-dropped-at-handoff.json"),
@@ -118,6 +127,7 @@ STAGE_ALIASES: Dict[str, List[str]] = {
     "strategy-definition": ["strategy", "strategy-definition", "strategy_review"],
     "ideation-concepting": ["ideation", "ideation-concepting", "ideation_review"],
     "wireframe-ia": ["wireframe", "wireframe-ia", "wireframe_review"],
+    "hifi-design": ["hifi", "hifi-design", "hifi_review"],
     "delivery-handoff": ["delivery", "delivery-handoff", "delivery_review"],
     "evaluation-planning": ["evaluation", "evaluation-planning", "evaluation_review"],
 }

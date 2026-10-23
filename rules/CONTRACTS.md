@@ -23,6 +23,7 @@ extracted to
 - [Stage 2 — strategy-definition](#stage-2--strategy-definition)
 - [Stage 3 — ideation-concepting](#stage-3--ideation-concepting)
 - [Stage 4 — wireframe-ia](#stage-4--wireframe-ia)
+- [Stage 4b — hifi-design](#stage-4b--hifi-design)
 - [Stage 5 — delivery-handoff](#stage-5--delivery-handoff)
 - [Stage 6 — evaluation-planning](#stage-6--evaluation-planning)
 - [Gate semantics](#gate-semantics)
@@ -345,6 +346,70 @@ Persisted files: `output/<project-slug>/wireframe.{json,md}`. The `.md` follows 
 review format — UX Interpretation, User Flow, Sitemap, Pages Created, Components
 Used, Responsive Behaviour, Accessibility, Prototype, Design System Gaps,
 Assumptions, Validation — and is the HITL surface.
+
+---
+
+## Stage 4b — hifi-design
+
+Pipeline Node 5. The heading is "4b" so the Stage 5 and Stage 6 numbers that the
+validators, rubrics, error messages and committed artifacts all quote stay stable.
+
+State keys: `figma_wireframe_url`, `figma_design_system_url` (inputs, set by the
+designer at the wireframe gate), `hifi_screens`, `hifi_figma_page_url`,
+`hifi_design_system_gaps` — reads `selected_concept`, `sitemap`, `wireframe_specs`.
+
+The Figma design system is the **only** source of truth for look and feel. This stage
+does not use `superlap-design-tokens.json` or the Stage-4 Material baseline. A missing
+design system is a blocking gap, never an invention.
+
+**Output**
+
+```json
+{
+  "contract_version": "2.0",
+  "figma_wireframe_url": "https://www.figma.com/design/<fileKey>/...",
+  "figma_design_system_url": "https://www.figma.com/design/<fileKey>/...",
+  "hifi_figma_page_url": "https://www.figma.com/design/<fileKey>/...?node-id=1-2",
+  "hifi_screens": [{
+    "name": "string — the Stage-4 page_name, then ' / <state>' for a state frame",
+    "wireframe_node_id": "123:456",
+    "figma_node_id": "789:12",
+    "figma_url": "string",
+    "breakpoint": "desktop | laptop | tablet | mobile",
+    "states": ["default | loading | empty | error | success | disabled"],
+    "components_used": ["string — design-system component names"]
+  }],
+  "design_system_gaps": [{"screen": "string", "need": "string", "reason": "string"}],
+  "blocking_gaps": ["string — only when an input is missing; screens then empty"]
+}
+```
+
+`design_system_gaps` is the key in the persisted artifact; in pipeline state it is
+`hifi_design_system_gaps`, because `design_system_gaps` is already the Stage-4 key.
+
+**Tier 1**
+
+- A blocked run (`blocking_gaps` non-empty) has an empty `hifi_screens` and a null
+  `hifi_figma_page_url`. It is a legitimate output: the human sees it at the gate and
+  supplies the missing URL.
+- Otherwise `figma_wireframe_url`, `figma_design_system_url` and `hifi_figma_page_url`
+  are Figma URLs, and `hifi_screens` is non-empty.
+- Every screen has a `name`; `wireframe_node_id` and `figma_node_id` in `123:456` form
+  (a `-` left over from a URL is a bug); a Figma `figma_url`; a `breakpoint` in the
+  four known; ≥ 1 `state`, each of the six known; and ≥ 1 `components_used`.
+- `figma_node_id` values are unique.
+- No `components_used` entry is a raw colour value (`#hex`, `rgb()`, `hsl()`).
+- Every gap carries a `screen`, a `need` and a `reason`.
+- Every Stage-4 page is covered by a screen whose name starts with the page name
+  (checked when the Stage-4 artifact is supplied as context).
+
+**Tier 2** — scored 1–5 per dimension against
+[`rubrics/hifi-design.md`](rubrics/hifi-design.md)
+(`ds_fidelity`, `wireframe_fidelity`, `state_and_breakpoint_coverage`,
+`accessibility`). `ds_fidelity` must be a 5. Rule in that file.
+
+Persisted files: `output/<project-slug>/hifi.{json,md}`. The `.md` — header, screen
+table, components used, design-system gaps — is the HITL surface.
 
 ---
 
