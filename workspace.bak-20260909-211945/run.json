@@ -1,0 +1,77 @@
+{
+  "run_id": "amazon-addtocart-20260908-121643",
+  "slug": "amazon-addtocart",
+  "raw_inputs": [
+    "/Users/nitya_venkataraman/Documents/Amazon addtocart user walkthrough"
+  ],
+  "source_count": 1,
+  "selected_direction": "Never Lose the Thread",
+  "target_platform": "android",
+  "stages": {
+    "discovery-synthesis": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "c1e85a224d9a",
+      "judge_score": 0.89,
+      "judge_breakdown": {
+        "evidence_grounding": 0.9,
+        "theme_distinctness": 0.9,
+        "signal_coverage": 0.88
+      }
+    },
+    "strategy-definition": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "cbcf690d343c",
+      "judge_score": 0.89,
+      "judge_breakdown": {
+        "persona_grounding": 0.82,
+        "hmw_quality": 0.91,
+        "journey_realism": 0.92
+      }
+    },
+    "ideation": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "ecbfcd6ab211",
+      "judge_score": 0.88,
+      "judge_breakdown": {
+        "hmw_linkage": 0.93,
+        "rice_integrity": 0.78,
+        "direction_distinctness": 0.92
+      }
+    },
+    "wireframe": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "761c3a48ad43",
+      "judge_score": 0.91,
+      "judge_breakdown": {
+        "ds_compliance": 0.9,
+        "ia_coherence": 0.92,
+        "hierarchy_clarity": 0.92,
+        "requirements_completeness": 0.93
+      }
+    },
+    "delivery-handoff": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "c7ba7e1d80b2",
+      "judge_score": 4.3,
+      "judge_scale": "1-5",
+      "judge_breakdown": {
+        "story_completeness": 4,
+        "traceability": 5,
+        "voice_consistency": 4
+      }
+    }
+  },
+  "status": "COMPLETE",
+  "started_at": "2026-09-08T06:46:43",
+  "completed_at": "2026-09-08T08:09:04.894662"
+}

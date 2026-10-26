@@ -1,0 +1,5 @@
+{"ts":"2026-09-10T05:32:45Z","event":"run_started","run_id":"nexusintel-20260910-110245","note":"re-run from stage 1; prior nexusintel stage1-2 built from single-interview corpus"}
+{"ts":"2026-09-10T05:35:48Z","event":"hitl_checkpoint","stage":"discovery","attempt":1,"tier1":"pass","tier2":0.88}
+{"ts":"2026-09-10T05:39:05Z","event":"approved","stage":"discovery"}
+{"ts":"2026-09-10T05:41:56Z","event":"tier1_override","stage":"strategy","rule":"exactly_2_personas","authorized_by":"human"}
+{"ts":"2026-09-10T05:43:36Z","event":"approved","stage":"strategy"}

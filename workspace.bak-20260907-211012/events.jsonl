@@ -1,0 +1,12 @@
+{"ts": "2026-09-07T15:19:52.879442", "event": "run_created", "run_id": "greenbasket-20260907-151952"}
+{"ts": "2026-09-07T15:22:00.792932", "event": "stage_awaiting_approval", "stage": "discovery-synthesis", "score": 0.87}
+{"ts": "2026-09-07T15:23:45.034881", "event": "stage_approved", "stage": "discovery-synthesis"}
+{"ts": "2026-09-07T15:25:12.805581", "event": "stage_awaiting_approval", "stage": "strategy-definition", "score": 0.88}
+{"ts": "2026-09-07T15:25:51.683560", "event": "stage_approved", "stage": "strategy-definition"}
+{"ts": "2026-09-07T15:27:41.971055", "event": "stage_awaiting_approval", "stage": "ideation", "score": 0.88}
+{"ts": "2026-09-07T15:30:29.602577", "event": "stage_approved", "stage": "ideation"}
+{"ts": "2026-09-07T15:35:44.607322", "event": "direction_selected", "direction": "Two Taps to Done"}
+{"ts": "2026-09-07T15:38:21.206398", "event": "stage_awaiting_approval", "stage": "wireframe", "score": 0.92}
+{"event": "stage_approved", "stage": "wireframe", "ts": "2026-09-07T15:43:06.931864"}
+{"event": "figma_rendered", "url": "https://www.figma.com/design/DykeyuXBVT643ydzJKchTT", "ts": "2026-09-07T15:43:06.932007"}
+{"event": "run_complete", "ts": "2026-09-07T15:43:06.932060"}

@@ -1,0 +1,16 @@
+{"ts":"2026-09-07T15:40:29Z","event":"run_started","run_id":"greenbasket-20260907-211029","note":"fresh run, prior run backed up"}
+{"ts":"2026-09-07T15:42:25Z","event":"stage_gated","stage":"discovery-synthesis","tier1":"pass","tier2_score":0.88,"input_hash":"f59468a94512"}
+{"ts":"2026-09-07T15:42:25Z","event":"hitl_checkpoint","stage":"discovery-synthesis","awaiting":"approval"}
+{"ts": "2026-09-07T15:42:56.359840Z", "event": "stage_approved", "stage": "discovery-synthesis"}
+{"ts": "2026-09-07T15:44:37.462496Z", "event": "stage_gated", "stage": "strategy-definition", "tier1": "pass", "tier2_score": 0.89, "input_hash": "708bfaf6ad84"}
+{"ts": "2026-09-07T15:44:37.463041Z", "event": "hitl_checkpoint", "stage": "strategy-definition"}
+{"ts": "2026-09-07T16:38:02.934806Z", "event": "stage_approved", "stage": "strategy-definition"}
+{"event": "stage_gated", "stage": "ideation", "tier1": "pass", "tier2_score": 0.89, "input_hash": "544d772c604a", "ts": "2026-09-07T16:39:44.305984Z"}
+{"event": "hitl_checkpoint", "stage": "ideation", "ts": "2026-09-07T16:39:44.306700Z"}
+{"ts": "2026-09-07T16:42:03.467544Z", "event": "stage_approved", "stage": "ideation"}
+{"ts": "2026-09-07T16:42:03.467821Z", "event": "selection_fork", "awaiting": "direction"}
+{"ts": "2026-09-07T16:47:09.021493Z", "event": "direction_selected", "direction": "The Digital Market", "platform": "Android"}
+{"event": "stage_gated", "stage": "wireframe", "tier1": "pass", "tier2_score": 0.91, "input_hash": "97a1cd2606f5", "ts": "2026-09-07T16:48:21.880385Z"}
+{"event": "hitl_checkpoint", "stage": "wireframe", "ts": "2026-09-07T16:48:21.881259Z"}
+{"ts": "2026-09-07T16:50:09.459072Z", "event": "stage_approved", "stage": "wireframe"}
+{"ts": "2026-09-07T16:50:09.459280Z", "event": "run_complete"}

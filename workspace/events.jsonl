@@ -1,0 +1,10 @@
+{"ts":"2026-09-09T15:49:45Z","event":"run_started","run_id":"nexusintel-20260909-211945","slug":"nexusintel"}
+{"ts":"2026-09-09T15:56:10Z","event":"stage_started","stage":"discovery-synthesis","attempt":0}
+{"ts":"2026-09-09T15:56:40Z","event":"tier1_pass","stage":"discovery-synthesis","themes":5,"quotes_verbatim":true}
+{"ts":"2026-09-09T15:56:45Z","event":"tier2_pass","stage":"discovery-synthesis","weighted_mean":4.75,"scores":{"evidence_grounding":5,"theme_distinctness":4,"signal_coverage":5}}
+{"ts":"2026-09-09T15:56:50Z","event":"awaiting_approval","stage":"discovery-synthesis"}
+{"ts":"2026-09-09T15:58:00Z","event":"approved","stage":"discovery-synthesis","by":"human","note":"approved with RBAC tension carried forward as an explicit downstream constraint"}
+{"ts":"2026-09-09T16:04:00Z","event":"stage_started","stage":"strategy-definition","attempt":0}
+{"ts":"2026-09-09T16:04:30Z","event":"tier1_pass","stage":"strategy-definition","personas":2,"journey_stages":6,"hmws":5}
+{"ts":"2026-09-09T16:04:35Z","event":"tier2_pass","stage":"strategy-definition","weighted_mean":4.65,"scores":{"persona_grounding":5,"hmw_quality":4,"journey_realism":5}}
+{"ts":"2026-09-09T16:04:40Z","event":"awaiting_approval","stage":"strategy-definition"}

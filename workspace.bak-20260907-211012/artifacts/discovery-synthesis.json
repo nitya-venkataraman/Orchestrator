@@ -1,0 +1,86 @@
+{
+  "themes": [
+    {
+      "name": "Weekly reorder means manual re-search",
+      "insight": "Both users buy a stable set of core items every week but must search and add each product one at a time because there is no reorder or regulars list, turning a routine restock into a timed chore they resent.",
+      "frequency": 2,
+      "quotes": [
+        {"text": "every single week I have to search for each one individually. There’s no ‘my regulars’ list, no reorder button.", "source": "Sarah Mitchell interview"},
+        {"text": "I timed it last Sunday. Eleven minutes. Eleven minutes to order essentially the same things I ordered the week before.", "source": "Mark Thompson interview"},
+        {"text": "I have to search for each item individually. Eggs. Search. Add. Milk. Search. Add. Sourdough. Search. Add.", "source": "Mark Thompson interview"},
+        {"text": "It’s not a significant gap. It’s a deal-breaker.", "source": "Mark Thompson interview"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Browsing strips out the market narrative",
+      "insight": "The one exploratory shopper wants seasonality, curation, and producer stories while browsing, but the catalogue is an uncurated grid and the producer content that exists is buried in the blog, so she falls back on search and stops expecting the homepage to change.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "it was like someone had built a gorgeous storefront and then put a spreadsheet inside it.", "source": "Sarah Mitchell interview"},
+        {"text": "Number one, by a mile, is product discovery.", "source": "Sarah Mitchell interview"},
+        {"text": "why is this hidden in a blog? Why isn’t this on the homepage? Why can’t I see this when I’m browsing cheese?", "source": "Sarah Mitchell interview"},
+        {"text": "I keep coming back hoping something will have changed on the homepage and it’s just— the same grid.", "source": "Sarah Mitchell interview"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Silent substitutions break trust",
+      "insight": "When an item is out of stock GreenBasket swaps it without notifying the customer or offering a choice, and because the substitute often fails the intended use (a recipe, a bread type) the experience reads as being ignored and has directly caused cancellation.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "I ordered chicken thighs— bone-in, skin-on, for a specific recipe— and they sent drumsticks. Drumsticks.", "source": "Mark Thompson interview"},
+        {"text": "And nobody told me. No text, no email, no ‘hey, we’re out of thighs, is this OK?’ It just arrived wrong.", "source": "Mark Thompson interview"},
+        {"text": "But I cancelled after that. Went back to just Ocado for about a month.", "source": "Mark Thompson interview"},
+        {"text": "Don’t silently swap my food and hope I won’t notice.", "source": "Mark Thompson interview"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Delivery silence hurts more than delivery speed",
+      "insight": "Both users can accept a two-day delivery in principle but not vague windows or unexplained delays; they plan meals around orders and want a specific slot and a proactive message when timing slips, though they diverge on whether the two-day baseline itself is acceptable.",
+      "frequency": 2,
+      "quotes": [
+        {"text": "It’s the silence that’s frustrating, not the speed.", "source": "Sarah Mitchell interview"},
+        {"text": "I’m not ordering like it’s Amazon. But I do need to know when it’s coming.", "source": "Sarah Mitchell interview"},
+        {"text": "‘Monday’ isn’t a delivery window. I need to know if it’s morning or afternoon", "source": "Mark Thompson interview"},
+        {"text": "But two days feels like a long time when I’m used to next-day or same-day from the competition.", "source": "Mark Thompson interview"}
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "Sustainability data feels abstract",
+      "insight": "Both users care about the mission but get nothing from a context-free Impact Score; they want a simple, tangible, cumulative summary of concrete impact (farms supported, waste avoided, food miles) rather than a number out of a hundred or a methodology page.",
+      "frequency": 2,
+      "quotes": [
+        {"text": "I don’t really know what a 73 means. Like, is that good? Out of what?", "source": "Sarah Mitchell interview"},
+        {"text": "A number out of a hundred doesn’t make me feel anything.", "source": "Sarah Mitchell interview"},
+        {"text": "I’m not going to read a producer’s life story while my four-year-old is screaming in the background", "source": "Mark Thompson interview"},
+        {"text": "tell me— ‘Mark, your orders this month supported four local farms and saved the equivalent of planting three trees.’", "source": "Mark Thompson interview"}
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "Superior produce is buying patience the UX keeps spending",
+      "insight": "Both users rate GreenBasket's product quality above every competitor and only stay because of it, treating the brand as a supplementary shop alongside Ocado or Abel & Cole while the ordering experience steadily erodes the goodwill the mission earns.",
+      "frequency": 2,
+      "quotes": [
+        {"text": "I’m someone who’s willing to put up with a lot because I care about the mission, but if you’re losing me on basics like this...", "source": "Sarah Mitchell interview"},
+        {"text": "If GreenBasket had, like, two hundred more SKUs in the staples category, I’d probably consolidate.", "source": "Sarah Mitchell interview"},
+        {"text": "GreenBasket is sort of— the supplementary thing. Fresh veg, meat sometimes, the bakery stuff.", "source": "Mark Thompson interview"},
+        {"text": "Fix the experience, and the product sells itself.", "source": "Mark Thompson interview"}
+      ],
+      "severity": "medium"
+    }
+  ],
+  "gaps": [
+    "Only two participants, both London-based existing GreenBasket users who already multi-home with other services; no fully churned users, no one who dislikes the mission, no rural or non-urban context.",
+    "No quantitative data on how widespread the reorder pain, cart abandonment, or substitution rate actually is — all evidence is anecdotal.",
+    "The two users disagree on delivery speed (Sarah accepts two days, Mark wants same/next-day) and the corpus cannot say which segment is larger or more valuable.",
+    "Mobile-versus-desktop ordering behaviour is unclear; one spouse reportedly refuses to order on a phone, but prevalence is unknown.",
+    "Price sensitivity and the role of cost in the multi-service split were barely explored.",
+    "No direct observation of onboarding or the first-purchase funnel, only recalled impressions.",
+    "Substitution handling preferences come from a single participant proposing three options; not validated with others."
+  ],
+  "source_count": 2
+}

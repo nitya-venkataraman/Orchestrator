@@ -1,0 +1,14 @@
+{"ts":"2026-09-08T06:46:43Z","event":"run_started","run_id":"amazon-addtocart-20260908-121643","slug":"amazon-addtocart"}
+{"ts":"2026-09-08T06:49:43Z","event":"gate_passed","stage":"discovery-synthesis","tier1":"pass","tier2":0.89}
+{"ts":"2026-09-08T06:49:43Z","event":"hitl_checkpoint","stage":"discovery-synthesis"}
+{"ts":"2026-09-08T07:13:40Z","event":"approved","stage":"discovery-synthesis"}
+{"ts":"2026-09-08T07:15:34Z","event":"gate_passed","stage":"strategy-definition","tier1":"pass","tier2":0.89}
+{"ts":"2026-09-08T07:39:07Z","event":"approved","stage":"strategy-definition"}
+{"ts":"2026-09-08T07:41:03Z","event":"gate_passed","stage":"ideation","tier1":"pass","tier2":0.88}
+{"ts":"2026-09-08T07:43:51Z","event":"approved","stage":"ideation"}
+{"ts":"2026-09-08T07:43:51Z","event":"selection_fork","selected_direction":"Never Lose the Thread","target_platform":"android"}
+{"ts":"2026-09-08T08:00:28Z","event":"gate_passed","stage":"wireframe","tier1":"pass","tier2":0.91,"figma":"https://www.figma.com/design/wQK2sbRMPTpLDccu8aUGGj"}
+{"ts":"2026-09-08T08:01:24Z","event":"approved","stage":"wireframe"}
+{"ts":"2026-09-08T08:03:06Z","event":"gate_passed","stage":"delivery-handoff","tier1":"pass","tier2":4.3}
+{"ts":"2026-09-08T08:09:04Z","event":"approved","stage":"delivery-handoff"}
+{"ts":"2026-09-08T08:09:04Z","event":"run_complete"}

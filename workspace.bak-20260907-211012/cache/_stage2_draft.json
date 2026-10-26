@@ -1,0 +1,174 @@
+{
+  "personas": [
+    {
+      "name": "Mark — the time-poor restocker",
+      "type": "primary",
+      "context": "45, parent of two young children in Islington. Does the household's weekly grocery order late on Sunday night after the kids are asleep. Ocado is the locked-in main shop; GreenBasket is a supplementary order for veg, meat and bakery that he places 'when I have the energy'.",
+      "goals": [
+        "Recreate last week's order with two or three changes in a couple of minutes",
+        "Know whether delivery lands in the morning or afternoon so it fits the household's week",
+        "Decide for himself what happens when an item is out of stock",
+        "Get a simple monthly impact summary he can show his wife without reading a methodology page"
+      ],
+      "frustrations": [
+        "Spends eleven minutes every week searching and re-adding the same core items because there is no reorder or favourites list",
+        "Had chicken thighs silently swapped for drumsticks with no message, which broke the recipe and made him cancel for a month",
+        "A delivery day shown only as 'Monday' is not a window he can plan around",
+        "A two-day wait feels long against Ocado's same-day, and the Impact Score asks him to do homework"
+      ],
+      "quote": "It’s not a significant gap. It’s a deal-breaker.",
+      "grounded_in": [
+        "Weekly reorder means manual re-search",
+        "Silent substitutions break trust",
+        "Delivery silence hurts more than delivery speed",
+        "Sustainability data feels abstract",
+        "Superior produce is buying patience the UX keeps spending"
+      ]
+    },
+    {
+      "name": "Sarah — the values-driven explorer",
+      "type": "secondary",
+      "context": "31, works in marketing at a B Corp in London. Splits shopping across GreenBasket, Abel & Cole and Sainsbury's and has built a spreadsheet comparing them, hoping to consolidate onto one service. Orders GreenBasket every week to ten days and cares deeply about the mission.",
+      "goals": [
+        "Be inspired while browsing — seasonal produce, new producers, editorial picks — not just work from a list",
+        "See the story of who makes the food while shopping, and share a producer with a friend",
+        "Watch her personal impact accumulate over time (producers supported, food miles, waste avoided)",
+        "Consolidate her grocery shopping onto GreenBasket alone"
+      ],
+      "frustrations": [
+        "The catalogue is an uncurated grid with no editorial layer, and the homepage never changes",
+        "Producer stories that would sell the food are buried in the blog and there is no shareable producer profile",
+        "An Impact Score of 73 has no context, no breakdown, and tapping it does nothing",
+        "Still has to search for each of her six regular items one at a time, every week"
+      ],
+      "quote": "it was like someone had built a gorgeous storefront and then put a spreadsheet inside it.",
+      "grounded_in": [
+        "Browsing strips out the market narrative",
+        "Sustainability data feels abstract",
+        "Weekly reorder means manual re-search",
+        "Delivery silence hurts more than delivery speed",
+        "Superior produce is buying patience the UX keeps spending"
+      ]
+    }
+  ],
+  "journey": [
+    {
+      "stage": "Remembering GreenBasket needs doing",
+      "actions": [
+        "Realises there is no booked slot the way Ocado has one",
+        "Opens the app on a phone late in the evening when there is finally time"
+      ],
+      "emotion": "reluctant",
+      "friction": [
+        "No recurring slot or reminder anchors the order",
+        "Competes with the only free hour of the evening",
+        "Order happens 'when I have the energy', not on a rhythm"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Rebuilding last week's basket by hand",
+      "actions": [
+        "Searches 'eggs', adds; searches 'milk', adds; repeats for every core item",
+        "Digs into order history to remember what the basket usually contains"
+      ],
+      "emotion": "exasperated",
+      "friction": [
+        "Eleven minutes to reassemble a near-identical order",
+        "No reorder button, no 'my regulars' list",
+        "The same manual rebuild every single week"
+      ],
+      "dropoff_risk": "high"
+    },
+    {
+      "stage": "Looking for something new to buy",
+      "actions": [
+        "Opens the homepage and browse categories hoping for seasonal picks or a new producer",
+        "Finds the same unchanged grid and retreats to the search box"
+      ],
+      "emotion": "deflated",
+      "friction": [
+        "No curation, seasonality or editorial layer",
+        "Producer stories hidden in the blog, unreachable while browsing cheese",
+        "Nothing about a producer is shareable with a friend"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Dealing with out-of-stock items",
+      "actions": [
+        "Discovers several items are unavailable",
+        "Searches manually for replacements, guessing at what is close enough"
+      ],
+      "emotion": "uncertain",
+      "friction": [
+        "No suggested alternative or 'similar items'",
+        "Adds another five to ten minutes of guesswork",
+        "No way to say 'just leave it out' cleanly"
+      ],
+      "dropoff_risk": "high"
+    },
+    {
+      "stage": "Checking out and choosing a slot",
+      "actions": [
+        "Picks a delivery day",
+        "Taps the Impact Score expecting a breakdown"
+      ],
+      "emotion": "resigned",
+      "friction": [
+        "The slot is a whole day ('Monday'), not a morning or afternoon",
+        "Impact Score gives no context and nothing happens on tap"
+      ],
+      "dropoff_risk": "low"
+    },
+    {
+      "stage": "Waiting for the delivery",
+      "actions": [
+        "Tracks the order",
+        "Plans the week's meals around the expected day"
+      ],
+      "emotion": "anxious",
+      "friction": [
+        "Delays arrive with no proactive message — 36 hours of silence in one case",
+        "No confidence about what time on the day the box will come"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Unpacking and reacting",
+      "actions": [
+        "Unpacks the box and finds an item was silently substituted",
+        "Contacts support, gets a credit, and weighs whether to keep using GreenBasket"
+      ],
+      "emotion": "betrayed",
+      "friction": [
+        "The swap was made with no notice and no choice",
+        "The substitute breaks the recipe or meal it was bought for",
+        "Support handles it well but the trust damage is already done"
+      ],
+      "dropoff_risk": "high"
+    }
+  ],
+  "hmw_statements": [
+    {
+      "statement": "How might we let a returning shopper recreate their usual basket without rebuilding it item by item?",
+      "derived_from": "Weekly reorder means manual re-search"
+    },
+    {
+      "statement": "How might we make an out-of-stock item a decision the shopper makes rather than one made for them?",
+      "derived_from": "Silent substitutions break trust"
+    },
+    {
+      "statement": "How might we give shoppers enough confidence in delivery timing to plan their week around an order?",
+      "derived_from": "Delivery silence hurts more than delivery speed"
+    },
+    {
+      "statement": "How might we help a browsing shopper encounter the people and the seasonality behind the food the way a market does?",
+      "derived_from": "Browsing strips out the market narrative"
+    },
+    {
+      "statement": "How might we make the impact of shopping this way something a person can feel without studying it?",
+      "derived_from": "Sustainability data feels abstract"
+    }
+  ]
+}

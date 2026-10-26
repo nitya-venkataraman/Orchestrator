@@ -1,0 +1,63 @@
+{
+  "run_id": "greenbasket-20260907-151952",
+  "slug": "greenbasket",
+  "raw_inputs": [
+    "/Users/nitya_venkataraman/Documents/Greenbasket/Interview_Transcript_Sarah_Mitchell.docx",
+    "/Users/nitya_venkataraman/Documents/Greenbasket/Interview_Transcript_Mark_Thompson.docx"
+  ],
+  "source_count": 2,
+  "selected_direction": "Two Taps to Done",
+  "stages": {
+    "discovery-synthesis": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "0c6fc239528c",
+      "judge_score": 0.87,
+      "judge_breakdown": {
+        "evidence_grounding": 0.9,
+        "theme_distinctness": 0.82,
+        "signal_coverage": 0.88
+      }
+    },
+    "strategy-definition": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "b349596f7861",
+      "judge_score": 0.88,
+      "judge_breakdown": {
+        "persona_grounding": 0.9,
+        "hmw_quality": 0.88,
+        "journey_realism": 0.87
+      }
+    },
+    "ideation": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "fd7036f129c2",
+      "judge_score": 0.88,
+      "judge_breakdown": {
+        "hmw_linkage": 0.95,
+        "rice_integrity": 0.85,
+        "direction_distinctness": 0.85
+      }
+    },
+    "wireframe": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "e401d197f30b",
+      "judge_score": 0.92,
+      "judge_breakdown": {
+        "ds_compliance": 0.95,
+        "ia_coherence": 0.88,
+        "hierarchy_clarity": 0.88
+      },
+      "figma_file_url": "https://www.figma.com/design/DykeyuXBVT643ydzJKchTT"
+    }
+  },
+  "status": "COMPLETE",
+  "completed_at": "2026-09-07T15:43:06.931615"
+}

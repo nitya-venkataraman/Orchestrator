@@ -1,0 +1,40 @@
+{
+  "run_id": "denso-ips-cloud-20261015-123637",
+  "project_slug": "denso-ips-cloud",
+  "raw_inputs": [
+    "/Users/nitya_venkataraman/Library/CloudStorage/OneDrive-EPAM/Initial Cloud RFP.pdf"
+  ],
+  "raw_inputs_sha": "b73daf9c87d7",
+  "raw_corpus_transcript": "ux-pipeline/workspace/source-corpus.txt",
+  "input_basis": "requirements-driven \u2014 single client RFQ, no user research (human decision, this session)",
+  "contract_version": "2.0",
+  "output_dir": "output/denso-ips-cloud",
+  "stage_status": {
+    "discovery": "APPROVED",
+    "strategy": "APPROVED",
+    "ideation": "APPROVED",
+    "wireframe": "AWAITING_APPROVAL",
+    "delivery": "PENDING",
+    "evaluation": "PENDING"
+  },
+  "attempts": {
+    "discovery": 1,
+    "strategy": 2,
+    "ideation": 1,
+    "wireframe": 1
+  },
+  "selected_direction": "B+C \u2014 One pane, names resolved at the glass + The system watches itself (composite, human-selected)",
+  "target_surface": "web",
+  "mobile_platform": null,
+  "design_system_input": "none \u2014 baseline Material 3 (human decision)",
+  "judge_scores": {
+    "discovery": 4.0,
+    "strategy": 4.0,
+    "ideation": 4.0,
+    "wireframe": 4.85
+  },
+  "overrides": [],
+  "figma_file_url": null,
+  "figma_destination": "EPAM Figma (Pro) team, chosen by human with the RFQ confidentiality noted",
+  "figma_note": "Not rendered: no Figma MCP connection in this session; destination chosen = EPAM Pro"
+}

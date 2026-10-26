@@ -1,0 +1,259 @@
+{
+  "contract_version": "2.0",
+  "features": [
+    {
+      "name": "Names resolved at the operator's screen",
+      "description": "The IPS dashboard receives only digital IDs. When the operator's session opens, it fetches names from the customer's own identity service using a signed token, and they are held in the browser for that session only. The vendor platform stores and logs digital IDs and nothing else.",
+      "hmw": "How might we let an operator see who is where on the floor without the vendor's platform ever holding who that person is?",
+      "reach": 5,
+      "impact": 3,
+      "confidence": 0.5,
+      "effort": 2,
+      "rice_score": 3.8,
+      "success_metric": {
+        "name": "Real identities found in IPS platform stores, logs and API responses",
+        "baseline": "unknown",
+        "target": "0 in a platform data audit after the pilot",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by audit of IPS databases, logs and API traffic."
+      },
+      "reach_basis": "RFQ requirement lines served: 3B-6, 4-D5, 3A-7, 3B-5, 4-T1",
+      "move": "change where it happens"
+    },
+    {
+      "name": "Pseudonymous markers, names revealed on purpose",
+      "description": "Markers show a stable alias by default. An operator reveals a person's name deliberately, one person at a time, and every reveal records who did it and why.",
+      "hmw": "How might we let an operator see who is where on the floor without the vendor's platform ever holding who that person is?",
+      "reach": 3,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 1,
+      "rice_score": 1.5,
+      "success_metric": {
+        "name": "Name reveals that carry an operator and a reason",
+        "baseline": "unknown",
+        "target": "Every reveal attributable (100%)",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured from the reveal audit log."
+      },
+      "reach_basis": "RFQ requirement lines served: 4-D5, 3B-6, 5D-1",
+      "move": "serve the need differently"
+    },
+    {
+      "name": "Identity lives only in the customer dashboard",
+      "description": "Split the two dashboards the RFQ describes along the trust boundary. The IPS dashboard is an infrastructure console (anchors, store computer, anonymous markers). Only the customer-cloud dashboard, which already holds the identity mapping, shows names.",
+      "hmw": "How might we let an operator see who is where on the floor without the vendor's platform ever holding who that person is?",
+      "reach": 5,
+      "impact": 2,
+      "confidence": 0.5,
+      "effort": 1,
+      "rice_score": 5.0,
+      "success_metric": {
+        "name": "Identity fields in IPS Dashboard API responses",
+        "baseline": "unknown",
+        "target": "0",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by contract test on the IPS Dashboard API."
+      },
+      "reach_basis": "RFQ requirement lines served: 3B-6, 4-D5, 3A-3, 3A-4, 4-D2",
+      "move": "change who does it"
+    },
+    {
+      "name": "Live, fading and gone states on every marker",
+      "description": "Each marker carries an explicit presence state with its last-seen age. It is live while readings arrive, fading after a defined silence, and removed at a defined timeout. Logout and a device switch skip straight to removal. The timings come from one agreed configuration rather than being implied.",
+      "hmw": "How might we make it unmistakable whether a person on the map is present now, fading out of range, or already gone?",
+      "reach": 9,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 1,
+      "rice_score": 14.4,
+      "success_metric": {
+        "name": "Stale markers: people shown who have logged out, switched device, or been out of range past the agreed timeout",
+        "baseline": "unknown",
+        "target": "0 across the five RFQ §5D scenarios",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by scripted run of the §5D demo scenarios, and in pilot by matching logout events to marker removal."
+      },
+      "reach_basis": "RFQ requirement lines served: 4-D4, 4-M3, 4-M4, 5D-2, 5D-3, 5D-4, 5D-5, 4-L1, 4-L2",
+      "move": "serve the need better"
+    },
+    {
+      "name": "Presence event timeline",
+      "description": "A per-person feed of logins, logouts, device switches, entering and leaving coverage, and anchor handovers. The operator can see how someone left rather than infer it from a missing dot.",
+      "hmw": "How might we make it unmistakable whether a person on the map is present now, fading out of range, or already gone?",
+      "reach": 7,
+      "impact": 0.5,
+      "confidence": 0.5,
+      "effort": 1,
+      "rice_score": 1.8,
+      "success_metric": {
+        "name": "Operators who can correctly state how and when a person left the floor",
+        "baseline": "unknown",
+        "target": "At least 4 of 5 usability-test participants",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured in the Stage-6 usability test."
+      },
+      "reach_basis": "RFQ requirement lines served: 4-M3, 4-M4, 5D-2, 5D-3, 5D-4, 5D-5, 4-D7",
+      "move": "change when it happens"
+    },
+    {
+      "name": "One panel that explains a reading",
+      "description": "Selecting a device opens one panel with its connected anchor, RSSI over the last minutes, the other anchors that can hear it, and the raw stream rows filtered to that device. Everything the RFQ asks for in telemetry, assembled around the question being asked.",
+      "hmw": "How might we help an operator tell a bad reading for one person from a failing anchor before they act on either?",
+      "reach": 5,
+      "impact": 2,
+      "confidence": 0.8,
+      "effort": 1,
+      "rice_score": 8.0,
+      "success_metric": {
+        "name": "Operators who correctly classify a suspicious reading as device-side or anchor-side",
+        "baseline": "unknown",
+        "target": "At least 4 of 5 usability-test participants",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured in the Stage-6 usability test with seeded faults."
+      },
+      "reach_basis": "RFQ requirement lines served: 4-D5, 4-D6, 4-D7, 3B-7, 4-L2",
+      "move": "serve the need better"
+    },
+    {
+      "name": "Anchor drift check",
+      "description": "The platform compares each anchor's readings against its neighbours and flags an anchor whose devices consistently disagree with the rest, so the system rather than the operator spots a failing anchor.",
+      "hmw": "How might we help an operator tell a bad reading for one person from a failing anchor before they act on either?",
+      "reach": 4,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 2,
+      "rice_score": 1.0,
+      "success_metric": {
+        "name": "Drifting anchors flagged by the system before an operator reports them",
+        "baseline": "unknown",
+        "target": "All seeded drift faults flagged first",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by fault-injection test on the demo site."
+      },
+      "reach_basis": "RFQ requirement lines served: 3A-3, 4-D2, 3B-7, 4-D6",
+      "move": "change who does it"
+    },
+    {
+      "name": "Impact preview before a change",
+      "description": "Before calibration or an OTA update is applied, the operator sees which phones are on that anchor right now and which neighbouring anchors will cover them, then confirms.",
+      "hmw": "How might we give an operator confidence that changing a live anchor will not silently interrupt tracking for the people on it?",
+      "reach": 4,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 1,
+      "rice_score": 2.0,
+      "success_metric": {
+        "name": "Configuration changes that interrupted tracking without a prior warning",
+        "baseline": "unknown",
+        "target": "0",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by correlating the change log with tracking gaps."
+      },
+      "reach_basis": "RFQ requirement lines served: 4-D3, 4-D6, 4-L2, 5B-2",
+      "move": "serve the need better"
+    },
+    {
+      "name": "Staged OTA with automatic rollback",
+      "description": "Updates roll out one anchor at a time while neighbours cover, and an anchor that does not come back healthy reverts automatically. Depends on store-computer and firmware support, which are outside this RFQ's scope.",
+      "hmw": "How might we give an operator confidence that changing a live anchor will not silently interrupt tracking for the people on it?",
+      "reach": 5,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 3,
+      "rice_score": 0.8,
+      "success_metric": {
+        "name": "Tracking gaps longer than the latency bound during OTA updates",
+        "baseline": "unknown",
+        "target": "0",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by correlating the OTA log with tracking gaps."
+      },
+      "reach_basis": "RFQ requirement lines served: 4-D3, 3A-3, 4-D2, 4-L2, 5B-2",
+      "move": "change when it happens"
+    },
+    {
+      "name": "Role-gated configuration",
+      "description": "Viewing anchor and store-computer configuration is open to operators. Changing it or starting an OTA update needs an explicit permission, and every change is logged.",
+      "hmw": "How might we give an operator confidence that changing a live anchor will not silently interrupt tracking for the people on it?",
+      "reach": 1,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 1,
+      "rice_score": 0.5,
+      "success_metric": {
+        "name": "Configuration changes made by users without change permission",
+        "baseline": "unknown",
+        "target": "0",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured from the change log against the permission model."
+      },
+      "reach_basis": "RFQ requirement lines served: 4-D3",
+      "move": "remove the need"
+    },
+    {
+      "name": "Integration health panel",
+      "description": "An integrator-facing view of the subscription (connected, last event received, lag) and the config feed (last SDK fetch, failed fetches), so a broken feed is visible on the integrator's side first.",
+      "hmw": "How might we let an integrator learn that the location stream or the SDK config feed has stopped before anyone on the floor notices tracking is gone?",
+      "reach": 6,
+      "impact": 2,
+      "confidence": 0.5,
+      "effort": 1,
+      "rice_score": 6.0,
+      "success_metric": {
+        "name": "Feed failures the integrator learns of before an operator or employee reports them",
+        "baseline": "unknown",
+        "target": "All injected stream and config failures",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by fault-injection test against the customer cloud."
+      },
+      "reach_basis": "RFQ requirement lines served: 3A-5, 3B-2, 3B-4, 4-S1, 3A-8, 5A-2",
+      "move": "serve the need better"
+    },
+    {
+      "name": "Heartbeat on the stream",
+      "description": "The stream emits a heartbeat even when nobody is moving. Silence becomes a detectable signal that the customer's existing monitoring can alert on, with no new UI.",
+      "hmw": "How might we let an integrator learn that the location stream or the SDK config feed has stopped before anyone on the floor notices tracking is gone?",
+      "reach": 3,
+      "impact": 1,
+      "confidence": 0.5,
+      "effort": 0.5,
+      "rice_score": 3.0,
+      "success_metric": {
+        "name": "Stream outages longer than one heartbeat interval missed by customer monitoring",
+        "baseline": "unknown",
+        "target": "0",
+        "source": "No current figure exists: the RFQ gives none and no Stage-2 journey stage carries a current_metric. Measured by fault-injection test against the customer's monitoring."
+      },
+      "reach_basis": "RFQ requirement lines served: 3A-5, 3B-2, 4-S1",
+      "move": "change who does it"
+    }
+  ],
+  "design_directions": [
+    {
+      "name": "The trust boundary is the product boundary",
+      "summary": "Two products, split where the PII rule splits them. The IPS dashboard is an infrastructure console that shows anchors, the store computer and anonymous markers, and never a name. The customer-cloud dashboard, which already owns the identity mapping, is where people are seen by name. The integrator gets a health panel and a heartbeat so their side of the split is observable.",
+      "differentiator": "Identity never enters any surface the vendor runs, so PII safety is enforced by which product you are in, not by careful engineering inside one.",
+      "hmws_addressed": [
+        "How might we let an operator see who is where on the floor without the vendor's platform ever holding who that person is?",
+        "How might we make it unmistakable whether a person on the map is present now, fading out of range, or already gone?",
+        "How might we give an operator confidence that changing a live anchor will not silently interrupt tracking for the people on it?",
+        "How might we let an integrator learn that the location stream or the SDK config feed has stopped before anyone on the floor notices tracking is gone?"
+      ],
+      "tradeoff": "Two dashboards to build and keep consistent, and an operator who needs both 'is the anchor up' and 'who is near it' switches tools. DENSO's own demo of 'who is where' depends on the customer-side build being ready."
+    },
+    {
+      "name": "One pane, names resolved at the glass",
+      "summary": "A single dashboard for everything: map, people, anchors, telemetry, configuration. The vendor platform holds digital IDs only. Names are fetched from the customer's identity service into the operator's browser per session, with pseudonymous markers and on-purpose reveals as the fallback. The operator's drill-down and change flows are built for confidence: one panel explains a reading, and a preview shows who a change will affect.",
+      "differentiator": "The operator works in one place and PII safety is an architectural guarantee inside it. It is the most direct reading of the RFQ's single-dashboard feature list.",
+      "hmws_addressed": [
+        "How might we let an operator see who is where on the floor without the vendor's platform ever holding who that person is?",
+        "How might we make it unmistakable whether a person on the map is present now, fading out of range, or already gone?",
+        "How might we help an operator tell a bad reading for one person from a failing anchor before they act on either?",
+        "How might we give an operator confidence that changing a live anchor will not silently interrupt tracking for the people on it?"
+      ],
+      "tradeoff": "The demo cannot show a single name until the customer exposes a signed identity-lookup endpoint, so it is gated on customer engineering. If that endpoint is down mid-demo, every marker falls back to an alias. Browser-side resolution is also harder to audit than a server-side split."
+    },
+    {
+      "name": "The system watches itself",
+      "summary": "Automation first. The platform decides presence states, flags drifting anchors, stages and rolls back OTA updates, and emits a heartbeat so a silent stream raises an alarm. The operator handles exceptions and reads a timeline of what happened instead of watching a map for things going wrong.",
+      "differentiator": "It moves the work of noticing from the operator to the system, which fits an operations product better than a demo one.",
+      "hmws_addressed": [
+        "How might we make it unmistakable whether a person on the map is present now, fading out of range, or already gone?",
+        "How might we help an operator tell a bad reading for one person from a failing anchor before they act on either?",
+        "How might we give an operator confidence that changing a live anchor will not silently interrupt tracking for the people on it?",
+        "How might we let an integrator learn that the location stream or the SDK config feed has stopped before anyone on the floor notices tracking is gone?"
+      ],
+      "tradeoff": "It is the most effort (drift detection and staged OTA alone are about 5 person-months) and depends on store-computer and firmware behaviour this RFQ puts out of scope. False drift alarms would erode the trust it is meant to build. The RFQ still requires the raw telemetry views, so this adds to the operator surfaces rather than replacing them, and it leaves the identity conflict (HMW 1) unanswered."
+    }
+  ]
+}

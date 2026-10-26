@@ -1,0 +1,43 @@
+{
+  "run_id": "nexusintel-20260910-110245",
+  "project_slug": "nexusintel",
+  "raw_inputs": [
+    "/Users/nitya_venkataraman/Documents/Product Brief_ NexusIntel (AI-Driven Cross-Asset Sourcing & Portfolio Analytics).md"
+  ],
+  "raw_inputs_sha": "1829028e93a6",
+  "output_dir": "output/nexusintel",
+  "stage_status": {
+    "discovery": "APPROVED",
+    "strategy": "APPROVED",
+    "ideation": "APPROVED",
+    "wireframe": "APPROVED",
+    "delivery": "APPROVED"
+  },
+  "attempts": {
+    "discovery": 1,
+    "strategy": 1,
+    "ideation": 1,
+    "wireframe": 1
+  },
+  "selected_direction": "A+C \u2014 The Verifiable Profile + The Standing Watch (composite, human-selected)",
+  "target_surface": "web",
+  "mobile_platform": null,
+  "design_system_input": "none \u2014 baseline Material 3",
+  "judge_scores": {
+    "discovery": 0.88,
+    "strategy": 0.88,
+    "ideation": 0.87,
+    "wireframe": 0.89,
+    "delivery": 4.7
+  },
+  "overrides": [
+    {
+      "stage": "strategy",
+      "rule": "exactly 2 personas",
+      "action": "waived by human",
+      "authorized": "user, this session",
+      "detail": "3 personas kept; all three users interviewed directly. validators/strategy.py unmodified."
+    }
+  ],
+  "figma_file_url": "https://www.figma.com/design/V091wDoNmDuw3J0N9P4Y5K"
+}

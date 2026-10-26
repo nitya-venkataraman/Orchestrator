@@ -1,0 +1,99 @@
+{
+  "themes": [
+    {
+      "name": "Manual multi-day profile build",
+      "insight": "An associate hand-assembles each borrower's foundational profile over 48-72 hours, pulling from four disconnected inputs — public filings, private databases, relationship logs, and macroeconomic feeds — which Marcus names as the scattered data his team relies on; he frames the payoff of collapsing that build as issuing term sheets faster.",
+      "frequency": 1,
+      "quotes": [
+        {
+          "text": "The issue is that the data we rely on is scattered. We’re pulling from public filings, private databases, relationship logs, and macroeconomic feeds.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        },
+        {
+          "text": "It’s incredibly manual. An associate will spend 48 to 72 hours just building the foundational profile.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        },
+        {
+          "text": "that cuts our initial vetting time down from three days to thirty minutes. We could issue term sheets faster, which is how you win deals in this environment.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "Firm memory invisible at screening",
+      "insight": "Teams vet targets the firm has already examined without seeing that prior work, because another desk's notes sit in a legacy PDF on an internal drive or in a personal Outlook inbox — Marcus calls this the real friction, ahead of the scattered external data.",
+      "frequency": 1,
+      "quotes": [
+        {
+          "text": "But the real friction is internal data silos. An infrastructure team or a buyout team in Europe might have looked at a subsidiary of this exact company two years ago.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        },
+        {
+          "text": "Their notes are buried in a legacy PDF on an internal drive somewhere, or worse, just sitting in someone's Outlook inbox. We lose massive leverage by not knowing what the firm already knows.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Quarterly covenant review lags",
+      "insight": "Portfolio risk is tracked by keying borrower-submitted covenants into spreadsheets once a quarter, so a breach or a dip in coverage ratios is seen about three months after it happened — which Marcus says is past the point where a workout or refinancing can still be structured.",
+      "frequency": 1,
+      "quotes": [
+        {
+          "text": "Right now, it’s mostly reactive. We do quarterly reviews. The borrowers submit their financial covenants, we input them into spreadsheets, and we calculate compliance.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        },
+        {
+          "text": "The problem with quarterly data is that by the time you see a covenant breach or a major dip in coverage ratios, you’re already three months too late to structure a workout or a refinancing package.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        },
+        {
+          "text": "I want an anomaly detection system that tracks alternative signals—like executive turnover, local supply chain delays, or sudden shifts in their accounts payable patterns—so we can see smoke before there’s a fire.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Alerts must carry the decision",
+      "insight": "Marcus rejects monitoring surfaces that hand him status to interpret; he says he will act on a feed only when one alert already states the issue, the firm's exposure, and the exact trigger point, and he names that as the single most critical feature for him as an MD.",
+      "frequency": 1,
+      "quotes": [
+        {
+          "text": "Actionable alerts. I don't need another messy dashboard with 50 flashing lights.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        },
+        {
+          "text": "It needs to tell me the problem, our exposure, and the immediate trigger point.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Data isolation gates adoption",
+      "insight": "Marcus treats keeping proprietary data inside KKR's own cloud environment as a precondition rather than a preference — he attaches firm-wide uptake to it in the same breath as the alerting capability, so the feature value is not separable from the deployment model.",
+      "frequency": 1,
+      "quotes": [
+        {
+          "text": "If your platform can do that while keeping our proprietary data completely isolated and secure within our own cloud environment, you’ll have a line of users out the door.",
+          "source": "Marcus Vance (MD, Private Credit & Liquid Strategies, KKR) — discovery interview 2026-09-08"
+        }
+      ],
+      "severity": "high"
+    }
+  ],
+  "gaps": [
+    "Single participant, single firm. Every theme rests on one MD at KKR. The persona who actually performs the 48-72 hour profile build — the associate — was never interviewed, and neither were the Portfolio Operations or Credit Risk Officer users the brief names as secondary.",
+    "Two of the strongest signals were elicited by leading questions. The interviewer proposed the centralized intelligence layer and the real-time predictive health-score dashboard before Marcus endorsed them, so stated desirability for both is confounded with the interviewer's framing and cannot be read as unprompted demand.",
+    "No observed work. Nothing in the corpus shows the actual spreadsheet, CRM, or screening artifact — no walkthrough, no screenshots, no file. Current-state workflow is described secondhand by a manager, not observed at the desk where it happens.",
+    "The PRD's mechanisms are unvalidated team hypotheses, not user evidence: the Credit Health Score, the 1.5-sigma deviation threshold, and vector search across SharePoint/Outlook appear only in the requirements document. No participant said what would make a generated score trustworthy enough to act on, and a wrong score is the failure mode that kills an alerting product.",
+    "Alert delivery is undefined. There is no evidence on channel (email, mobile, desktop), timing, who triages before an MD sees it, or what happens after the click — the corpus stops at 'Click here to see our debt exposure and covenant thresholds.'",
+    "No base rates. The corpus never quantifies how often a target actually has prior internal coverage, how many covenant surprises the portfolio saw last year, or what a missed one cost — so the value of both themes 2 and 3 is asserted, not sized.",
+    "Competitive claims are desk research. Marcus never named DealCloud, Preqin, PitchBook, Bloomberg, or AlphaSense, or described using any of them; the competitor weaknesses in the PRD come from the product team, not from a user.",
+    "A live tension is unexamined: the PRD requires strict RBAC that makes Private Equity deal notes invisible to Liquid Strategies teams for compliance reasons, while theme 2 is a demand to surface exactly what other desks know. Nobody asked Marcus — himself a Private Credit and Liquid Strategies MD — which cross-desk context he is permitted to see. That boundary decides whether the flagship feature is usable at all."
+  ],
+  "source_count": 1
+}

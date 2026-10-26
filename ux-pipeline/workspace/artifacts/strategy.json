@@ -1,0 +1,194 @@
+{
+  "contract_version": "2.0",
+  "personas": [
+    {
+      "name": "Site Operator",
+      "type": "primary",
+      "context": "Watches the IPS dashboard for one site: the floor plan, its anchors, the store computer and the logged-in people moving through it. They are also the one who reaches in to recalibrate an anchor or push a firmware update. The RFQ only ever calls this person 'users', so the role is inferred. Who it really is (facility operations, airline IT, a field engineer or a demo presenter) is the first open question in Stage 1. The RFQ is shaped around a live demo, so the realistic hard case is this person doing everything with the client watching, on a site they may not have commissioned themselves. The floor plan is the main surface, so a keyboard-only or screen-reader operator still has to be able to answer 'who is near this anchor, and is it working' without the map.",
+      "goals": [
+        "Trust that the map shows exactly the people who are logged in and present right now, and nobody else",
+        "Know at a glance whether every anchor and the store computer is up",
+        "Be able to explain why a device is shown where it is before acting on it",
+        "Recalibrate an anchor or apply an update from the same place they spotted the problem"
+      ],
+      "frustrations": [
+        "'Progressively lose the connection' and 'eventually remove' have no timings, so a marker for someone who left looks the same as a marker for someone who is there",
+        "Checking one suspicious reading means cross-reading the map, the anchor's connected-phone list, the RSSI and a raw text stream",
+        "Can change configuration and push OTA updates to live hardware, but nothing says who is allowed to, or what happens to tracking while it runs",
+        "May be shown real identities on a dashboard the platform is meant to keep PII out of, with no rule for which dashboard that is"
+      ],
+      "quote": "Allow users to click on an anchor or store computer to view and modify configuration settings (e.g., for calibration, OTA updates).",
+      "grounded_in": [
+        "The map must show only who is really there, right now",
+        "Operators watch infrastructure health and reach in to change it",
+        "Operators check a position by reading the raw signal behind it",
+        "Identity is wanted on screen but kept out of the platform"
+      ]
+    },
+    {
+      "name": "Customer-Cloud Integrator",
+      "type": "secondary",
+      "context": "The engineer on the customer side who connects the customer cloud to the platform. In the RFQ's example this is a large global airline. They subscribe to the location stream for logged-in users, store it for their own analysis, host the remote configuration the SDK downloads at login, and run the customer's side of the PKI: the intermediate CA and the mapping from digital ID to real person. Their work is mostly invisible until it breaks. If the subscription drops or the config endpoint fails, nobody is tracked, and the first sign is likely an operator or employee noticing.",
+      "goals": [
+        "Receive a continuous stream of location updates for every logged-in user",
+        "Publish configuration that the SDK reliably picks up at login, since the app ships with no anchor data",
+        "Keep the mapping from digital ID to real identity entirely inside their own systems"
+      ],
+      "frustrations": [
+        "Nothing specifies how they would see that a subscription or a config endpoint has failed",
+        "They carry the identity mapping and a certificate authority, but the RFQ defines the PKI as architecture, with no process for issuing, rotating or revoking anything"
+      ],
+      "quote": "Host and serve remote configuration data for the SDK.",
+      "grounded_in": [
+        "The customer cloud subscribes and hosts config, and never feeds the platform",
+        "Identity is wanted on screen but kept out of the platform"
+      ]
+    },
+    {
+      "name": "Tracked Employee",
+      "type": "secondary",
+      "context": "Carries a phone with the customer's app and the embedded SDK, logs in to be tracked, logs out to stop, sometimes switches to a different phone, and walks in and out of anchor coverage. Every one of the RFQ's demo scenarios is an action this person takes. They are the subject of the system rather than its operator: the RFQ never describes what they see. Logout is the only control it gives them, and nothing says whether they know what is recorded about them or who sees it.",
+      "goals": [
+        "Be tracked only while logged in, and stop the moment they log out",
+        "Show up as themselves on whichever phone they are using, and never on two phones at once",
+        "Have their real identity stay with their employer, not with the vendor's platform"
+      ],
+      "frustrations": [
+        "On walking out of coverage they cannot tell whether they still appear on someone's dashboard, because removal is 'eventual'",
+        "Their identity can appear on a dashboard they never see, and logout is the only control they have"
+      ],
+      "quote": "A phone that logs out should immediately disappear from the dashboard.",
+      "grounded_in": [
+        "The map must show only who is really there, right now",
+        "Identity is wanted on screen but kept out of the platform"
+      ]
+    }
+  ],
+  "journey": [
+    {
+      "stage": "Bring the site up on the dashboard",
+      "actions": [
+        "Open the dashboard for a site and check that the floor plan matches the room",
+        "Check that every ceiling anchor is marked where it physically hangs",
+        "Confirm that the store computer is connected and sending"
+      ],
+      "emotion": "uncertain",
+      "friction": [
+        "The RFQ specifies one floor plan and one store computer, but its PKI implies several sites. How an operator picks or switches site is undefined",
+        "Anchor positions reach the app through customer-hosted config, but nothing says where the dashboard's anchor placement comes from or who keeps it correct"
+      ],
+      "dropoff_risk": "medium",
+      "emotion_basis": "Anticipated, not observed: Two inputs the operator depends on, which site they are looking at and where the anchor placement comes from, are undefined before anything is visible."
+    },
+    {
+      "stage": "Confirm every anchor is up",
+      "actions": [
+        "Scan anchor status: online/offline, health, firmware version",
+        "Read the store-computer status panel"
+      ],
+      "emotion": "watchful",
+      "friction": [
+        "'Health' is required but never defined, so a healthy and a degraded anchor may look the same",
+        "There is no alerting in scope (notifications are a future enhancement), so an anchor dropping offline is only noticed if someone is looking"
+      ],
+      "dropoff_risk": "medium",
+      "emotion_basis": "Anticipated, not observed: Status is specified, but 'health' is undefined and there is no alerting, so the operator has to keep looking."
+    },
+    {
+      "stage": "Watch people appear as they log in",
+      "actions": [
+        "A tracked employee logs in on their phone",
+        "Their marker appears on the floor plan with identity, coordinates and connected anchor",
+        "Two or more people are shown at once"
+      ],
+      "emotion": "reassured",
+      "friction": [
+        "The latency bound is garbled in the source ('between 1 seconds'), so nobody can say whether a slow appearance is a fault",
+        "Showing the logged-in user's identity conflicts with keeping PII out of the platform, and the RFQ does not say which dashboard may do it"
+      ],
+      "dropoff_risk": "low",
+      "emotion_basis": "Anticipated, not observed: This is the most fully specified moment in the RFQ (login, marker appears, several people at once) and the first visible proof that the system works."
+    },
+    {
+      "stage": "Follow someone across the floor",
+      "actions": [
+        "Watch a marker move as the person walks",
+        "See the connected anchor change as they pass from one anchor's range into the next"
+      ],
+      "emotion": "confident",
+      "friction": [
+        "The handover has to stay continuous within a latency bound that is itself unclear",
+        "No accuracy target is given, so 'roughly the right place' and 'wrong' have no line between them"
+      ],
+      "dropoff_risk": "low",
+      "emotion_basis": "Anticipated, not observed: Handover is specified as automatic and continuous. The latency and accuracy gaps only bite when something looks off, which is the next stage."
+    },
+    {
+      "stage": "Explain a marker that looks wrong",
+      "actions": [
+        "Open the device's detail: connected anchor, signal strength",
+        "Open the anchor's list of connected phones",
+        "Scan the raw streaming data panel for that device"
+      ],
+      "emotion": "doubtful",
+      "friction": [
+        "The evidence is split across the map, the anchor list, RSSI values and a raw text stream, and the operator has to assemble it",
+        "Nothing separates a bad reading for one device from an anchor that is drifting for everyone near it"
+      ],
+      "dropoff_risk": "high",
+      "emotion_basis": "Anticipated, not observed: The evidence exists (anchor, RSSI, phone list, raw stream) but has to be assembled by hand, and nothing separates a device fault from an anchor fault."
+    },
+    {
+      "stage": "Fix an anchor or push an update",
+      "actions": [
+        "Click an anchor or the store computer",
+        "View and modify its configuration for calibration",
+        "Start an OTA update"
+      ],
+      "emotion": "anxious",
+      "friction": [
+        "No permission model: the RFQ does not say who may change live hardware",
+        "Nothing says what happens to tracking on that anchor, or to the people currently connected to it, while a change or update is applied"
+      ],
+      "dropoff_risk": "high",
+      "emotion_basis": "Anticipated, not observed: This is the only stage that changes live hardware, with no permission model and no stated effect on the people currently being tracked."
+    },
+    {
+      "stage": "Account for someone who has gone",
+      "actions": [
+        "A person logs out, and their marker should vanish immediately",
+        "A person switches phones, and their marker should move to the new device",
+        "A person walks out of coverage, and their marker should fade and then be removed"
+      ],
+      "emotion": "unsure",
+      "friction": [
+        "'Progressively' and 'eventually' have no timings, so stale and live markers are indistinguishable",
+        "During a device switch nothing rules out a moment with two markers, or none, for the same person"
+      ],
+      "dropoff_risk": "medium",
+      "emotion_basis": "Anticipated, not observed: Logout has a rule ('immediately'); leaving coverage does not ('progressively', 'eventually'), so one of the three exits is undefined."
+    }
+  ],
+  "hmw_statements": [
+    {
+      "statement": "How might we let an operator see who is where on the floor without the vendor's platform ever holding who that person is?",
+      "derived_from": "Watch people appear as they log in: showing the logged-in user's identity conflicts with keeping PII out of the platform (theme: Identity is wanted on screen but kept out of the platform)"
+    },
+    {
+      "statement": "How might we make it unmistakable whether a person on the map is present now, fading out of range, or already gone?",
+      "derived_from": "Account for someone who has gone: 'progressively' and 'eventually' have no timings, so stale and live markers are indistinguishable (theme: The map must show only who is really there, right now)"
+    },
+    {
+      "statement": "How might we help an operator tell a bad reading for one person from a failing anchor before they act on either?",
+      "derived_from": "Explain a marker that looks wrong: evidence split across map, anchor list, RSSI and raw stream; nothing separates a bad reading from a drifting anchor (themes: Operators check a position by reading the raw signal behind it; Operators watch infrastructure health and reach in to change it)"
+    },
+    {
+      "statement": "How might we give an operator confidence that changing a live anchor will not silently interrupt tracking for the people on it?",
+      "derived_from": "Fix an anchor or push an update: no permission model, and the effect on tracking during a change or OTA update is unspecified (theme: Operators watch infrastructure health and reach in to change it)"
+    },
+    {
+      "statement": "How might we let an integrator learn that the location stream or the SDK config feed has stopped before anyone on the floor notices tracking is gone?",
+      "derived_from": "Customer-Cloud Integrator frustration: nothing specifies how a failed subscription or config endpoint becomes visible (theme: The customer cloud subscribes and hosts config, and never feeds the platform)"
+    }
+  ]
+}

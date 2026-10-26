@@ -1,0 +1,198 @@
+{
+  "selected_direction": "The Digital Market",
+  "target_platform": "Android",
+  "sitemap": [
+    {"screen": "The Market", "path": "/", "children": ["This Week's Picks", "Category Browse", "Producer Profile", "Your GreenBasket Story"]},
+    {"screen": "This Week's Picks", "path": "/picks", "children": ["Product Detail"]},
+    {"screen": "Category Browse", "path": "/browse/:category", "children": ["Product Detail", "Producer Profile"]},
+    {"screen": "Producer Profile", "path": "/producer/:slug", "children": ["Product Detail"]},
+    {"screen": "Product Detail", "path": "/product/:slug", "children": ["Basket & Checkout"]},
+    {"screen": "Basket & Checkout", "path": "/basket", "children": ["Order Impact Receipt"]},
+    {"screen": "Order Impact Receipt", "path": "/orders/:id/impact", "children": ["Your GreenBasket Story"]},
+    {"screen": "Your GreenBasket Story", "path": "/story", "children": []}
+  ],
+  "screens": [
+    {
+      "screen_name": "The Market",
+      "purpose": "Open the app into a curated seasonal market: what is good right now, which producers are featured, and a fast lane back into a known order.",
+      "components": ["SL-Nav", "SL-Card", "SL-Tag", "SL-Button", "SL-Banner"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav global — inverted --sl-void surface, --sl-paper text, --sl-rule-heavy bottom",
+        "Hero marquee — --sl-void band, --sl-type-display seasonal headline, one SL-Button primary in --sl-signal, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Banner info — delivery cutoff for the week, --sl-type-meta, --sl-space-8 below",
+        "Section THIS WEEK'S PICKS — --sl-type-h2 label, SL-Card poster ×3 with full-bleed image slot, --sl-type-h3 product name, SL-Tag count producer credit, --sl-space-6 gutter",
+        "Section FEATURED PRODUCERS — --sl-type-h2 label, SL-Card list-item ×3 with --sl-type-body one-line story, --sl-rule-hair between, SL-Button ghost READ STORY",
+        "Section YOUR REGULARS — --sl-type-h2 label, SL-Card data compact list, SL-Button ghost ADD ALL, --sl-space-16 above"
+      ],
+      "states": {
+        "empty": "No seasonal edit is published yet. Browse all categories.",
+        "loading": "Loading this week's market.",
+        "error": "The market did not load. Pull down to retry."
+      },
+      "microcopy": {"cta_primary": "START THIS WEEK"}
+    },
+    {
+      "screen_name": "This Week's Picks",
+      "purpose": "Show the full curated seasonal selection with the reasoning behind each pick.",
+      "components": ["SL-Nav", "SL-Card", "SL-Tag", "SL-Button"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — The Market / This Week's Picks, --sl-type-meta",
+        "Hero band — --sl-void surface, --sl-type-h1 title, --sl-type-body curator note, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Card poster stack — one per pick, full-bleed image slot, --sl-type-h3 name, --sl-type-meta WHY THIS WEEK label with --sl-type-body rationale, SL-Tag filter for seasonality, --sl-space-12 between cards",
+        "SL-Button primary ADD TO BASKET per card in --sl-signal, SL-Button ghost VIEW PRODUCER beneath it"
+      ],
+      "states": {
+        "empty": "No picks are published this week. Browse all categories.",
+        "loading": "Loading this week's picks.",
+        "error": "Picks did not load. Retry."
+      },
+      "microcopy": {"cta_primary": "ADD TO BASKET"}
+    },
+    {
+      "screen_name": "Category Browse",
+      "purpose": "Browse a single category as a market aisle, with the producer behind each product surfaced inline rather than hidden.",
+      "components": ["SL-Nav", "SL-Input", "SL-Card", "SL-Tag", "SL-Button"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — The Market / category name, --sl-type-meta",
+        "SL-Input search — pinned top, --sl-rule-base underline, --sl-type-body placeholder",
+        "SL-Tag filter row — seasonality and producer region, --sl-space-2 gap, horizontal scroll",
+        "Hero band — --sl-void surface, --sl-type-h1 category name, --sl-type-body aisle intro, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Card list-item grid — --sl-space-6 gutter, image slot, --sl-type-h3 product, producer name as SL-Button ghost, --sl-type-body price",
+        "SL-Card poster interstitial every sixth item — a featured producer story, --sl-type-h2 producer name, SL-Button ghost READ STORY"
+      ],
+      "states": {
+        "empty": "Nothing in this category matches those filters. Clear filters.",
+        "loading": "Loading this category.",
+        "error": "This category did not load. Retry."
+      },
+      "microcopy": {"cta_primary": "ADD TO BASKET"}
+    },
+    {
+      "screen_name": "Producer Profile",
+      "purpose": "Tell one producer's story in full and let a shopper buy their range or share the page.",
+      "components": ["SL-Nav", "SL-Card", "SL-Tag", "SL-Button", "SL-Banner"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — The Market / Producers / name, --sl-type-meta",
+        "Hero band — --sl-void surface, full-bleed farm image slot, --sl-type-display producer name, --sl-type-meta region and PRODUCER SINCE year, --sl-rule-heavy bottom",
+        "SL-Button ghost SHARE PRODUCER — pinned to the hero top-right",
+        "Story body — --sl-type-h2 THE STORY, --sl-type-body multi-paragraph text, --sl-space-8 rhythm between paragraphs",
+        "SL-Banner success — count of times the shopper's orders have supported this producer, --sl-type-meta",
+        "Section THEIR RANGE — --sl-type-h2 label, SL-Card list-item grid, --sl-space-6 gutter, SL-Button primary ADD TO BASKET per item in --sl-signal"
+      ],
+      "states": {
+        "empty": "This producer has no products listed right now. Read their story.",
+        "loading": "Loading this producer.",
+        "error": "This producer page did not load. Retry."
+      },
+      "microcopy": {"cta_primary": "SHOP THIS PRODUCER"}
+    },
+    {
+      "screen_name": "Product Detail",
+      "purpose": "Present a single product with its producer, its seasonality, and what buying it contributes.",
+      "components": ["SL-Nav", "SL-Card", "SL-Tag", "SL-Button"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — trail back to the category, --sl-type-meta",
+        "Hero band — --sl-void surface, full-bleed product image slot, --sl-type-h1 product name, --sl-type-body price, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Button primary ADD TO BASKET — --sl-signal, full-width, --sl-space-8 below the hero",
+        "SL-Card data — FROM producer name as SL-Button ghost, SL-Tag status reading IN SEASON NOW, --sl-type-meta food-miles line",
+        "SL-Card data — WHAT THIS ADDS, impact contribution written in plain --sl-type-body language",
+        "Section MORE FROM THIS PRODUCER — --sl-type-h2 label, SL-Card list-item row, --sl-space-6 gutter"
+      ],
+      "states": {
+        "empty": "This product is out of season and unavailable. See what is in season now.",
+        "loading": "Loading this product.",
+        "error": "This product did not load. Retry."
+      },
+      "microcopy": {"cta_primary": "ADD TO BASKET"}
+    },
+    {
+      "screen_name": "Basket & Checkout",
+      "purpose": "Review the basket, choose a delivery slot, and confirm the order.",
+      "components": ["SL-Nav", "SL-Table", "SL-Input", "SL-Tag", "SL-Button", "SL-Banner"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — The Market / Basket, --sl-type-meta",
+        "Hero band — --sl-void surface, --sl-type-h1 YOUR BASKET, item count in --sl-type-meta, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Table default — item / producer / quantity / price columns, --sl-rule-hair row rules, quantity cell as SL-Input select",
+        "SL-Banner info — link to set how substitutions are handled, --sl-type-meta",
+        "SL-Input select — delivery day then a morning or afternoon window, --sl-rule-base underline, --sl-space-8 above",
+        "SL-Table compact — subtotal / delivery / total rows, --sl-type-h3 on the total row",
+        "SL-Button primary PLACE ORDER — --sl-signal, full-width, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "Your basket is empty. Go to this week's picks.",
+        "loading": "Loading your basket.",
+        "error": "Checkout did not load. Retry."
+      },
+      "microcopy": {"cta_primary": "PLACE ORDER"}
+    },
+    {
+      "screen_name": "Order Impact Receipt",
+      "purpose": "After an order is placed, tell the shopper in plain language what that order did.",
+      "components": ["SL-Nav", "SL-Card", "SL-Tag", "SL-Button", "SL-Banner"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — Orders / order id / Impact, --sl-type-meta",
+        "Hero band — --sl-void surface, --sl-type-display THIS ORDER, --sl-type-body confirmation line and delivery window, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Card data ×3 — one plain statement each: local producers supported, kilograms of produce waste prevented, average miles travelled; --sl-type-h2 figure over --sl-type-meta label, --sl-space-6 gutter",
+        "SL-Card list-item — the producers in this order, each name an SL-Button ghost through to Producer Profile",
+        "SL-Button ghost SHARE THIS ORDER — --sl-space-8 above",
+        "SL-Banner success — added to your GreenBasket story, with SL-Button ghost VIEW STORY"
+      ],
+      "states": {
+        "empty": "Impact for this order is not calculated yet. Check back after delivery.",
+        "loading": "Loading this order's impact.",
+        "error": "Order impact did not load. Retry."
+      },
+      "microcopy": {"cta_primary": "VIEW YOUR STORY"}
+    },
+    {
+      "screen_name": "Your GreenBasket Story",
+      "purpose": "Show the shopper their cumulative impact over time as one evolving narrative they can share.",
+      "components": ["SL-Nav", "SL-Card", "SL-Table", "SL-Tag", "SL-Button"],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav global — inverted --sl-void surface, --sl-rule-heavy bottom",
+        "Hero marquee — --sl-void surface, --sl-type-display SINCE month and year, --sl-type-h2 one-line running summary, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Card data ×3 — cumulative totals: producers supported, food miles avoided, produce waste prevented; --sl-type-display figure over --sl-type-meta label",
+        "SL-Table default — month / orders / producers / miles columns, --sl-rule-hair row rules",
+        "Section PRODUCERS YOU'VE BACKED — --sl-type-h2 label, SL-Tag count grid of producer names, --sl-space-2 gap",
+        "SL-Button primary SHARE YOUR STORY — --sl-signal, full-width, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "No orders yet. Your story starts with your first basket.",
+        "loading": "Loading your story.",
+        "error": "Your story did not load. Retry."
+      },
+      "microcopy": {"cta_primary": "SHARE YOUR STORY"}
+    }
+  ],
+  "design_system_gaps": [
+    {
+      "need": "Long-form editorial layout for producer stories — flowing multi-paragraph text with pull quotes and inline photography",
+      "nearest_component": "SL-Card",
+      "why_insufficient": "SL-Card is a bounded unit with a single image slot and one heading; a full producer narrative has to be faked as a stack of cards, which breaks reading flow and offers no in-body media."
+    },
+    {
+      "need": "Seasonal availability calendar — an at-a-glance month-by-month strip showing when a product or category is in season",
+      "nearest_component": "SL-Table",
+      "why_insufficient": "SL-Table carries the data but not the scannable calendar form; SL-DS has no temporal or timeline component, so seasonality stays text-only."
+    },
+    {
+      "need": "Share composition — a preview of the shareable card or link generated for a producer or an order before it is sent",
+      "nearest_component": "SL-Modal",
+      "why_insufficient": "SL-Modal sheet is a blocking surface for a single decision, not a compose-and-preview surface; no component defines the layout of the shared artifact itself."
+    },
+    {
+      "need": "Sequential image gallery for producer and product photography",
+      "nearest_component": "SL-Card",
+      "why_insufficient": "SL-Card poster has one full-bleed slot and SL-DS forbids hover animation with no defined swipe-gallery pattern, so multiple photos cannot be browsed in sequence."
+    }
+  ],
+  "design_tokens_applied": true
+}

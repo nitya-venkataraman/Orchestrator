@@ -1,0 +1,41 @@
+{
+  "run_id": "nexusintel-20260909-211945",
+  "slug": "nexusintel",
+  "raw_inputs": [
+    "/Users/nitya_venkataraman/Documents/Product Brief_ NexusIntel (AI-Driven Cross-Asset Sourcing & Portfolio Analytics).md"
+  ],
+  "source_count": 1,
+  "selected_direction": null,
+  "target_surface": null,
+  "mobile_platform": null,
+  "design_system_input": null,
+  "stages": {
+    "discovery-synthesis": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "judge_score": 4.75
+    },
+    "strategy-definition": {
+      "status": "AWAITING_APPROVAL",
+      "attempt": 0,
+      "revision_feedback": null
+    },
+    "ideation": {
+      "status": "PENDING",
+      "attempt": 0,
+      "revision_feedback": null
+    },
+    "wireframe": {
+      "status": "PENDING",
+      "attempt": 0,
+      "revision_feedback": null
+    }
+  },
+  "status": "RUNNING",
+  "started_at": "2026-09-09T15:49:45Z",
+  "completed_at": null,
+  "carried_constraints": [
+    "RBAC vs knowledge-surfacing: PRD mandates PE deal notes be invisible to Liquid Strategies teams; theme 2 demands cross-desk context be surfaced. Stage 2 HMWs and Stage 3 directions must address this boundary, not ignore it."
+  ]
+}

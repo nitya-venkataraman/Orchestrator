@@ -1,0 +1,166 @@
+{
+  "personas": [
+    {
+      "name": "The Sunday-night reorder",
+      "type": "primary",
+      "context": "45, parent of young kids. Runs a weekly Ocado main shop and treats GreenBasket as a veg-and-bakery top-up, ordering late on Sunday after the kids are asleep — the only free time in his week. Very low tolerance for app friction; has already cancelled GreenBasket once.",
+      "goals": [
+        "Recreate last week's basket with a few swaps in a couple of taps, not eleven minutes of searching",
+        "Know whether delivery lands morning or afternoon so it fits around the household's week",
+        "Keep buying the better-quality produce without the ordering feeling like work",
+        "Never be surprised by what's in the box on delivery day"
+      ],
+      "frustrations": [
+        "No reorder or buy-again — every staple is searched and re-added one at a time each week",
+        "Out-of-stock items are swapped silently, discovered only when unpacking",
+        "'Monday' is the whole delivery window; no AM/PM and no update when it slips",
+        "One more bad order and he's back to Ocado full-time"
+      ],
+      "quote": "I timed it last Sunday. Eleven minutes. Eleven minutes to order essentially the same things I ordered the week before.",
+      "grounded_in": [
+        "Weekly reorder rebuilt by hand",
+        "Silent substitutions with no control",
+        "Delivery timing left unsaid",
+        "GreenBasket is the side shop"
+      ]
+    },
+    {
+      "name": "The market-stall seeker",
+      "type": "secondary",
+      "context": "31, works in marketing at a B Corp. Shops across GreenBasket, Abel & Cole and Sainsbury's and has built a spreadsheet to compare them. Wants online grocery to feel like her Saturday trip to Broadway Market — seasonality, producer stories, a sense of discovery — and would consolidate onto GreenBasket if the range allowed.",
+      "goals": [
+        "Be inspired while browsing, not just work through a list",
+        "See and share the producers and stories behind the food",
+        "Feel a personal sustainability impact that builds over time",
+        "Consolidate onto one grocery service and drop the comparison spreadsheet"
+      ],
+      "frustrations": [
+        "Browse is an unsorted grid with no seasonal or editorial layer; search is the only reliable path",
+        "Producer stories are buried in the blog and there's nothing shareable",
+        "The Impact Score is a context-free number that makes her feel nothing",
+        "Thin staples range keeps her tied to other retailers"
+      ],
+      "quote": "it was like someone had built a gorgeous storefront and then put a spreadsheet inside it.",
+      "grounded_in": [
+        "Storefront with no editorial layer",
+        "Impact Score means nothing",
+        "GreenBasket is the side shop"
+      ]
+    }
+  ],
+  "journey": [
+    {
+      "stage": "Remembering to order",
+      "actions": [
+        "Realise GreenBasket hasn't been done this week",
+        "Open the app late on Sunday once the kids are asleep"
+      ],
+      "emotion": "reluctant",
+      "friction": [
+        "No booked slot or recurring order, so it slips a day or more",
+        "Competes with the only free hour of the week"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Rebuilding last week's basket",
+      "actions": [
+        "Look for order history, give up digging for it",
+        "Search each staple individually and add it to the cart"
+      ],
+      "emotion": "exasperated",
+      "friction": [
+        "No reorder, buy-again, or 'my regulars' list",
+        "Roughly eleven minutes to reassemble a near-identical order"
+      ],
+      "dropoff_risk": "high"
+    },
+    {
+      "stage": "Filling the gaps elsewhere",
+      "actions": [
+        "Note the staples GreenBasket doesn't carry",
+        "Plan a separate Ocado or Sainsbury's order for the rest"
+      ],
+      "emotion": "resigned",
+      "friction": [
+        "Thin range means GreenBasket can only ever be a partial shop",
+        "Managing a split basket across two or three retailers"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Looking for something new",
+      "actions": [
+        "Check the homepage for anything changed",
+        "Scroll the category grid, then fall back to search"
+      ],
+      "emotion": "curious",
+      "friction": [
+        "No seasonal or editorial layer; the grid is the same every week",
+        "Producer stories are hidden in the blog, not in the browse flow"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Checking out and picking a slot",
+      "actions": [
+        "Review the cart",
+        "Choose a delivery day and place the order"
+      ],
+      "emotion": "uneasy",
+      "friction": [
+        "Delivery is a day only, no morning/afternoon choice",
+        "No visibility into how a missing item will be handled"
+      ],
+      "dropoff_risk": "low"
+    },
+    {
+      "stage": "Waiting for delivery",
+      "actions": [
+        "Track the order",
+        "Re-plan meals if it looks late"
+      ],
+      "emotion": "anxious",
+      "friction": [
+        "No proactive message when an order slips — up to 36 hours of silence",
+        "ETA never narrows from the original day"
+      ],
+      "dropoff_risk": "medium"
+    },
+    {
+      "stage": "Unpacking the order",
+      "actions": [
+        "Unpack and notice any substitutions",
+        "Glance at the Impact Score"
+      ],
+      "emotion": "torn",
+      "friction": [
+        "Silent swaps — drumsticks for thighs, sliced white for sourdough — undercut real delight in the produce quality",
+        "The Impact Score is a number with no context, so the order's benefit is invisible"
+      ],
+      "dropoff_risk": "high"
+    }
+  ],
+  "hmw_statements": [
+    {
+      "statement": "How might we let a returning shopper recreate their usual order without hunting down each item?",
+      "derived_from": "Rebuilding last week's basket"
+    },
+    {
+      "statement": "How might we keep shoppers in control when something they wanted turns out to be unavailable?",
+      "derived_from": "Silent substitutions with no control"
+    },
+    {
+      "statement": "How might we make a delivery's timing predictable enough to plan a household around?",
+      "derived_from": "Delivery timing left unsaid"
+    },
+    {
+      "statement": "How might we help shoppers feel what their order achieved without asking them to interpret a score?",
+      "derived_from": "Impact Score means nothing"
+    },
+    {
+      "statement": "How might we make browsing feel like discovering a market rather than scanning a list?",
+      "derived_from": "Storefront with no editorial layer"
+    }
+  ]
+}

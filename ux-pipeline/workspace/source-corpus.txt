@@ -1,0 +1,181 @@
+SOURCE: Initial Cloud RFP.pdf (9 pages, marked CONFIDENTIAL)
+Transcribed from the PDF text layer on 2026-10-15. Three text-layer ligature glitches
+were corrected against the page images: "O9line" -> "Offline", "di9erent" -> "different",
+"Di>erent" -> "Different". Text inside diagrams is transcribed separately and labelled.
+Personal names shown in the p.6 floor-plan mock-up are demo placeholders and are omitted.
+
+=== p.1 ===
+Request for Quote (RFQ)
+IPS (Indoor Positioning System) MVP – Cloud Components
+
+1. Introduction and Project Overview
+Goal
+The IPS MVP is designed to provide an indoor tracking solution for people within a company. The system leverages ceiling-mounted anchors, a mobile app with embedded tokens, a site (store) computer, and a visualization dashboard. This RFQ covers the development of all cloud components of the solution, including both the central DENSO IPS Cloud and an example Customer Cloud implementation. (Note: The Customer Cloud example will be based on a major global airline customer)
+
+High-Level System Components
+- Anchors (Ceiling-Mounted): Devices installed in the physical environment.
+- Devices with Tracking Tokens: Mobile phones running a dedicated app with the DENSO SDK.
+- Site (Store) Computer: Processes BLE signals from anchors and calculates real-time positions.
+- Cloud Components:
+  - DENSO IPS Cloud: Ingests data from the store computer, monitors anchor status, and facilitates remote configuration.
+  - IPS Dashboard: Visualizes location data, anchor health, and device connectivity.
+  - Customer Cloud: Hosts remote configuration data for the SDK and subscribes to streaming events from the IPS Cloud.
+
+=== p.2 diagram: "B. ID Management" ===
+To preserve PII for clients, the DENSO IPS system obtains an anonymous digital identity from the client cloud. This method ensures PII is contained within the client cloud and kept out of the IPS system.
+1) The DENSO Cloud Services enables the Client's Cloud to ingest:
+- Real-time online/offline presence information for devices in supported locations
+- Real-time location of devices with Streaming APIs
+- Historical location of devices in supported locations
+2) A Public Key Infrastructure (PKI) is provided to issue certificate based Digital Identity keys to IPS infrastructure and the clients users, enabling mutual authentication and secure communication between devices and IPS infrastructure
+3) PII only exists inside the client's systems, never accessible by the IPS platform. Mapping between User Data and Digital ID can only be performed by Client servers.
+4) Customizations may be possible to run services on Client infrastructure (requires further discussion)
+The DENSO IPS Cloud offers: Operation Tools — PKI Root of Trust; Store Historical Data; Integration with SaaS Partners. Administration Tools — Build Dashboards; Assess System Health; Account Management.
+Diagram labels: Client On-Prem; Client Cloud (User Info; DigitalID to Real ID Mapping / Digital ID Signing); DENSO Cloud / IPS Cloud (Customer Config Info; Online/Offline Presence Data for Device; Location Database; Real-Time Data Streaming API; Public Key Infrastructure); On-Prem Computer (Calculated Location of User Device; Real-Time Data Streaming API); Network Equipment; IPS Sensor Module; Bluetooth Devices; Apps (DENSO SDK; IPS Digital Identity (no PII)).
+
+=== p.2 ===
+- Asset Tag Tracking: The MVP will also allow the tracking of non Phone assets like Bluetooth assets, however this will be covered in a later update
+
+Target Market
+Businesses that operate within a contained space (e.g., manufacturing, airline, retail) and require accurate people tracking for operational insights and enhanced user experiences.
+
+2. Objectives
+- Core Value Demonstration:
+  - Accurately locate a mobile device indoors using ceiling-mounted anchors.
+  - Associate location data with a user’s identity (via app login) for personalized services and analytics.
+  - Provide a visual dashboard that shows real-time tracking and system status.
+- Essential Architecture:
+  - Integration of Anchors, Store Computer, Cloud Components, and Dashboard/App.
+  - Basic identity handling within the mobile app and back-end to link a user’s identity with their location.
+
+=== p.3 ===
+- Room for Expansion:
+  - Future enhancements may include advanced analytics, notifications, improved security measures, and additional compliance features.
+    - E.g. SOC2 Compliance
+
+3. Scope of Work
+This RFQ covers the design and development of the cloud components only. The following components are out-of-scope and will be developed independently:
+- DENSO SDK
+- Store Computer Software
+- Anchors Hardware and Firmware
+
+Cloud Components to be Developed
+A. DENSO IPS Cloud
+- Data Ingestion:
+  - Must receive streaming coordinate data exclusively from the Store Computer.
+  - Data includes timestamp, user/device ID, (x, y, z) coordinates
+- Remote Monitoring:
+  - Display real-time anchor statuses (Online/Offline, health, firmware version).
+  - Provide a system status panel to show the connectivity status of the store computer.
+- Data Streaming:
+  - Implement a streaming API that allows customer clouds to subscribe to location updates of logged-in users.
+- Authentication & Security:
+  - Integrate a Public Key Infrastructure (PKI) authentication scheme.
+  - Use root and intermediary certificates to enable the DENSO IPS Cloud and Customer Cloud to exchange signed tokens with the SDK via the customer cloud.
+
+=== p.4 diagram: PKI hierarchy ===
+Customer Cloud (Definitely Not Aliens Co - DNA Co): Customer Digital Key Database ([U_pub_a] -> Person A; [U_pub_b] -> Person B; [U_pub_z] -> Person Z); Customer Intermediate CA (DNA Co Intermediate Cert Public Key [Ci_pub] - Signed by [J]; DNA Co Intermediate Cert Private Key [Ci_priv]).
+IPS Cloud (undisclosed location): Root CA (IPS Root Cert Public Key [J_pub]; IPS Root Cert Private Key [J_priv]); Site Intermediate CA (DNA Co Site Intermediate Cert [SI_pub] Signed by [J]; DNA Co Site Private Key [SI_priv]).
+End User (Person A) - SDK: SDK Secure Storage (Person A Digital ID Private Key [U_priv]); SDK General Storage (Person A Digital ID Public Key [U_pub] signed by [CI]; Local Copy of [J_pub] (updated periodically when online)).
+IPS Site (Area 50): Site Secure Storage (Area 50 Site Certificate Private Key [S_priv]); Area 50 Site Certificate [S] Signed by [SI].
+
+=== p.4 ===
+- Remote Configuration:
+  - Provide endpoints for remote configuration data that the Customer Cloud will host for the SDK.
+
+B. Customer Cloud (Example Implementation)
+- Use Case Example:
+  - Designed for a major airline environment (stand-in example for a large global carrier,
+- Data Subscription & Processing:
+  - Subscribe to the streaming events from the DENSO IPS Cloud for all logged-in users.
+  - Ingest and store location and anchor data for further analysis.
+- Remote Configuration Hosting:
+  - Host and serve remote configuration data for the SDK.
+- Integration with Authentication:
+  - Support the PKI-based authentication, enabling secure token exchange between the DENSO IPS Cloud and the SDK.
+
+=== p.5 ===
+- Dashboard Integration:
+  - Provide an example dashboard that visualizes the physical layout (floor plan), anchor positions, connection statuses, and live tracking data for logged-in users.
+  - Allow users to view detailed telemetry including anchor-to-device connections and RSSI values.
+
+=== p.6 diagram: floor-plan mock-up ===
+"DN-20 Atrium" — a rectangular room with a Sensor marker at each of the four corners, a Front Door and a Hallway Door, and three circular person markers labelled with first names.
+
+=== p.6 ===
+4. Detailed Technical Requirements
+Data Flow & Latency
+- Real-Time Location Updates:
+  - The system must display updates with an overall latency between 1 seconds as a phone moves through the physical space.
+  - When a phone switches between anchors, the location updates should remain continuous and within the defined latency.
+
+Dashboard and Visualization Requirements
+- Physical Space Representation:
+  - The dashboard must display a floor plan with clear markers for each ceiling-mounted anchor.
+
+=== p.7 ===
+- Anchor and Store Computer Status:
+  - Display real-time connection status and health for each anchor and the store computer.
+  - Allow users to click on an anchor or store computer to view and modify configuration settings (e.g., for calibration, OTA updates).
+- Device Tracking:
+  - Only logged-in devices (phones) should be tracked and displayed.
+  - For each device, show the logged-in user’s identity, current coordinates, and details of the connected anchor (including signal strength).
+  - Each anchor should list all the phones currently connected to it.
+- Streaming Data View:
+  - Provide a text-based overlay or side panel showing raw streaming data (timestamp, user/device ID, coordinates, anchor details).
+
+User Authentication & Identity
+- Mobile App Behavior:
+  - The demo app must include a simple login (e.g., “User: JohnDoe / Password: demo123”) to map the device to a user identity.
+  - The app should only broadcast BLE signals when a user is logged in.
+  - On logout, the user’s device should no longer appear on the dashboard.
+  - If a user logs in on a different device after logging out on one, the system must accurately reflect the change.
+- Token Exchange:
+  - Authentication between the DENSO IPS Cloud, Customer Cloud, and SDK must be based on PKI infrastructure, enabling the exchange of signed tokens.
+
+Data Ingestion
+- Store Computer Interface:
+  - The IPS Cloud must ingest data solely from the store computer, ensuring the SDK does not send data directly to the cloud.
+
+=== p.8 ===
+- Streaming API:
+  - Implement a robust streaming API for delivering real-time coordinate data to the customer cloud.
+
+5. Demo Experience Requirements
+A. User Authentication in the Demo App
+- Login Process:
+  - A demo mobile app shows a login screen (e.g., “User: JohnDoe / Password: demo123”).
+  - Upon successful authentication, the app displays a welcome message and initializes the DENSO SDK.
+- Configuration Loading:
+  - The app downloads configuration data (including anchor details) from a central configuration server.
+  - No pre-loaded anchor information exists on the app.
+
+B. Phone Movement and Real-Time Data Capture
+- Real-Time BLE Detection & Triangulation:
+  - As a logged-in phone moves through the demo area, ceiling-mounted anchors capture BLE packets and forward data to the store computer.
+  - The store computer triangulates the phone’s position (using methods such as Angle of Arrival) and uploads data to the DENSO IPS Cloud.
+- Automatic Anchor Handover:
+  - When a phone moves out of range of one anchor, it should automatically connect to the next available anchor, maintaining continuous location tracking.
+
+C. Visualization Dashboard Flow
+- Dashboard Features:
+  - Displays a floor plan with the physical locations of anchors.
+
+=== p.9 ===
+  - Shows real-time connection status of anchors and the store computer.
+  - Displays each logged-in phone’s location, including detailed telemetry (user ID, anchor connection, signal strength).
+  - Provides a data view that streams raw coordinate data.
+- User Interaction:
+  - Users can click on an anchor or store computer icon to access configuration settings for calibration or OTA updates.
+
+D. Additional Demo Scenarios
+1. Multiple Phones with Different User IDs:
+   - Two or more phones logged in with unique user IDs (e.g., “User A” and “User B”) should be displayed simultaneously on the dashboard.
+2. User Logout:
+   - A phone that logs out should immediately disappear from the dashboard.
+3. User Login Reconnection:
+   - A logged-out phone that logs back in should reappear, with updated position data.
+4. Single User Switching Devices:
+   - If a user logs out from one device and logs in on another, the system must reflect the change by removing the marker from the first device and showing it on the new device.
+5. User Moves Out of Range:
+   - When a logged-in user exits the anchor coverage area, the system should progressively lose the connection and eventually remove the user’s marker from the dashboard. Returning within range should restore the tracking data.

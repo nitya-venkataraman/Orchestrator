@@ -1,0 +1,63 @@
+{
+  "run_id": "greenbasket-20260907-211029",
+  "slug": "greenbasket",
+  "raw_inputs": [
+    "/Users/nitya_venkataraman/Documents/Greenbasket/Interview_Transcript_Sarah_Mitchell.docx",
+    "/Users/nitya_venkataraman/Documents/Greenbasket/Interview_Transcript_Mark_Thompson.docx"
+  ],
+  "source_count": 2,
+  "selected_direction": "The Digital Market",
+  "stages": {
+    "discovery-synthesis": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "f59468a94512",
+      "judge_score": 0.88,
+      "judge_breakdown": {
+        "evidence_grounding": 0.92,
+        "theme_distinctness": 0.83,
+        "signal_coverage": 0.87
+      }
+    },
+    "strategy-definition": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "708bfaf6ad84",
+      "judge_score": 0.89,
+      "judge_breakdown": {
+        "persona_grounding": 0.9,
+        "hmw_quality": 0.88,
+        "journey_realism": 0.89
+      }
+    },
+    "ideation": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "544d772c604a",
+      "judge_score": 0.89,
+      "judge_breakdown": {
+        "hmw_linkage": 0.95,
+        "rice_integrity": 0.82,
+        "direction_distinctness": 0.9
+      }
+    },
+    "wireframe": {
+      "status": "APPROVED",
+      "attempt": 0,
+      "revision_feedback": null,
+      "input_hash": "97a1cd2606f5",
+      "judge_score": 0.91,
+      "judge_breakdown": {
+        "ds_compliance": 0.95,
+        "ia_coherence": 0.86,
+        "hierarchy_clarity": 0.88
+      }
+    }
+  },
+  "status": "COMPLETE",
+  "target_platform": "Android",
+  "completed_at": "2026-09-07T16:50:09.458245"
+}

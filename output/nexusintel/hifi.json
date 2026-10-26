@@ -1,0 +1,1007 @@
+{
+  "contract_version": "2.0",
+  "figma_wireframe_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=3-2",
+  "figma_design_system_url": "https://www.figma.com/design/tyyB9P7KCqID40O6pe3lCT/KKR-Internal-Design-System",
+  "hifi_figma_page_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=10-2",
+  "hifi_screens": [
+    {
+      "name": "01 - Screening Queue",
+      "wireframe_node_id": "3:3",
+      "figma_node_id": "12:1268",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-1268",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "01 - Screening Queue / loading",
+      "wireframe_node_id": "3:3",
+      "figma_node_id": "17:1178",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-1178",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Bar Loader",
+        "Button",
+        "Header Section",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "01 - Screening Queue / empty",
+      "wireframe_node_id": "3:3",
+      "figma_node_id": "17:1307",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-1307",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "01 - Screening Queue / error",
+      "wireframe_node_id": "3:3",
+      "figma_node_id": "17:1403",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-1403",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "01 - Screening Queue / success",
+      "wireframe_node_id": "3:3",
+      "figma_node_id": "17:1499",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-1499",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Toast"
+      ]
+    },
+    {
+      "name": "01 - Screening Queue / disabled",
+      "wireframe_node_id": "3:3",
+      "figma_node_id": "17:1639",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-1639",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "02 - Precedent Search",
+      "wireframe_node_id": "3:52",
+      "figma_node_id": "12:1919",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-1919",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "02 - Precedent Search / loading",
+      "wireframe_node_id": "3:52",
+      "figma_node_id": "17:1855",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-1855",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Navigation Button",
+        "Progress",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "02 - Precedent Search / empty",
+      "wireframe_node_id": "3:52",
+      "figma_node_id": "17:1970",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-1970",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "02 - Precedent Search / error",
+      "wireframe_node_id": "3:52",
+      "figma_node_id": "17:2071",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-2071",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "02 - Precedent Search / success",
+      "wireframe_node_id": "3:52",
+      "figma_node_id": "17:2163",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-2163",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Toast"
+      ]
+    },
+    {
+      "name": "02 - Precedent Search / disabled",
+      "wireframe_node_id": "3:52",
+      "figma_node_id": "17:2234",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=17-2234",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "03 - Document Extraction",
+      "wireframe_node_id": "3:82",
+      "figma_node_id": "12:2032",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-2032",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "03 - Document Extraction / loading",
+      "wireframe_node_id": "3:82",
+      "figma_node_id": "18:1857",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-1857",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Navigation Button",
+        "Progress",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "03 - Document Extraction / empty",
+      "wireframe_node_id": "3:82",
+      "figma_node_id": "18:1948",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-1948",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "03 - Document Extraction / error",
+      "wireframe_node_id": "3:82",
+      "figma_node_id": "18:2058",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2058",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "03 - Document Extraction / success",
+      "wireframe_node_id": "3:82",
+      "figma_node_id": "18:2202",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2202",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Toast"
+      ]
+    },
+    {
+      "name": "03 - Document Extraction / disabled",
+      "wireframe_node_id": "3:82",
+      "figma_node_id": "18:2254",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2254",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "04 - Borrower Profile",
+      "wireframe_node_id": "4:2",
+      "figma_node_id": "12:2137",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-2137",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "04 - Borrower Profile / loading",
+      "wireframe_node_id": "4:2",
+      "figma_node_id": "18:2440",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2440",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Bar Loader",
+        "Button",
+        "Header Section",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "04 - Borrower Profile / empty",
+      "wireframe_node_id": "4:2",
+      "figma_node_id": "18:2605",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2605",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "04 - Borrower Profile / error",
+      "wireframe_node_id": "4:2",
+      "figma_node_id": "18:2722",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2722",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "04 - Borrower Profile / success",
+      "wireframe_node_id": "4:2",
+      "figma_node_id": "18:2881",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2881",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Toast"
+      ]
+    },
+    {
+      "name": "04 - Borrower Profile / disabled",
+      "wireframe_node_id": "4:2",
+      "figma_node_id": "18:2949",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=18-2949",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "05 - Corporate Structure",
+      "wireframe_node_id": "4:60",
+      "figma_node_id": "12:2242",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-2242",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "05 - Corporate Structure / loading",
+      "wireframe_node_id": "4:60",
+      "figma_node_id": "19:2478",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-2478",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Navigation Button",
+        "Progress",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "05 - Corporate Structure / empty",
+      "wireframe_node_id": "4:60",
+      "figma_node_id": "19:2592",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-2592",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "05 - Corporate Structure / error",
+      "wireframe_node_id": "4:60",
+      "figma_node_id": "19:2717",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-2717",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "05 - Corporate Structure / success",
+      "wireframe_node_id": "4:60",
+      "figma_node_id": "19:2904",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-2904",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Toast"
+      ]
+    },
+    {
+      "name": "05 - Corporate Structure / disabled",
+      "wireframe_node_id": "4:60",
+      "figma_node_id": "19:2972",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-2972",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "06 - Risk Review",
+      "wireframe_node_id": "4:110",
+      "figma_node_id": "12:2347",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-2347",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "06 - Risk Review / loading",
+      "wireframe_node_id": "4:110",
+      "figma_node_id": "19:3192",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-3192",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Bar Loader",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "06 - Risk Review / empty",
+      "wireframe_node_id": "4:110",
+      "figma_node_id": "19:3275",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-3275",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "06 - Risk Review / error",
+      "wireframe_node_id": "4:110",
+      "figma_node_id": "19:3370",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-3370",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "06 - Risk Review / success",
+      "wireframe_node_id": "4:110",
+      "figma_node_id": "19:3598",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-3598",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation",
+        "Toast"
+      ]
+    },
+    {
+      "name": "06 - Risk Review / disabled",
+      "wireframe_node_id": "4:110",
+      "figma_node_id": "19:3683",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=19-3683",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "KPI Card",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "07 - Portfolio Watch",
+      "wireframe_node_id": "5:6",
+      "figma_node_id": "12:2445",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-2445",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "07 - Portfolio Watch / loading",
+      "wireframe_node_id": "5:6",
+      "figma_node_id": "20:3051",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3051",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Bar Loader",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "07 - Portfolio Watch / empty",
+      "wireframe_node_id": "5:6",
+      "figma_node_id": "20:3143",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3143",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "07 - Portfolio Watch / error",
+      "wireframe_node_id": "5:6",
+      "figma_node_id": "20:3237",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3237",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "07 - Portfolio Watch / success",
+      "wireframe_node_id": "5:6",
+      "figma_node_id": "20:3415",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3415",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "07 - Portfolio Watch / disabled",
+      "wireframe_node_id": "5:6",
+      "figma_node_id": "20:3508",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3508",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "08 - Position Detail",
+      "wireframe_node_id": "5:74",
+      "figma_node_id": "12:2546",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=12-2546",
+      "breakpoint": "desktop",
+      "states": [
+        "default"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "08 - Position Detail / loading",
+      "wireframe_node_id": "5:74",
+      "figma_node_id": "20:3672",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3672",
+      "breakpoint": "desktop",
+      "states": [
+        "loading"
+      ],
+      "components_used": [
+        "Bar Loader",
+        "Button",
+        "Header Section",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "08 - Position Detail / empty",
+      "wireframe_node_id": "5:74",
+      "figma_node_id": "20:3781",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3781",
+      "breakpoint": "desktop",
+      "states": [
+        "empty"
+      ],
+      "components_used": [
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Navigation Button",
+        "Search Bar",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "08 - Position Detail / error",
+      "wireframe_node_id": "5:74",
+      "figma_node_id": "20:3886",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-3886",
+      "breakpoint": "desktop",
+      "states": [
+        "error"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "08 - Position Detail / success",
+      "wireframe_node_id": "5:74",
+      "figma_node_id": "20:4031",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-4031",
+      "breakpoint": "desktop",
+      "states": [
+        "success"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Inline Notification",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation"
+      ]
+    },
+    {
+      "name": "08 - Position Detail / disabled",
+      "wireframe_node_id": "5:74",
+      "figma_node_id": "20:4136",
+      "figma_url": "https://www.figma.com/design/sMv3Xth5sjx5eLOmyge0H8/NexusIntel-%E2%80%94-Wireframes--Stage-4--web-?node-id=20-4136",
+      "breakpoint": "desktop",
+      "states": [
+        "disabled"
+      ],
+      "components_used": [
+        "Badge",
+        "Button",
+        "Header Section",
+        "Meter",
+        "Navigation Button",
+        "Search Bar",
+        "Separator",
+        "Side Navigation",
+        "Tooltip"
+      ]
+    }
+  ],
+  "design_system_gaps": [
+    {
+      "screen": "All screens",
+      "need": "A list / table row for queue, timeline, extracted-term, add-back, exposure and structure rows",
+      "reason": "The library publishes no list-row or data-grid component usable on canvas — the AG Grid pages are documentation frames and 'To-Do List using AG Grid' is a fixed task-list composite. Rows are auto-layout frames composed from KKR text styles, Badge, Button (Tertiary / Inline) and Separator, with every fill, gap and padding bound to KKR variables."
+    },
+    {
+      "screen": "04 - Borrower Profile, 06 - Risk Review",
+      "need": "A provenance line under each metric naming the clause or feed it came from",
+      "reason": "KPI Card's only secondary text is the 'As Of' date chip, which prefixes 'As Of:' and truncates at card width. The source line is set in body_s / Text/tertiary beneath the card inside a 'Metric Tile' wrapper."
+    },
+    {
+      "screen": "01 - Screening Queue / loading, 04 - Borrower Profile / loading, 06 - Risk Review / loading, 07 - Portfolio Watch / loading, 08 - Position Detail / loading",
+      "need": "Skeleton rows and tiles held at final height so the page does not reflow when data lands",
+      "reason": "No skeleton component exists. Loading uses Bar Loader plus placeholder '—' values in KPI Card; Bar Loader's copy ('Please wait / This might take a few minutes') is not exposed as a property, so it cannot name what is loading."
+    },
+    {
+      "screen": "All '/ empty' frames",
+      "need": "An empty-state pattern that names what will appear and offers the next action",
+      "reason": "No empty-state component is published. The DS file has a WIP 'Empty State Banner' page, but it is not in the library. Empty states use Inline Notification (Info / Warning / Success) plus Button."
+    },
+    {
+      "screen": "03 - Document Extraction",
+      "need": "An extracted-term reconciliation row: extracted value, source excerpt, editable override, confidence, accept / correct in place",
+      "reason": "No such control exists. Rendered as a composed row with a Badge for confidence (Success / Warning / Error, each with a text label). Accept / correct / override are not represented."
+    },
+    {
+      "screen": "03 - Document Extraction, 08 - Position Detail",
+      "need": "A source-excerpt popover: highlighted citing sentence, document / page / clause reference, deep link, plus 'resolving' and 'could not be located' states",
+      "reason": "Tooltip carries a single label and Dialog is modal. Rendered as a static 'Source Passage' panel (surface/subtle, label_s caption, body_s quote) without its two failure states."
+    },
+    {
+      "screen": "04 - Borrower Profile",
+      "need": "A challenge flag that holds evidence and records an accept / dismiss decision",
+      "reason": "Inline Notification is informational, with no actions or decision record. Rendered as a Warning Inline Notification; adjudication is not represented."
+    },
+    {
+      "screen": "05 - Corporate Structure",
+      "need": "A structure canvas with entity nodes, guarantee overlay and keyboard-navigable tree",
+      "reason": "No tree or graph component exists. Rendered as the wireframe's indented outline equivalent, with Badge for 'Unrated offshore' (Warning) and 'Unverified' (Error)."
+    },
+    {
+      "screen": "07 - Portfolio Watch, 08 - Position Detail",
+      "need": "A covenant-headroom meter with a fixed threshold marker, signed distance, breached and 'no current data' states",
+      "reason": "Meter exposes Label and Data text only. Its fill level is not settable, so every instance shows the component's default fill (including 'No current data'), and there is no threshold marker or unknown state. The text carries the meaning; the bar does not."
+    },
+    {
+      "screen": "06 - Risk Review",
+      "need": "A review thread (open / answered / resolved / blocking, with reply)",
+      "reason": "No thread or accordion component exists. Threads are Inline Notifications (Error = blocking, Info = open), with no reply or resolve affordance."
+    },
+    {
+      "screen": "02 - Precedent Search",
+      "need": "A desk-attribution chip with own-desk / other-desk / restricted variants, and the relationship map from the page spec",
+      "reason": "Badge has only status types; 'Other desk' uses Badge/Warning. The wireframe frame has no relationship map and the DS has no graph component, so the map is not built."
+    }
+  ],
+  "blocking_gaps": []
+}

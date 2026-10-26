@@ -1,0 +1,2064 @@
+{
+  "contract_version": "2.0",
+  "target": "web",
+  "mobile_platform": null,
+  "design_system": {
+    "name": "Material 3 (baseline profile)",
+    "source": "baseline",
+    "tokens": {
+      "color": [
+        "md.sys.color.primary",
+        "md.sys.color.on-primary",
+        "md.sys.color.primary-container",
+        "md.sys.color.on-primary-container",
+        "md.sys.color.secondary",
+        "md.sys.color.on-secondary",
+        "md.sys.color.secondary-container",
+        "md.sys.color.on-secondary-container",
+        "md.sys.color.tertiary",
+        "md.sys.color.on-tertiary",
+        "md.sys.color.tertiary-container",
+        "md.sys.color.surface",
+        "md.sys.color.surface-container-lowest",
+        "md.sys.color.surface-container-low",
+        "md.sys.color.surface-container",
+        "md.sys.color.surface-container-high",
+        "md.sys.color.surface-container-highest",
+        "md.sys.color.on-surface",
+        "md.sys.color.on-surface-variant",
+        "md.sys.color.outline",
+        "md.sys.color.outline-variant",
+        "md.sys.color.error",
+        "md.sys.color.on-error",
+        "md.sys.color.error-container",
+        "md.sys.color.on-error-container",
+        "md.sys.color.inverse-surface",
+        "md.sys.color.inverse-on-surface",
+        "md.sys.color.scrim"
+      ],
+      "typography": [
+        "md.sys.typescale.headline-small",
+        "md.sys.typescale.title-large",
+        "md.sys.typescale.title-medium",
+        "md.sys.typescale.title-small",
+        "md.sys.typescale.body-large",
+        "md.sys.typescale.body-medium",
+        "md.sys.typescale.body-small",
+        "md.sys.typescale.label-large",
+        "md.sys.typescale.label-medium",
+        "md.sys.typescale.label-small"
+      ],
+      "spacing": [
+        "md.sys.spacing.unit",
+        "md.sys.spacing.edge-margin",
+        "md.sys.spacing.between-items",
+        "md.sys.spacing.between-groups",
+        "md.sys.shape.corner.medium",
+        "md.sys.shape.corner.full",
+        "md.sys.elevation.level1",
+        "md.sys.elevation.level3"
+      ]
+    }
+  },
+  "ux_interpretation": {
+    "primary_user": "Site Operator — whoever watches the IPS dashboard for a site and adjusts its anchors (role inferred from the RFQ; facility operations, airline IT, field engineer or demo presenter is still open)",
+    "user_goal": "Trust that the floor shows exactly who is present now, explain any reading that looks wrong, and keep the anchors working without interrupting the people being tracked",
+    "business_goal": "Demonstrate the IPS MVP's core value (accurate indoor location tied to a logged-in identity, plus live system status) to the airline example customer, while proving that the vendor platform never holds PII",
+    "main_task": "Watch the live floor, drill from a suspicious marker to the reading and the anchor behind it, and recalibrate or update that anchor safely",
+    "context": "An operations or demo setting on one site (the pilot is a single room with four corner anchors), often with the client watching. Positions update roughly every second. Names come from the customer's systems, never from the vendor's.",
+    "entry_point": "01 - Sign In through the customer's identity provider, landing on 02 - Live Floor",
+    "expected_outcome": "The operator can say who is on the floor and where with confidence, can tell a bad reading from a bad anchor, and can change an anchor without anyone silently losing tracking",
+    "required_data": [
+      "Floor plan geometry",
+      "Anchor positions, status, health, firmware",
+      "Store-computer connectivity",
+      "Live position and presence events per digital ID",
+      "Display names from the customer identity service",
+      "Signal strength per hearing anchor",
+      "Configuration, history and rollout state",
+      "Event history"
+    ],
+    "business_rules": [
+      "Only logged-in devices are tracked and displayed (RFQ §4)",
+      "A logged-out device disappears immediately (RFQ §5D)",
+      "A user switching devices shows on the new device only (RFQ §4, §5D)",
+      "A user leaving coverage fades and is then removed, and returning restores them (RFQ §5D)",
+      "The IPS platform never holds PII; mapping from digital ID to person happens only on customer servers (RFQ ID Management)",
+      "The IPS Cloud ingests data only from the store computer (RFQ §3A, §4)",
+      "Anchor and store-computer configuration is viewable and modifiable from the dashboard (RFQ §4)"
+    ],
+    "constraints": [
+      "Overall latency target as stated in the RFQ ('between 1 seconds', bound to be confirmed)",
+      "SDK, store-computer software and anchor firmware are out of scope, so staged OTA and rollback depend on teams outside this RFQ",
+      "Web only for this stage; the demo phone app is not wireframed"
+    ],
+    "dependencies": [
+      "Customer identity provider for operator sign-in",
+      "Customer identity service exposing signed digital-ID resolution",
+      "Store computer streaming positions and equipment status",
+      "Anchor firmware reporting post-update health"
+    ]
+  },
+  "user_flow": {
+    "primary_journey": [
+      "01 - Sign In: operator signs in through the customer IdP; names policy and roles are loaded",
+      "02 - Live Floor: operator sees anchors and live people; system status chips are green",
+      "02 - Live Floor: a person's marker looks wrong; operator opens them",
+      "03 - Person Detail: verdict says only one anchor hears this phone strongly; signal chart shows Anchor NE weak for everyone",
+      "05 - Equipment Detail: drift card says phones near Anchor NE are placed 2.4 m off their neighbours' estimate",
+      "06 - Change Settings: editor adjusts calibration and checks the impact preview (3 phones, all covered by neighbours)",
+      "05 - Equipment Detail: calibration applied; snackbar offers revert",
+      "02 - Live Floor: the person's marker settles; operator returns to watching"
+    ],
+    "supporting_tasks": [
+      "Review site health and drift flags (04)",
+      "Run a staged firmware update and monitor it (06, 07)",
+      "Reveal one person's name with a reason under the anonymous-ID policy (03)",
+      "Find out how and when someone left the floor (08)",
+      "Search for one person on a busy floor (02)"
+    ],
+    "error_scenarios": [
+      "The store computer goes offline and markers freeze (02 error, 04 edge case)",
+      "The customer identity service is down and names degrade to anonymous IDs (01, 02, 03)",
+      "An anchor fails verification during a rollout, rolls back automatically and the rollout pauses (07 error)",
+      "An anchor disconnects mid-review of a settings change (06 error)",
+      "A person logs out while their detail sheet is open (03 empty)",
+      "Two editors change the same anchor (06 edge case)"
+    ]
+  },
+  "sitemap": [
+    {
+      "page": "01 - Sign In",
+      "path": "/sign-in",
+      "children": []
+    },
+    {
+      "page": "02 - Live Floor",
+      "path": "/sites/:siteId/floor",
+      "children": [
+        "03 - Person Detail"
+      ]
+    },
+    {
+      "page": "03 - Person Detail",
+      "path": "/sites/:siteId/floor/people/:digitalId",
+      "children": []
+    },
+    {
+      "page": "04 - Site Health",
+      "path": "/sites/:siteId/health",
+      "children": [
+        "05 - Equipment Detail",
+        "07 - Rollout Progress"
+      ]
+    },
+    {
+      "page": "05 - Equipment Detail",
+      "path": "/sites/:siteId/health/equipment/:equipmentId",
+      "children": [
+        "06 - Change Settings"
+      ]
+    },
+    {
+      "page": "06 - Change Settings",
+      "path": "/sites/:siteId/health/equipment/:equipmentId/settings",
+      "children": []
+    },
+    {
+      "page": "07 - Rollout Progress",
+      "path": "/sites/:siteId/health/rollouts/:rolloutId",
+      "children": []
+    },
+    {
+      "page": "08 - Activity Timeline",
+      "path": "/sites/:siteId/activity",
+      "children": []
+    }
+  ],
+  "pages": [
+    {
+      "page_name": "01 - Sign In",
+      "purpose": "Authenticate the operator through the customer's identity provider, establish which site they may see, whether they may change equipment settings, and obtain the signed token the browser uses to resolve names from the customer's identity service.",
+      "primary_user": "Site Operator",
+      "primary_action": "Sign in",
+      "secondary_actions": [
+        "Get help signing in"
+      ],
+      "content_structure": [
+        "Product name and environment label (for example 'Pilot')",
+        "Sign-in panel: a single 'Sign in' button that hands off to the customer identity provider",
+        "Status line for the hand-off (redirecting, returning, failed)",
+        "Privacy line: 'This dashboard never stores who people are. Names are fetched from your organisation for this session only.'"
+      ],
+      "navigation": "No app chrome. On success, routes to 02 - Live Floor for the operator's default site.",
+      "components": [
+        {
+          "name": "Component / Outlined Card",
+          "base": "Card",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Selected"
+          ]
+        },
+        {
+          "name": "Component / Filled Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Primary",
+            "Disabled",
+            "Loading"
+          ]
+        },
+        {
+          "name": "Component / Text Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Tertiary"
+          ]
+        },
+        {
+          "name": "Component / Linear Progress Indicator",
+          "base": "ProgressIndicator",
+          "source": "reused",
+          "variants": [
+            "Determinate",
+            "Indeterminate"
+          ]
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        }
+      ],
+      "data": [
+        "Operator identity and roles from the customer IdP (OIDC claims)",
+        "Permitted sites",
+        "Name-display policy for the operator's organisation (names on, or anonymous IDs with reveal)"
+      ],
+      "interactions": [
+        "Sign in redirects to the customer IdP and returns with a session",
+        "On return, the browser requests a signed identity-resolution token; failure to obtain it does not block sign-in, it degrades names to anonymous IDs"
+      ],
+      "states": {
+        "default": "Centered card on md.sys.color.surface with the filled 'Sign in' button and the privacy line beneath.",
+        "loading": "After return from the IdP the button is replaced by a linear progress bar labelled 'Opening your site…' while roles and the site list load.",
+        "empty": "Operator authenticated but holds no site permission: card reads 'Your account isn't assigned to a site yet', names the customer administrator role to contact, and offers one action, 'Sign out'.",
+        "error": "IdP hand-off failed or timed out: banner 'Sign-in didn't complete — your organisation's sign-in service didn't respond' with 'Try again'; nothing the operator typed is lost because nothing is typed here.",
+        "success": "No interstitial; the operator lands on 02 - Live Floor and a snackbar confirms the site name.",
+        "disabled": "While the hand-off is in flight the button shows the Loading variant and ignores repeat clicks, so a double-click cannot start two sessions."
+      },
+      "responsive": {
+        "desktop": "Card 400px wide, centred vertically and horizontally on a md.sys.color.surface-container-low field.",
+        "laptop": "Identical to desktop; the card does not scale with the viewport.",
+        "tablet": "Card 400px, centred; the privacy line wraps to two lines.",
+        "mobile": "Card goes full-bleed with md.sys.spacing.edge-margin side insets; button is full width and pinned above the keyboard-safe area."
+      },
+      "accessibility": {
+        "contrast": "Button label md.sys.color.on-primary on md.sys.color.primary; privacy line md.sys.color.on-surface-variant on md.sys.color.surface checked at 4.5:1 or better because it is body-size text.",
+        "keyboard_focus": "Focus starts on 'Sign in'; Tab reaches 'Get help signing in' next. The focus ring is a 2px md.sys.color.primary outline offset by 2px, never suppressed on mouse use.",
+        "labels": "The button's accessible name is 'Sign in with your organisation', which is more specific than the visible label. The error banner names the failing service in words, not an error code.",
+        "touch_targets": "Sign-in button 48px tall at full card width; help link padded to a 44x44px hit area.",
+        "reading_order": "h1 product name, then the sign-in panel, then the privacy line. A single h1 and no other headings.",
+        "status_messages": "'Opening your site…' and the sign-in failure are both set in an assertive live region, because each changes what the operator can do next and there is nothing else on the page to read.",
+        "motion": "Under prefers-reduced-motion the indeterminate progress bar is replaced by static text 'Opening your site…' with no sweep."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "Customer IdP OIDC authorize and token endpoints",
+          "POST /v1/sessions — IPS Cloud API (proposed): exchanges the IdP token for a dashboard session and returns roles + permitted sites",
+          "POST /v1/identity-tokens — IPS Cloud API (proposed): returns a short-lived token signed under the customer intermediate CA for browser-side name resolution"
+        ],
+        "permissions": [
+          "Any authenticated operator may sign in",
+          "Role 'equipment-editor' is read from IdP claims and governs 06 - Change Settings"
+        ],
+        "edge_cases": [
+          "Operator's IdP session is valid but the identity-token request fails: sign in succeeds, names degrade to anonymous IDs, and 02 shows the names-unavailable banner",
+          "Operator permitted on more than one site: lands on the most recently viewed site, switchable from the top bar",
+          "Clock skew between browser and token issuer rejects the signed token: retried once with server time, then degraded as above"
+        ],
+        "open_questions": [
+          "Which identity provider does the customer use, and will it carry an equipment-editor role claim?",
+          "Does the demo require a username/password form (the RFQ's 'JohnDoe / demo123' is the phone app, not the dashboard)?"
+        ]
+      }
+    },
+    {
+      "page_name": "02 - Live Floor",
+      "purpose": "Show exactly who is present on the floor right now, where they are, and whether the system behind that picture is healthy, so the operator can trust or question the map at a glance.",
+      "primary_user": "Site Operator",
+      "primary_action": "Open person",
+      "secondary_actions": [
+        "Search people",
+        "Switch to raw stream",
+        "Open anchor",
+        "Switch site"
+      ],
+      "content_structure": [
+        "Top app bar: site selector, system status chips (store computer, anchors online n/N, stream heartbeat), operator menu",
+        "Page-level banner slot (positions frozen, names unavailable, drift suspected) shown only when a condition is active",
+        "Floor plan canvas: room outline, doors, anchor markers by status, person markers by presence state with name or anonymous ID",
+        "Right panel with tabs 'People | Raw stream': People is a searchable list (name or ID, presence state, nearest anchor, signal strength label); Raw stream is the live log",
+        "Legend explaining marker shapes (always visible, collapsible)"
+      ],
+      "navigation": "Navigation rail destinations: Live floor (current), Site health, Activity. Selecting a person opens 03 - Person Detail as a side sheet over the floor; selecting an anchor or the store computer opens 05 - Equipment Detail.",
+      "components": [
+        {
+          "name": "Component / Top App Bar",
+          "base": "Header",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Scrolled"
+          ]
+        },
+        {
+          "name": "Component / Navigation Rail",
+          "base": "Navigation",
+          "source": "reused",
+          "variants": [
+            "Expanded",
+            "Collapsed"
+          ]
+        },
+        {
+          "name": "Component / Exposed Dropdown Menu",
+          "base": "Select",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Assist Chip",
+          "base": "Chip",
+          "source": "reused",
+          "variants": [
+            "Default"
+          ]
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        },
+        {
+          "name": "Component / Floor Plan Canvas",
+          "base": "Chart",
+          "source": "new",
+          "variants": [
+            "Live",
+            "Frozen",
+            "Loading"
+          ],
+          "why_new": "No Material 3 component positions live objects on a scaled floor plan. Logged as a design-system gap."
+        },
+        {
+          "name": "Component / Presence Marker",
+          "base": "Badge",
+          "source": "new",
+          "variants": [
+            "Live",
+            "Fading",
+            "Selected",
+            "Frozen"
+          ],
+          "why_new": "Encodes presence state by shape and label, not colour: solid disc = live, dashed ring with last-seen age = fading, hatched disc = frozen. No M3 badge or avatar carries a time-based state. Logged as a design-system gap."
+        },
+        {
+          "name": "Component / Anchor Marker",
+          "base": "Icon",
+          "source": "new",
+          "variants": [
+            "Online",
+            "Offline",
+            "Drift suspected",
+            "Updating"
+          ],
+          "why_new": "An anchor's status needs four shape-distinct glyphs (filled triangle, outlined triangle with slash, triangle with exclamation, triangle with rotating arc) placed on the canvas; M3 icons are not stateful."
+        },
+        {
+          "name": "Component / Secondary Tabs",
+          "base": "Tabs",
+          "source": "reused",
+          "variants": [
+            "Default"
+          ]
+        },
+        {
+          "name": "Component / Search Bar",
+          "base": "Search",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Active"
+          ]
+        },
+        {
+          "name": "Component / List",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "One-line",
+            "Two-line",
+            "Three-line"
+          ]
+        },
+        {
+          "name": "Component / Stream Log",
+          "base": "List",
+          "source": "new",
+          "variants": [
+            "Following",
+            "Paused",
+            "Filtered"
+          ],
+          "why_new": "The RFQ requires a raw streaming-data view. An append-only, pausable, monospace log with follow-tail semantics is not an M3 list. Logged as a design-system gap."
+        },
+        {
+          "name": "Component / Badge",
+          "base": "Badge",
+          "source": "reused",
+          "variants": [
+            "Small",
+            "Large"
+          ]
+        },
+        {
+          "name": "Component / Plain Tooltip",
+          "base": "Tooltip",
+          "source": "reused",
+          "variants": [
+            "Default"
+          ]
+        },
+        {
+          "name": "Component / Segmented Button",
+          "base": "Tabs",
+          "source": "reused",
+          "variants": [
+            "Map",
+            "List"
+          ]
+        },
+        {
+          "name": "Component / Skeleton",
+          "base": "Skeleton",
+          "source": "new",
+          "variants": [
+            "Row",
+            "Block"
+          ],
+          "why_new": "Material 3 specifies loading indicators but no skeleton placeholder; built from md.sys.color.surface-container-high blocks at the loaded content's exact dimensions so layout never shifts."
+        },
+        {
+          "name": "Component / Snackbar",
+          "base": "Toast",
+          "source": "reused",
+          "variants": [
+            "Single-line",
+            "With action"
+          ]
+        }
+      ],
+      "data": [
+        "Floor plan geometry and scale for the site",
+        "Anchor list with position, status, health, firmware, drift flag",
+        "Live position events per digital ID (timestamp, x, y, z, connected anchor, signal strength)",
+        "Presence state per digital ID derived from the site's fade and remove timings",
+        "Display names resolved in the browser from the customer identity service, or anonymous IDs",
+        "Store-computer connectivity and stream heartbeat status"
+      ],
+      "interactions": [
+        "Markers move as position events arrive; no animation longer than the update interval",
+        "Click or Enter on a marker or list row opens 03 for that person",
+        "Click or Enter on an anchor marker or the store-computer chip opens 05",
+        "'/' focuses people search; results filter the list and highlight matching markers",
+        "Tab 'Raw stream' swaps the people list for the stream log in the same panel, rather than adding a third column",
+        "Legend toggles open and closed; its state persists per operator"
+      ],
+      "states": {
+        "default": "Floor plan fills the canvas with anchors at the four corners (pilot layout) and live markers; People tab lists everyone present, sorted by name or ID.",
+        "loading": "Canvas shows the room outline from cached geometry with anchor markers as skeleton triangles, and the people list shows six skeleton rows. The top bar status chips read 'Connecting…' until the first live event arrives.",
+        "empty": "Live data is flowing but nobody is logged in on this floor: the canvas shows anchors only, and the list reads 'Nobody is being tracked on this floor. People appear here when they sign in to the app.' Its one action is 'View recent activity' (to 08).",
+        "error": "The store computer stops sending: every marker switches to the Frozen variant (hatched) at its last position, the list's presence column reads 'Frozen', and the banner reads 'Positions frozen since 10:42:07 — the store computer is offline. People may have moved.' Its action is 'View site health'. Markers are never left looking live on stale data.",
+        "disabled": "When names cannot be resolved, the 'Reveal name' action elsewhere is unavailable and markers show anonymous IDs; the banner explains 'Names unavailable — your organisation's identity service isn't responding. Showing anonymous IDs.'"
+      },
+      "responsive": {
+        "desktop": "Navigation rail 80px, canvas flexible, right panel 360px fixed with People and Raw stream tabs; legend docked bottom-left of the canvas.",
+        "laptop": "Same structure as desktop with the right panel at 320px and tighter md.sys.spacing.edge-margin.",
+        "tablet": "Rail stays, the right panel collapses into a standard bottom sheet peeking 96px (count of people present), and the canvas takes the full width; dragging the sheet up reveals the list.",
+        "mobile": "Rail becomes a modal navigation drawer behind a menu icon. A segmented button 'Map | List' leads the page and defaults to List: rows show name or ID, presence state and nearest anchor. Map is full-bleed with pinch and zoom, and the raw stream moves to 03 only."
+      },
+      "accessibility": {
+        "contrast": "Marker labels md.sys.color.on-surface on md.sys.color.surface-container-lowest canvas at 4.5:1 or better; marker outlines and anchor glyphs md.sys.color.outline against the canvas at 3:1 or better as non-text UI. Presence and anchor status are encoded by shape plus a text label, never colour alone.",
+        "keyboard_focus": "Tab order is top bar, then banner action, then canvas, then right panel tabs, then list. Inside the canvas, arrow keys move between objects in reading order (anchors first by label, then people by name), Enter opens, and Escape returns focus to the canvas container. The focus ring is a 2px md.sys.color.primary outline around the marker's 48px hit area.",
+        "labels": "Each marker's accessible name states the person, state and nearest anchor, for example 'Person 7F3A, live, nearest Anchor NE, signal good'. The canvas has a text alternative: 'Floor plan, DN-20 Atrium, 4 anchors, 3 people present.' The search field has a visible label 'Search people'.",
+        "touch_targets": "Person and anchor markers have 48x48px hit areas regardless of drawn size; list rows 56px tall; status chips 32px tall inside a 48px hit area.",
+        "reading_order": "h1 is the site and floor name (visually in the top bar), h2 'Floor plan', h2 'People' / 'Raw stream'. The DOM order matches the visual order and has no skipped levels.",
+        "status_messages": "People arriving or leaving are summarised in a polite live region at most every 10 seconds ('2 people arrived, 1 left'), so the operator is not interrupted per event. Positions freezing and names becoming unavailable are announced assertively once, because they change what every marker means.",
+        "motion": "Under prefers-reduced-motion markers jump to new positions instead of gliding, the fading state uses a static dashed ring instead of a pulse, and skeleton shimmer is replaced by flat placeholder blocks."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "GET /v1/sites/{siteId}/floorplan — IPS Cloud API (proposed)",
+          "GET /v1/sites/{siteId}/anchors — IPS Cloud API (proposed): position, status, health, firmware, drift flag",
+          "WS /v1/sites/{siteId}/live — IPS Cloud API (proposed): position and presence events for logged-in digital IDs only",
+          "POST /v1/resolve — Customer identity service (customer-hosted, proposed): digital IDs to display names, called from the browser with the signed token; never proxied through IPS",
+          "GET /v1/sites/{siteId}/stream-health — IPS Cloud API (proposed): store-computer last-seen, heartbeat interval, subscriber count"
+        ],
+        "permissions": [
+          "Any operator on the site may view",
+          "Names are shown only when the organisation policy and the identity service both allow; otherwise anonymous IDs"
+        ],
+        "edge_cases": [
+          "Same person logs in on a second phone before the first logs out: one marker only, on the newest device; the activity timeline records the switch",
+          "A person is between anchors and the stream lags past the latency bound: the marker enters Fading rather than snapping",
+          "Floor plan geometry is missing for a new site: the canvas is replaced by the list view with a banner asking an administrator to upload the plan",
+          "Over 200 people present: markers cluster by anchor with a count badge, and the list stays complete",
+          "WebSocket reconnects: positions are re-synced from a snapshot before deltas resume, so no ghost markers remain"
+        ],
+        "open_questions": [
+          "What are the fade and remove timings? The RFQ says 'progressively' and 'eventually' without numbers",
+          "Is the latency bound 1 second end-to-end? The RFQ text is garbled ('between 1 seconds')",
+          "Should the map default to names or anonymous IDs on a shared screen in an operations room?"
+        ]
+      }
+    },
+    {
+      "page_name": "03 - Person Detail",
+      "purpose": "Explain one person's position: which anchor they are connected to, how strong the signal is, which other anchors hear them, the raw readings behind the marker and their recent presence history, so the operator can decide whether the reading or the anchor is at fault.",
+      "primary_user": "Site Operator",
+      "primary_action": "Open nearest anchor",
+      "secondary_actions": [
+        "Reveal name",
+        "Pause raw readings",
+        "View in activity"
+      ],
+      "content_structure": [
+        "Header: name or anonymous ID, presence state with last-seen age, current coordinates",
+        "Verdict line: 'Reading looks consistent' or 'Only one anchor hears this phone — position is approximate'",
+        "Connected anchor card: anchor label, signal strength label with dBm secondary",
+        "Signal strength chart: per hearing anchor, last 10 minutes, with a 'Show as table' toggle",
+        "Raw readings: the stream log filtered to this digital ID",
+        "Recent presence events for this person (last 30 minutes)"
+      ],
+      "navigation": "Opens as a side sheet over 02 on desktop and laptop, and as a full page on tablet and mobile with a back arrow. 'Open nearest anchor' goes to 05 carrying this person as context.",
+      "components": [
+        {
+          "name": "Component / Side Sheet",
+          "base": "Drawer",
+          "source": "reused",
+          "variants": [
+            "Standard",
+            "Modal"
+          ]
+        },
+        {
+          "name": "Component / Filled Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Primary",
+            "Disabled",
+            "Loading"
+          ]
+        },
+        {
+          "name": "Component / Outlined Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Secondary",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Icon Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Standard",
+            "Toggle",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Outlined Card",
+          "base": "Card",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Selected"
+          ]
+        },
+        {
+          "name": "Component / Signal Strength Chart",
+          "base": "Chart",
+          "source": "new",
+          "variants": [
+            "Single anchor",
+            "Multi-anchor"
+          ],
+          "why_new": "Material 3 has no charts. A small line chart of signal strength per hearing anchor over the last 10 minutes, with a data-table equivalent."
+        },
+        {
+          "name": "Component / Stream Log",
+          "base": "List",
+          "source": "new",
+          "variants": [
+            "Following",
+            "Paused",
+            "Filtered"
+          ],
+          "why_new": "The RFQ requires a raw streaming-data view. An append-only, pausable, monospace log with follow-tail semantics is not an M3 list. Logged as a design-system gap."
+        },
+        {
+          "name": "Component / List",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "One-line",
+            "Two-line",
+            "Three-line"
+          ]
+        },
+        {
+          "name": "Component / Event Row",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "Presence",
+            "Equipment",
+            "Configuration",
+            "Stream"
+          ]
+        },
+        {
+          "name": "Component / Assist Chip",
+          "base": "Chip",
+          "source": "reused",
+          "variants": [
+            "Default"
+          ]
+        },
+        {
+          "name": "Component / Dialog",
+          "base": "Confirmation",
+          "source": "reused",
+          "variants": [
+            "Basic",
+            "Destructive"
+          ]
+        },
+        {
+          "name": "Component / Outlined Text Field",
+          "base": "Input",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Error",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Skeleton",
+          "base": "Skeleton",
+          "source": "new",
+          "variants": [
+            "Row",
+            "Block"
+          ],
+          "why_new": "Material 3 specifies loading indicators but no skeleton placeholder; built from md.sys.color.surface-container-high blocks at the loaded content's exact dimensions so layout never shifts."
+        },
+        {
+          "name": "Component / Snackbar",
+          "base": "Toast",
+          "source": "reused",
+          "variants": [
+            "Single-line",
+            "With action"
+          ]
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        },
+        {
+          "name": "Component / Divider",
+          "base": "Divider",
+          "source": "reused",
+          "variants": [
+            "Full-width",
+            "Inset"
+          ]
+        }
+      ],
+      "data": [
+        "Digital ID, display name if resolved",
+        "Presence state and last-seen timestamp",
+        "Current x, y, z",
+        "Connected anchor and signal strength",
+        "Signal strength per hearing anchor over 10 minutes",
+        "Raw stream rows for this digital ID",
+        "Presence events for this digital ID"
+      ],
+      "interactions": [
+        "'Open nearest anchor' routes to 05 with this person highlighted in the anchor's connected-phones list",
+        "'Reveal name' (only under the anonymous-ID policy) opens a dialog asking for a reason from a short list plus free text; on confirm the name shows for this session and the reveal is logged",
+        "'Pause raw readings' freezes the log so rows can be read; a 'Resume' replaces it",
+        "'Show as table' swaps the chart for a data table of the same series"
+      ],
+      "states": {
+        "default": "Header, verdict line, connected anchor card, chart with one line per hearing anchor, the last 50 raw rows, and presence events.",
+        "loading": "Header renders immediately from the live state already on 02. The chart area shows a skeleton block of the chart's height, and the raw log and events show four skeleton rows each.",
+        "empty": "The person logged out while the sheet was open: content dims and a banner reads 'This person signed out at 10:51:22 and is no longer tracked.' Its one action is 'Back to floor'. No data for a logged-out person stays visible.",
+        "error": "Telemetry history failed to load: the chart area reads 'Signal history didn't load — live readings are still shown below' with 'Retry'. Header and raw log stay live.",
+        "success": "After a reveal, a snackbar reads 'Name shown for this session. Your reveal was recorded.' and the header updates in place.",
+        "disabled": "'Reveal name' is disabled with the helper text 'Names are unavailable while your organisation's identity service is down' when resolution has failed, and hidden entirely when the policy already shows names."
+      },
+      "responsive": {
+        "desktop": "Side sheet 480px wide over the floor plan, which stays visible and keeps the person's marker highlighted.",
+        "laptop": "Side sheet 440px; the chart's height drops from 200px to 160px.",
+        "tablet": "Full page with a top app bar and back arrow. The connected anchor card and verdict sit side by side above the chart.",
+        "mobile": "Full page, single column: header, verdict, anchor card, then the chart defaults to the table view. The raw log is collapsed behind 'Show raw readings'."
+      },
+      "accessibility": {
+        "contrast": "Verdict text md.sys.color.on-surface on md.sys.color.surface-container-low at 4.5:1 or better; chart lines are distinguished by md.sys.color.primary, md.sys.color.tertiary and md.sys.color.secondary plus distinct line dashes and end labels, each at 3:1 or better against the chart surface.",
+        "keyboard_focus": "When the sheet opens, focus moves to its heading. Tab runs primary action, reveal, chart toggle, log pause, then events. Escape closes the sheet and returns focus to the marker or row that opened it. The reveal dialog traps focus and returns it to 'Reveal name'.",
+        "labels": "Signal strength is shown as words ('Good', 'Fair', 'Weak') with dBm as secondary text, so the label works for an operator who isn't RF-literate. The reveal reason is a required labelled field whose error 'Choose a reason to reveal this name' sits below it.",
+        "touch_targets": "All buttons are at least 40px tall inside 48x48px hit areas; chart data points are not targets, and the table view is the interactive equivalent.",
+        "reading_order": "h2 person heading (the sheet is a region within 02's h1), h3 'Connection', h3 'Signal history', h3 'Raw readings', h3 'Recent activity'.",
+        "status_messages": "The verdict line is a polite live region and announces only when the verdict changes. New raw rows are not announced individually; pausing announces 'Raw readings paused at 10:52:03'. Sign-out while the sheet is open is assertive, because the content is no longer valid.",
+        "motion": "Under prefers-reduced-motion the sheet appears without a slide, and chart lines redraw without easing."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "GET /v1/sites/{siteId}/devices/{digitalId}/telemetry?window=10m — IPS Cloud API (proposed): signal strength per hearing anchor",
+          "GET /v1/sites/{siteId}/stream?digitalId={id}&limit=50 — IPS Cloud API (proposed): raw rows",
+          "GET /v1/sites/{siteId}/events?digitalId={id}&since=30m — IPS Cloud API (proposed)",
+          "POST /v1/resolve — Customer identity service (customer-hosted, proposed): on reveal",
+          "POST /v1/audit/reveals — IPS Cloud API (proposed): records operator, digital ID, reason, timestamp; stores no name"
+        ],
+        "permissions": [
+          "Any operator may view a person's telemetry",
+          "Reveal is available to any operator under the anonymous-ID policy and is always logged"
+        ],
+        "edge_cases": [
+          "Only one anchor hears the phone: verdict states the position is approximate rather than showing false precision",
+          "The person switches device while the sheet is open: the sheet follows the person to the new device and the events list shows the switch",
+          "Telemetry history exists only from the last reconnect: the chart starts at that point with a 'No data before 10:40' marker",
+          "Reveal requested while the identity service is down: blocked with the disabled explanation, never queued"
+        ],
+        "open_questions": [
+          "Is a logged reason for revealing a name acceptable to the customer's works council or privacy office, or is a stricter policy needed?",
+          "How long should a reveal last: this session, or until the person next logs out?"
+        ]
+      }
+    },
+    {
+      "page_name": "04 - Site Health",
+      "purpose": "Show at a glance whether every anchor, the store computer and the outbound customer stream are working, and surface anchors the system suspects are drifting before an operator notices bad readings.",
+      "primary_user": "Site Operator",
+      "primary_action": "Open equipment",
+      "secondary_actions": [
+        "Filter by status",
+        "View active rollout"
+      ],
+      "content_structure": [
+        "Summary cards: store computer (connected, last data received), anchors online (n of N), drift suspected (count), customer stream (heartbeat last sent, subscribers connected)",
+        "Active rollout strip if a staged update is running (links to 07)",
+        "Equipment table: label, type, status, health, firmware, connected phones, drift flag, last seen"
+      ],
+      "navigation": "Rail destination 'Site health'. A row or summary card opens 05 - Equipment Detail. The rollout strip opens 07 - Rollout Progress.",
+      "components": [
+        {
+          "name": "Component / Top App Bar",
+          "base": "Header",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Scrolled"
+          ]
+        },
+        {
+          "name": "Component / Navigation Rail",
+          "base": "Navigation",
+          "source": "reused",
+          "variants": [
+            "Expanded",
+            "Collapsed"
+          ]
+        },
+        {
+          "name": "Component / Outlined Card",
+          "base": "Card",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Selected"
+          ]
+        },
+        {
+          "name": "Component / Data Table",
+          "base": "Table",
+          "source": "new",
+          "variants": [
+            "Default",
+            "Row selected",
+            "Sorted"
+          ],
+          "why_new": "Material 3 ships no data table; anchors and events are multi-column comparable data. Built from M3 list-row anatomy, md.sys.typescale.body-medium and md.sys.color.outline-variant row dividers."
+        },
+        {
+          "name": "Component / Filter Chip",
+          "base": "Chip",
+          "source": "reused",
+          "variants": [
+            "Selected",
+            "Unselected"
+          ]
+        },
+        {
+          "name": "Component / Anchor Marker",
+          "base": "Icon",
+          "source": "new",
+          "variants": [
+            "Online",
+            "Offline",
+            "Drift suspected",
+            "Updating"
+          ],
+          "why_new": "An anchor's status needs four shape-distinct glyphs (filled triangle, outlined triangle with slash, triangle with exclamation, triangle with rotating arc) placed on the canvas; M3 icons are not stateful."
+        },
+        {
+          "name": "Component / Badge",
+          "base": "Badge",
+          "source": "reused",
+          "variants": [
+            "Small",
+            "Large"
+          ]
+        },
+        {
+          "name": "Component / Linear Progress Indicator",
+          "base": "ProgressIndicator",
+          "source": "reused",
+          "variants": [
+            "Determinate",
+            "Indeterminate"
+          ]
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        },
+        {
+          "name": "Component / Skeleton",
+          "base": "Skeleton",
+          "source": "new",
+          "variants": [
+            "Row",
+            "Block"
+          ],
+          "why_new": "Material 3 specifies loading indicators but no skeleton placeholder; built from md.sys.color.surface-container-high blocks at the loaded content's exact dimensions so layout never shifts."
+        },
+        {
+          "name": "Component / List",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "One-line",
+            "Two-line",
+            "Three-line"
+          ]
+        }
+      ],
+      "data": [
+        "Store-computer connectivity and last data timestamp",
+        "Per anchor: status, health, firmware version, connected-phone count, drift flag and evidence summary, last seen",
+        "Stream health: heartbeat interval, last heartbeat sent, connected subscribers",
+        "Active rollout summary"
+      ],
+      "interactions": [
+        "Filter chips 'Offline', 'Drift suspected', 'Updating' narrow the table",
+        "Sort by any column",
+        "Row click or Enter opens 05",
+        "The rollout strip opens 07"
+      ],
+      "states": {
+        "default": "Four summary cards over a table of five rows for the pilot (four anchors and one store computer), sorted with problems first.",
+        "loading": "Summary cards show skeleton values with their labels already rendered, and the table shows five skeleton rows at final row height.",
+        "empty": "A site with no equipment registered: the table area reads 'No equipment registered for this site yet. Anchors appear once the store computer reports them.' Its one action is 'View setup guide'.",
+        "error": "Health data unavailable: the banner reads 'Equipment status couldn't be loaded — last known status from 10:38 is shown'. Values are shown with a 'Last known' label and the table stays usable.",
+        "disabled": "When no rollout is active the rollout strip is absent rather than disabled, so there is nothing to explain."
+      },
+      "responsive": {
+        "desktop": "Four summary cards in one row, with a full-width data table below and all eight columns.",
+        "laptop": "Four cards in one row, and the 'last seen' column collapses into the status cell's secondary line.",
+        "tablet": "Cards in a 2x2 grid. The table keeps label, status, drift and phones; the other columns move to a row-expansion panel.",
+        "mobile": "Cards stack as a single column of compact rows, and the table recomposes to a list. Each item shows label, status glyph with text, and drift flag, and tapping it opens 05."
+      },
+      "accessibility": {
+        "contrast": "Status text md.sys.color.on-surface on md.sys.color.surface at 4.5:1 or better; the 'Offline' and 'Drift suspected' treatments use md.sys.color.on-error-container on md.sys.color.error-container plus a distinct glyph and the word itself.",
+        "keyboard_focus": "Tab order is summary cards left to right, then filter chips, then table. In the table, arrow keys move between cells in grid mode and Enter on a row opens 05. The focus ring wraps the whole row.",
+        "labels": "The table has a caption 'Equipment on DN-20 Atrium' and column headers marked as headers. The drift flag cell reads 'Drift suspected: readings differ from neighbours', not just an icon.",
+        "touch_targets": "Table rows 52px tall, filter chips 32px tall inside 48px hit areas, and summary cards fully clickable at a minimum of 96px tall.",
+        "reading_order": "h1 'Site health', h2 'Summary', h2 'Equipment'. The rollout strip, when present, sits between them as an h2 'Update in progress'.",
+        "status_messages": "An anchor going offline or a new drift flag is announced politely ('Anchor SW went offline'), throttled to one summary per 15 seconds. The store computer disconnecting is assertive.",
+        "motion": "There is no decorative motion. Under prefers-reduced-motion the rollout strip's progress bar updates in steps rather than animating."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "GET /v1/sites/{siteId}/equipment — IPS Cloud API (proposed)",
+          "GET /v1/sites/{siteId}/drift — IPS Cloud API (proposed): per-anchor drift flag with evidence summary",
+          "GET /v1/sites/{siteId}/stream-health — IPS Cloud API (proposed)",
+          "GET /v1/sites/{siteId}/rollouts?status=active — IPS Cloud API (proposed)",
+          "WS /v1/sites/{siteId}/equipment-events — IPS Cloud API (proposed): status changes"
+        ],
+        "permissions": [
+          "Any operator on the site may view"
+        ],
+        "edge_cases": [
+          "Store computer offline: anchor statuses become 'Unknown since 10:42' rather than staying 'Online', because they report through it",
+          "An anchor reports a firmware version no rollout has issued: flagged 'Unexpected firmware'",
+          "Drift check has under 10 minutes of data after a restart: flag column reads 'Checking…' rather than 'OK'",
+          "Customer stream has zero subscribers: the stream card reads 'No customer system is listening' as a warning, not an error"
+        ],
+        "open_questions": [
+          "What does 'health' measure beyond online/offline? The RFQ requires it but does not define it",
+          "Should drift detection alert anyone, or only display? Notifications are out of MVP scope in the RFQ"
+        ]
+      }
+    },
+    {
+      "page_name": "05 - Equipment Detail",
+      "purpose": "Show everything about one anchor or the store computer — status, health, firmware, the phones connected to it, and the drift evidence — so the operator can decide whether it needs recalibration or an update.",
+      "primary_user": "Site Operator",
+      "primary_action": "Change settings",
+      "secondary_actions": [
+        "View on floor",
+        "View setting history"
+      ],
+      "content_structure": [
+        "Header: equipment label and type, status with text, firmware version, last seen",
+        "Context chip if arriving from 03: 'From Person 7F3A' with that person highlighted below",
+        "Drift card (anchors only): verdict sentence with evidence, for example 'Phones near this anchor are placed 2.4 m from where neighbouring anchors place them, over the last 10 minutes', and what usually fixes it",
+        "Connected phones list: name or ID, signal strength label, time connected",
+        "Current settings summary (read-only)",
+        "Setting history: last five changes with who, when and a revert action"
+      ],
+      "navigation": "Breadcrumb 'Site health › Anchor NE'. 'Change settings' opens 06. 'View on floor' returns to 02 with this anchor selected.",
+      "components": [
+        {
+          "name": "Component / Top App Bar",
+          "base": "Header",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Scrolled"
+          ]
+        },
+        {
+          "name": "Component / Navigation Rail",
+          "base": "Navigation",
+          "source": "reused",
+          "variants": [
+            "Expanded",
+            "Collapsed"
+          ]
+        },
+        {
+          "name": "Component / Breadcrumb",
+          "base": "Breadcrumb",
+          "source": "new",
+          "variants": [
+            "Default"
+          ],
+          "why_new": "Material 3 has no breadcrumb component; built from M3 text buttons separated by a chevron icon in md.sys.typescale.label-large, shared by 05, 06 and 07."
+        },
+        {
+          "name": "Component / Outlined Card",
+          "base": "Card",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Selected"
+          ]
+        },
+        {
+          "name": "Component / Assist Chip",
+          "base": "Chip",
+          "source": "reused",
+          "variants": [
+            "Default"
+          ]
+        },
+        {
+          "name": "Component / List",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "One-line",
+            "Two-line",
+            "Three-line"
+          ]
+        },
+        {
+          "name": "Component / Filled Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Primary",
+            "Disabled",
+            "Loading"
+          ]
+        },
+        {
+          "name": "Component / Outlined Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Secondary",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Text Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Tertiary"
+          ]
+        },
+        {
+          "name": "Component / Anchor Marker",
+          "base": "Icon",
+          "source": "new",
+          "variants": [
+            "Online",
+            "Offline",
+            "Drift suspected",
+            "Updating"
+          ],
+          "why_new": "An anchor's status needs four shape-distinct glyphs (filled triangle, outlined triangle with slash, triangle with exclamation, triangle with rotating arc) placed on the canvas; M3 icons are not stateful."
+        },
+        {
+          "name": "Component / Dialog",
+          "base": "Confirmation",
+          "source": "reused",
+          "variants": [
+            "Basic",
+            "Destructive"
+          ]
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        },
+        {
+          "name": "Component / Skeleton",
+          "base": "Skeleton",
+          "source": "new",
+          "variants": [
+            "Row",
+            "Block"
+          ],
+          "why_new": "Material 3 specifies loading indicators but no skeleton placeholder; built from md.sys.color.surface-container-high blocks at the loaded content's exact dimensions so layout never shifts."
+        },
+        {
+          "name": "Component / Snackbar",
+          "base": "Toast",
+          "source": "reused",
+          "variants": [
+            "Single-line",
+            "With action"
+          ]
+        },
+        {
+          "name": "Component / Divider",
+          "base": "Divider",
+          "source": "reused",
+          "variants": [
+            "Full-width",
+            "Inset"
+          ]
+        }
+      ],
+      "data": [
+        "Equipment metadata: label, type, position, firmware, status, health, last seen",
+        "Connected phones with signal strength and connection time",
+        "Drift evidence: mean displacement against neighbours, window, sample count",
+        "Current configuration",
+        "Configuration history"
+      ],
+      "interactions": [
+        "'Change settings' opens 06 for this equipment (shown only to equipment editors)",
+        "'View on floor' returns to 02 with this anchor focused",
+        "A phone row opens 03 for that person",
+        "'Revert' on a history row opens a confirmation naming the change being undone and the phones connected now"
+      ],
+      "states": {
+        "default": "Header, drift card (if flagged; otherwise a one-line 'Readings agree with neighbouring anchors'), connected phones, settings summary, history.",
+        "loading": "The header renders from 04's row data. The drift card, phones list and history each show skeleton blocks at final height.",
+        "empty": "No phones connected: the list reads 'No phones are connected to this anchor right now.' with one action, 'View on floor'. No history yet: 'No setting changes since installation.'",
+        "error": "Equipment unreachable: the banner reads 'Anchor NE hasn't reported since 10:31. Settings can't be changed until it reconnects.' Its action is 'View site health'. 'Change settings' becomes disabled.",
+        "success": "After a revert, a snackbar reads 'Settings reverted to 10:05 configuration' with 'View history', and the history list gains the revert entry.",
+        "disabled": "'Change settings' is disabled with the helper text 'You can view settings but not change them. Ask an equipment editor.' for operators without the role, and 'Anchor offline — reconnect to change settings' when unreachable."
+      },
+      "responsive": {
+        "desktop": "Two columns: left 2/3 holds the header, drift card and connected phones; right 1/3 holds the settings summary and history.",
+        "laptop": "Two columns at 60/40, with the history truncated to three rows and a 'Show all' link.",
+        "tablet": "Single column ordered header, drift, phones, settings, history. The primary action stays in the header.",
+        "mobile": "Single column. The primary action moves to a full-width button pinned at the bottom above the safe area. History is collapsed behind 'Setting history (5)'."
+      },
+      "accessibility": {
+        "contrast": "Drift card text md.sys.color.on-tertiary-container on md.sys.color.tertiary-container at 4.5:1 or better; the 'Drift suspected' state also carries an exclamation glyph and the words, so colour is not the signal.",
+        "keyboard_focus": "Tab order is breadcrumb, primary action, 'View on floor', context chip, drift card link, phone rows, history revert buttons. The revert dialog traps focus, puts initial focus on 'Cancel' (the safe choice), and returns focus to the revert button.",
+        "labels": "Each revert button names its change ('Revert calibration change from 10:05'). A disabled 'Change settings' exposes its reason through aria-describedby pointing at the helper text.",
+        "touch_targets": "Phone rows 56px; revert buttons are text buttons padded to 44x44px; the pinned mobile button is 48px tall.",
+        "reading_order": "h1 equipment label, h2 'Drift check', h2 'Connected phones', h2 'Settings', h2 'Setting history'.",
+        "status_messages": "The connected-phones count is a polite live region ('3 phones connected'). The anchor going offline while open is assertive, because it disables the primary action. A revert result is announced politely with the snackbar.",
+        "motion": "There is no motion beyond list updates. Under prefers-reduced-motion new phone rows appear without a slide-in."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "GET /v1/sites/{siteId}/equipment/{equipmentId} — IPS Cloud API (proposed)",
+          "GET /v1/sites/{siteId}/equipment/{equipmentId}/connections — IPS Cloud API (proposed)",
+          "GET /v1/sites/{siteId}/drift/{anchorId} — IPS Cloud API (proposed)",
+          "GET /v1/sites/{siteId}/equipment/{equipmentId}/config/history?limit=5 — IPS Cloud API (proposed)",
+          "POST /v1/sites/{siteId}/equipment/{equipmentId}/config/revert — IPS Cloud API (proposed)"
+        ],
+        "permissions": [
+          "View: any operator on the site",
+          "Change settings and revert: role 'equipment-editor'"
+        ],
+        "edge_cases": [
+          "Store computer detail has no drift card and no connected-phones list; it shows per-anchor link status instead",
+          "Revert targets firmware rather than settings: offered as a rollout (06) because a firmware downgrade is an OTA, not a settings write",
+          "Arriving from 03 for a person who has since moved to another anchor: the context chip reads 'Person 7F3A is now on Anchor SE' with a link"
+        ],
+        "open_questions": [
+          "Which settings are exposed for calibration (transmit power, angle offsets, position)? The RFQ names calibration without listing parameters",
+          "Is the store computer's configuration changed from the cloud at all in the MVP?"
+        ]
+      }
+    },
+    {
+      "page_name": "06 - Change Settings",
+      "purpose": "Let an equipment editor change calibration settings or start a firmware update with a clear preview of who is affected, and with a rollout plan that keeps every tracked person covered.",
+      "primary_user": "Site Operator",
+      "primary_action": "Review and apply",
+      "secondary_actions": [
+        "Cancel",
+        "Choose rollout plan"
+      ],
+      "content_structure": [
+        "Header: equipment label, current firmware, current settings",
+        "Change type: 'Calibration settings' or 'Firmware update' (radio)",
+        "Settings form (calibration) or firmware version picker (update)",
+        "Impact preview: phones connected now, the neighbouring anchors that will cover them, and any phone with no other covering anchor",
+        "Rollout plan (firmware only): staged by default, one anchor at a time while neighbours cover; 'All at once' available only when nobody is present",
+        "Review step: summary of change, impact, plan; 'Apply' confirm"
+      ],
+      "navigation": "Breadcrumb 'Site health › Anchor NE › Change settings'. 'Cancel' returns to 05 without changes. A firmware apply lands on 07; a calibration apply returns to 05 with a success snackbar.",
+      "components": [
+        {
+          "name": "Component / Top App Bar",
+          "base": "Header",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Scrolled"
+          ]
+        },
+        {
+          "name": "Component / Navigation Rail",
+          "base": "Navigation",
+          "source": "reused",
+          "variants": [
+            "Expanded",
+            "Collapsed"
+          ]
+        },
+        {
+          "name": "Component / Breadcrumb",
+          "base": "Breadcrumb",
+          "source": "new",
+          "variants": [
+            "Default"
+          ],
+          "why_new": "Material 3 has no breadcrumb component; built from M3 text buttons separated by a chevron icon in md.sys.typescale.label-large, shared by 05, 06 and 07."
+        },
+        {
+          "name": "Component / Radio Button",
+          "base": "Radio",
+          "source": "reused",
+          "variants": [
+            "Selected",
+            "Unselected",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Outlined Text Field",
+          "base": "Input",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Error",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Slider",
+          "base": "Slider",
+          "source": "reused",
+          "variants": [
+            "Continuous",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Exposed Dropdown Menu",
+          "base": "Select",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Outlined Card",
+          "base": "Card",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Selected"
+          ]
+        },
+        {
+          "name": "Component / List",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "One-line",
+            "Two-line",
+            "Three-line"
+          ]
+        },
+        {
+          "name": "Component / Filled Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Primary",
+            "Disabled",
+            "Loading"
+          ]
+        },
+        {
+          "name": "Component / Outlined Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Secondary",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Dialog",
+          "base": "Confirmation",
+          "source": "reused",
+          "variants": [
+            "Basic",
+            "Destructive"
+          ]
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        },
+        {
+          "name": "Component / Linear Progress Indicator",
+          "base": "ProgressIndicator",
+          "source": "reused",
+          "variants": [
+            "Determinate",
+            "Indeterminate"
+          ]
+        },
+        {
+          "name": "Component / Snackbar",
+          "base": "Toast",
+          "source": "reused",
+          "variants": [
+            "Single-line",
+            "With action"
+          ]
+        }
+      ],
+      "data": [
+        "Current configuration and firmware",
+        "Available firmware versions with release notes",
+        "Phones connected to this anchor now, with each phone's other hearing anchors",
+        "Coverage computation: phones that would have no anchor during the change",
+        "Rollout plan options"
+      ],
+      "interactions": [
+        "Choosing 'Firmware update' reveals the version picker and rollout plan; choosing 'Calibration settings' reveals the settings form",
+        "The impact preview recomputes live as people move and shows the time it was computed",
+        "'Review and apply' opens a review dialog repeating the change, the affected phones and the plan; 'Apply' writes",
+        "If the preview shows phones with no other coverage, 'Apply' stays available but requires ticking 'I understand 2 people will lose tracking for about 90 seconds'"
+      ],
+      "states": {
+        "default": "Calibration settings selected, the form prefilled with current values, the impact preview listing connected phones and their covering neighbours.",
+        "loading": "Form fields render with current values. The impact preview shows three skeleton rows labelled 'Checking who would be affected…'.",
+        "empty": "Nobody is connected to this anchor: the impact preview reads 'Nobody is connected to this anchor — the change won't interrupt tracking.' 'All at once' becomes available.",
+        "error": "Apply rejected by the cloud (for example the anchor went offline mid-review): the dialog closes, the banner reads 'Settings weren't applied — Anchor NE disconnected. Nothing was changed.', and form values are kept for retry.",
+        "success": "Calibration: returns to 05 with the snackbar 'Calibration applied to Anchor NE' and a 'Revert' action. Firmware: routes to 07 showing the rollout starting.",
+        "disabled": "'Review and apply' is disabled until a value differs from the current configuration, with helper text 'Change a setting to continue'. The 'All at once' radio is disabled with 'Only available when nobody is on the floor' while anyone is present."
+      },
+      "responsive": {
+        "desktop": "Two columns: the form on the left (2/3) and a sticky impact preview card on the right (1/3) that stays visible while editing.",
+        "laptop": "Same two columns at 60/40.",
+        "tablet": "Single column with the impact preview directly under the change type, above the form, so it is read before editing.",
+        "mobile": "Single-column form with stacked full-width actions at the bottom. The impact preview is a collapsible card, expanded by default and showing the count in its header ('3 phones affected')."
+      },
+      "accessibility": {
+        "contrast": "Form labels md.sys.color.on-surface and helper text md.sys.color.on-surface-variant on md.sys.color.surface at 4.5:1 or better; the 'loses tracking' warning uses md.sys.color.on-error-container on md.sys.color.error-container with a warning glyph.",
+        "keyboard_focus": "Tab order is change type radios, then form fields, then rollout plan, then 'Review and apply', then 'Cancel'. The review dialog opens with focus on its heading, Tab cycles inside it, and Escape cancels back to the form with values intact.",
+        "labels": "Every field has a visible label and unit ('Transmit power (dBm)'). Out-of-range values show an inline error naming the allowed range below the field and are announced on blur. The acknowledgement checkbox's label states the people and duration.",
+        "touch_targets": "Radios and checkbox have 48x48px hit areas; slider thumb 44px with arrow-key steps; action buttons 40px tall inside 48px hit areas.",
+        "reading_order": "h1 'Change settings for Anchor NE', h2 'What to change', h2 'Who this affects', h2 'Rollout plan', then actions.",
+        "status_messages": "When the impact preview recomputes and its count changes, a polite live region announces it ('Now 4 phones affected'). An apply failure is assertive. Success is announced on the destination page.",
+        "motion": "Under prefers-reduced-motion the preview card does not animate its height when people are added or removed, and the dialog appears without a scale transition."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "GET /v1/sites/{siteId}/equipment/{equipmentId}/config — IPS Cloud API (proposed)",
+          "GET /v1/firmware?model={model} — IPS Cloud API (proposed)",
+          "POST /v1/sites/{siteId}/equipment/{equipmentId}/impact — IPS Cloud API (proposed): returns affected phones and coverage gaps",
+          "PUT /v1/sites/{siteId}/equipment/{equipmentId}/config — IPS Cloud API (proposed): calibration write, returns change id",
+          "POST /v1/sites/{siteId}/rollouts — IPS Cloud API (proposed): firmware rollout with plan"
+        ],
+        "permissions": [
+          "Role 'equipment-editor' only; other operators reaching the URL see 05 with the disabled explanation"
+        ],
+        "edge_cases": [
+          "People move while the review dialog is open: the dialog shows 'Updated 4s ago' and re-confirms if the count of uncovered people rises",
+          "Two editors change the same anchor: the second apply is rejected with 'Anchor NE was changed by another editor at 10:47 — review their change first'",
+          "Firmware version older than the installed one: labelled 'Downgrade' and requires the acknowledgement checkbox",
+          "Staged rollout requested on a site where an anchor has no neighbour coverage: that anchor is scheduled last and flagged"
+        ],
+        "open_questions": [
+          "Staged rollout and automatic rollback depend on the store computer and anchor firmware, which this RFQ puts out of scope. Can those teams support them?",
+          "How long does an OTA take per anchor? The '90 seconds' in the acknowledgement copy is a placeholder until this is known"
+        ]
+      }
+    },
+    {
+      "page_name": "07 - Rollout Progress",
+      "purpose": "Track a staged firmware update anchor by anchor, show who is covered while each anchor is down, and let the operator pause or stop and roll back at any point.",
+      "primary_user": "Site Operator",
+      "primary_action": "Pause rollout",
+      "secondary_actions": [
+        "Stop and roll back",
+        "Resume rollout",
+        "Back to site health"
+      ],
+      "content_structure": [
+        "Header: firmware version, started by and at, overall progress",
+        "Rollout tracker: one step per anchor with state (waiting, updating, verifying, done, rolled back) and the covering anchors during its update",
+        "Coverage line: 'Everyone stayed tracked' or 'Person 2B91 lost tracking for 40s at 10:58'",
+        "Event log for this rollout"
+      ],
+      "navigation": "Breadcrumb 'Site health › Update to 2.4.1'. Reached from 06 on apply, or from the rollout strip on 04.",
+      "components": [
+        {
+          "name": "Component / Top App Bar",
+          "base": "Header",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Scrolled"
+          ]
+        },
+        {
+          "name": "Component / Navigation Rail",
+          "base": "Navigation",
+          "source": "reused",
+          "variants": [
+            "Expanded",
+            "Collapsed"
+          ]
+        },
+        {
+          "name": "Component / Breadcrumb",
+          "base": "Breadcrumb",
+          "source": "new",
+          "variants": [
+            "Default"
+          ],
+          "why_new": "Material 3 has no breadcrumb component; built from M3 text buttons separated by a chevron icon in md.sys.typescale.label-large, shared by 05, 06 and 07."
+        },
+        {
+          "name": "Component / Rollout Tracker",
+          "base": "Stepper",
+          "source": "new",
+          "variants": [
+            "In progress",
+            "Paused",
+            "Rolled back",
+            "Complete"
+          ],
+          "why_new": "Material 3 has no stepper. Shows staged OTA waves anchor by anchor with per-anchor outcome and rollback."
+        },
+        {
+          "name": "Component / Linear Progress Indicator",
+          "base": "ProgressIndicator",
+          "source": "reused",
+          "variants": [
+            "Determinate",
+            "Indeterminate"
+          ]
+        },
+        {
+          "name": "Component / Filled Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Primary",
+            "Disabled",
+            "Loading"
+          ]
+        },
+        {
+          "name": "Component / Outlined Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Secondary",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Dialog",
+          "base": "Confirmation",
+          "source": "reused",
+          "variants": [
+            "Basic",
+            "Destructive"
+          ]
+        },
+        {
+          "name": "Component / List",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "One-line",
+            "Two-line",
+            "Three-line"
+          ]
+        },
+        {
+          "name": "Component / Event Row",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "Presence",
+            "Equipment",
+            "Configuration",
+            "Stream"
+          ]
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        },
+        {
+          "name": "Component / Snackbar",
+          "base": "Toast",
+          "source": "reused",
+          "variants": [
+            "Single-line",
+            "With action"
+          ]
+        },
+        {
+          "name": "Component / Skeleton",
+          "base": "Skeleton",
+          "source": "new",
+          "variants": [
+            "Row",
+            "Block"
+          ],
+          "why_new": "Material 3 specifies loading indicators but no skeleton placeholder; built from md.sys.color.surface-container-high blocks at the loaded content's exact dimensions so layout never shifts."
+        }
+      ],
+      "data": [
+        "Rollout id, firmware version, initiator, start time",
+        "Per-anchor step state and timestamps",
+        "Coverage gaps detected during the rollout",
+        "Rollout events"
+      ],
+      "interactions": [
+        "'Pause rollout' finishes the anchor currently updating, then holds",
+        "'Resume rollout' continues from the next anchor",
+        "'Stop and roll back' opens a confirmation listing the anchors that will revert; on confirm, updated anchors revert one at a time",
+        "An anchor that fails verification rolls back automatically and the rollout pauses itself"
+      ],
+      "states": {
+        "default": "Tracker with completed anchors marked done, one updating, the rest waiting. Overall progress 'Anchor 2 of 4'.",
+        "loading": "The header renders from the rollout id. The tracker shows four skeleton steps at final height.",
+        "empty": "Rollout id not found (an old link): the page reads 'This update isn't running any more.' Its one action is 'Back to site health'.",
+        "error": "An anchor failed verification and rolled back automatically: the tracker marks that step 'Rolled back — didn't come back healthy', the rollout pauses, and the banner reads 'Update paused: Anchor SW reverted to 2.3.0. Other anchors are unaffected.' 'Resume' and 'Stop and roll back' both stay available.",
+        "success": "All anchors done: the banner reads 'All 4 anchors updated to 2.4.1. Everyone stayed tracked.' Its action is 'Back to site health'.",
+        "disabled": "'Pause rollout' becomes 'Pausing…' (disabled) until the current anchor finishes, with helper text 'Finishing Anchor NE before pausing'."
+      },
+      "responsive": {
+        "desktop": "Vertical tracker in a centred 720px column, with the event log in a right column.",
+        "laptop": "Same layout; the event log narrows to 320px.",
+        "tablet": "Single column with the event log below the tracker. Actions stay in the header.",
+        "mobile": "Single column. The tracker compresses each step to one line (anchor label and state) with an expand control, and the actions stack full-width at the bottom."
+      },
+      "accessibility": {
+        "contrast": "Step labels md.sys.color.on-surface on md.sys.color.surface at 4.5:1 or better; done, updating and rolled-back steps differ by glyph (check, rotating arc, undo arrow) and by text, and the md.sys.color.primary and md.sys.color.error accents are secondary.",
+        "keyboard_focus": "Tab order is primary action, then 'Stop and roll back', then each tracker step's expand control, then the event log. The stop dialog opens with focus on 'Keep updating' (the safe option); Escape cancels.",
+        "labels": "Each step's accessible name is the anchor and its state ('Anchor NE, updating, covered by Anchor N and Anchor E'). The stop dialog names the anchors that will revert.",
+        "touch_targets": "Action buttons 40px tall inside 48px hit areas; step expand controls 48x48px.",
+        "reading_order": "h1 'Updating to 2.4.1', h2 'Progress', h2 'Coverage', h2 'Events'.",
+        "status_messages": "Each step completing is announced politely ('Anchor NE updated'). An automatic rollback and pause is announced assertively, because the operator must decide what to do next.",
+        "motion": "The updating step's rotating arc stops under prefers-reduced-motion and is replaced by the static text 'Updating'."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "GET /v1/sites/{siteId}/rollouts/{rolloutId} — IPS Cloud API (proposed)",
+          "WS /v1/sites/{siteId}/rollouts/{rolloutId}/events — IPS Cloud API (proposed)",
+          "POST /v1/sites/{siteId}/rollouts/{rolloutId}/pause — IPS Cloud API (proposed)",
+          "POST /v1/sites/{siteId}/rollouts/{rolloutId}/resume — IPS Cloud API (proposed)",
+          "POST /v1/sites/{siteId}/rollouts/{rolloutId}/abort — IPS Cloud API (proposed): aborts and rolls back updated anchors"
+        ],
+        "permissions": [
+          "View: any operator on the site",
+          "Pause, resume, stop: role 'equipment-editor'"
+        ],
+        "edge_cases": [
+          "The operator closes the browser mid-rollout: the rollout continues server-side and the strip on 04 shows it to whoever opens the site next",
+          "The store computer disconnects mid-rollout: the rollout pauses automatically, because anchor verification cannot be read",
+          "Rollback itself fails for one anchor: that step is marked 'Needs attention — couldn't revert' with the anchor's last reported firmware"
+        ],
+        "open_questions": [
+          "Can anchors report post-update health to drive automatic rollback? This depends on out-of-scope firmware"
+        ]
+      }
+    },
+    {
+      "page_name": "08 - Activity Timeline",
+      "purpose": "Record what happened on the floor and to the equipment — sign-ins, sign-outs, device switches, people leaving coverage, drift flags, settings changes, rollouts, name reveals and stream silences — so the operator can see how someone left or why something changed instead of inferring it from a missing marker.",
+      "primary_user": "Site Operator",
+      "primary_action": "Filter events",
+      "secondary_actions": [
+        "Search by person",
+        "Jump to time",
+        "Open related item"
+      ],
+      "content_structure": [
+        "Filter chips: Presence, Equipment, Settings, Stream, Reveals",
+        "Time range selector (last 15 min, 1 h, today)",
+        "Event list in reverse chronological order: time, type glyph with text, subject (name or ID, or equipment), description, link to related page"
+      ],
+      "navigation": "Rail destination 'Activity'. An event's link opens 03 (presence events for someone still present), 05 (equipment), or 07 (rollouts).",
+      "components": [
+        {
+          "name": "Component / Top App Bar",
+          "base": "Header",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Scrolled"
+          ]
+        },
+        {
+          "name": "Component / Navigation Rail",
+          "base": "Navigation",
+          "source": "reused",
+          "variants": [
+            "Expanded",
+            "Collapsed"
+          ]
+        },
+        {
+          "name": "Component / Filter Chip",
+          "base": "Chip",
+          "source": "reused",
+          "variants": [
+            "Selected",
+            "Unselected"
+          ]
+        },
+        {
+          "name": "Component / Search Bar",
+          "base": "Search",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Active"
+          ]
+        },
+        {
+          "name": "Component / Exposed Dropdown Menu",
+          "base": "Select",
+          "source": "reused",
+          "variants": [
+            "Default",
+            "Disabled"
+          ]
+        },
+        {
+          "name": "Component / Event Row",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "Presence",
+            "Equipment",
+            "Configuration",
+            "Stream"
+          ]
+        },
+        {
+          "name": "Component / List",
+          "base": "List",
+          "source": "reused",
+          "variants": [
+            "One-line",
+            "Two-line",
+            "Three-line"
+          ]
+        },
+        {
+          "name": "Component / Divider",
+          "base": "Divider",
+          "source": "reused",
+          "variants": [
+            "Full-width",
+            "Inset"
+          ]
+        },
+        {
+          "name": "Component / Text Button",
+          "base": "Button",
+          "source": "reused",
+          "variants": [
+            "Tertiary"
+          ]
+        },
+        {
+          "name": "Component / Skeleton",
+          "base": "Skeleton",
+          "source": "new",
+          "variants": [
+            "Row",
+            "Block"
+          ],
+          "why_new": "Material 3 specifies loading indicators but no skeleton placeholder; built from md.sys.color.surface-container-high blocks at the loaded content's exact dimensions so layout never shifts."
+        },
+        {
+          "name": "Component / Banner",
+          "base": "Banner",
+          "source": "new",
+          "variants": [
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "why_new": "Material 3 dropped the Material 2 banner but these pages need a persistent, page-level condition (positions frozen, names unavailable) that a transient snackbar cannot carry; rebuilt on the M2 banner anatomy with M3 colour and type tokens."
+        }
+      ],
+      "data": [
+        "Site events with type, timestamp, subject digital ID or equipment id, description",
+        "Display names resolved in the browser for digital IDs",
+        "Reveal audit entries (operator, reason, time)"
+      ],
+      "interactions": [
+        "Filter chips combine; the result count updates",
+        "Search by name or ID filters to one person",
+        "'Jump to time' scrolls to the nearest event",
+        "New events insert at the top only when the operator is scrolled to the top; otherwise a 'N new events' chip appears"
+      ],
+      "states": {
+        "default": "The last hour of events, all types, newest first.",
+        "loading": "Filter chips render immediately and the list shows eight skeleton rows at final height.",
+        "empty": "No events match the filters: 'No events in the last hour for these filters.' Its one action is 'Clear filters'.",
+        "error": "Event history failed to load: the banner reads 'Activity couldn't be loaded — new events will still appear as they happen' with 'Retry'.",
+        "disabled": "The Reveals filter is visible only to roles permitted to see the reveal audit; otherwise it is absent, not disabled."
+      },
+      "responsive": {
+        "desktop": "Filters and time range in one row above a full-width list with five columns (time, type, subject, description, link).",
+        "laptop": "Same layout; the description truncates to one line and expands on focus.",
+        "tablet": "Filters wrap onto two rows, and list rows become two-line (time and type on top, subject and description below).",
+        "mobile": "Filters move into a horizontally scrollable chip row, time range becomes a menu, and rows are three-line cards. The 'N new events' chip floats above the list."
+      },
+      "accessibility": {
+        "contrast": "Event text md.sys.color.on-surface on md.sys.color.surface at 4.5:1 or better; type glyphs md.sys.color.on-surface-variant at 3:1 or better and always paired with the type word.",
+        "keyboard_focus": "Tab order is filter chips, then search, then time range, then the 'new events' chip when present, then the list. Each row is one focusable link to its related page, and arrow keys move between rows.",
+        "labels": "Each row reads as one sentence ('10:51:22, presence, Person 7F3A signed out on Pixel 7'). The chips are a labelled group 'Event types'.",
+        "touch_targets": "Rows at least 56px; chips 32px tall inside 48px hit areas; the 'new events' chip 40px inside 48px.",
+        "reading_order": "h1 'Activity', h2 'Filters', h2 'Events'. Rows are a list, not a table, because they are read in sequence.",
+        "status_messages": "When filters change, the result count is announced politely ('42 events'). New events arriving while scrolled are summarised politely by the chip ('3 new events') rather than read individually.",
+        "motion": "Under prefers-reduced-motion new rows appear without sliding in, and the list never auto-scrolls."
+      },
+      "requirements": {
+        "data_dependencies": [
+          "GET /v1/sites/{siteId}/events?types=&since=&until=&digitalId= — IPS Cloud API (proposed)",
+          "WS /v1/sites/{siteId}/events/live — IPS Cloud API (proposed)",
+          "POST /v1/resolve — Customer identity service (customer-hosted, proposed)",
+          "GET /v1/audit/reveals?siteId= — IPS Cloud API (proposed)"
+        ],
+        "permissions": [
+          "Presence, equipment, settings and stream events: any operator on the site",
+          "Reveal audit: role to be defined by the customer"
+        ],
+        "edge_cases": [
+          "A person's events after logout show their anonymous ID even under the names policy, because names are resolved only for people currently logged in",
+          "Stream silence longer than one heartbeat interval logs a 'Stream silent' event with its duration once heartbeats resume",
+          "The time range spans a store-computer outage: a single 'Store computer offline 10:42–10:49' event marks the gap instead of an unexplained absence"
+        ],
+        "open_questions": [
+          "How long are events retained? The RFQ says the customer cloud stores location data, but says nothing about the IPS side",
+          "Should name resolution be allowed for logged-out people in the timeline, or does that defeat 'no longer appear on the dashboard'?"
+        ]
+      }
+    }
+  ],
+  "responsive_matrix": [
+    {
+      "component": "Navigation Rail",
+      "desktop": "Rail 80px with labels",
+      "tablet": "Rail 80px, icons with labels",
+      "mobile": "Modal navigation drawer behind a menu icon"
+    },
+    {
+      "component": "Floor Plan Canvas",
+      "desktop": "Fills the space between rail and 360px right panel",
+      "tablet": "Full width; people list becomes a peeking bottom sheet",
+      "mobile": "Behind a 'Map | List' segmented button, defaulting to List; full-bleed with pinch-zoom when chosen"
+    },
+    {
+      "component": "People / Raw stream panel",
+      "desktop": "Right panel 360px with tabs",
+      "tablet": "Bottom sheet peeking 96px with count",
+      "mobile": "List view of the segmented control; raw stream moves to 03 only"
+    },
+    {
+      "component": "Person Detail",
+      "desktop": "Side sheet 480px over the floor",
+      "tablet": "Full page with back arrow",
+      "mobile": "Full page, chart defaults to table, raw log collapsed"
+    },
+    {
+      "component": "Equipment Data Table",
+      "desktop": "All eight columns",
+      "tablet": "Four columns plus row expansion",
+      "mobile": "Recomposes to a list of status rows"
+    },
+    {
+      "component": "Impact preview",
+      "desktop": "Sticky right card beside the form",
+      "tablet": "Placed above the form",
+      "mobile": "Collapsible card, expanded by default, count in header"
+    },
+    {
+      "component": "Rollout Tracker",
+      "desktop": "Vertical steps in a 720px column with the log at right",
+      "tablet": "Steps then log, single column",
+      "mobile": "One-line steps with expand controls; stacked actions"
+    },
+    {
+      "component": "Primary actions",
+      "desktop": "Inline in page header",
+      "tablet": "Inline in page header",
+      "mobile": "Full-width, pinned above the bottom safe area on 05 and 06; stacked elsewhere"
+    }
+  ],
+  "prototype_flows": [
+    {
+      "from": "01 - Sign In",
+      "trigger": "Click 'Sign in' and return from IdP",
+      "to": "02 - Live Floor",
+      "interaction": "Navigate, instant"
+    },
+    {
+      "from": "02 - Live Floor",
+      "trigger": "Click a person marker or People row",
+      "to": "03 - Person Detail",
+      "interaction": "Open overlay: side sheet from right"
+    },
+    {
+      "from": "03 - Person Detail",
+      "trigger": "Click 'Open nearest anchor'",
+      "to": "05 - Equipment Detail",
+      "interaction": "Navigate, carrying person context"
+    },
+    {
+      "from": "03 - Person Detail",
+      "trigger": "Press Escape or close",
+      "to": "02 - Live Floor",
+      "interaction": "Close overlay"
+    },
+    {
+      "from": "02 - Live Floor",
+      "trigger": "Click an anchor marker or store-computer chip",
+      "to": "05 - Equipment Detail",
+      "interaction": "Navigate"
+    },
+    {
+      "from": "02 - Live Floor",
+      "trigger": "Rail: Site health",
+      "to": "04 - Site Health",
+      "interaction": "Navigate, instant"
+    },
+    {
+      "from": "02 - Live Floor",
+      "trigger": "Rail: Activity",
+      "to": "08 - Activity Timeline",
+      "interaction": "Navigate, instant"
+    },
+    {
+      "from": "04 - Site Health",
+      "trigger": "Click an equipment row",
+      "to": "05 - Equipment Detail",
+      "interaction": "Navigate"
+    },
+    {
+      "from": "04 - Site Health",
+      "trigger": "Click the active rollout strip",
+      "to": "07 - Rollout Progress",
+      "interaction": "Navigate"
+    },
+    {
+      "from": "05 - Equipment Detail",
+      "trigger": "Click 'Change settings'",
+      "to": "06 - Change Settings",
+      "interaction": "Navigate"
+    },
+    {
+      "from": "05 - Equipment Detail",
+      "trigger": "Click 'View on floor'",
+      "to": "02 - Live Floor",
+      "interaction": "Navigate, anchor focused"
+    },
+    {
+      "from": "06 - Change Settings",
+      "trigger": "Firmware: 'Review and apply' then 'Apply'",
+      "to": "07 - Rollout Progress",
+      "interaction": "Navigate after dialog confirm"
+    },
+    {
+      "from": "06 - Change Settings",
+      "trigger": "Calibration: 'Review and apply' then 'Apply', or 'Cancel'",
+      "to": "05 - Equipment Detail",
+      "interaction": "Navigate back with snackbar"
+    },
+    {
+      "from": "07 - Rollout Progress",
+      "trigger": "Click 'Back to site health'",
+      "to": "04 - Site Health",
+      "interaction": "Navigate"
+    },
+    {
+      "from": "08 - Activity Timeline",
+      "trigger": "Click an equipment event",
+      "to": "05 - Equipment Detail",
+      "interaction": "Navigate"
+    },
+    {
+      "from": "08 - Activity Timeline",
+      "trigger": "Click a presence event for someone present",
+      "to": "03 - Person Detail",
+      "interaction": "Navigate, open as side sheet over 02"
+    }
+  ],
+  "design_system_gaps": [
+    {
+      "need": "A scaled floor plan on which live person markers and anchor markers are positioned by (x, y), panned and zoomed, and navigable by keyboard as an ordered list of objects",
+      "nearest_role": "Chart",
+      "why_insufficient": "A chart plots data on axes. This is a spatial map of a real room, where position is the content, objects are interactive, and a non-visual user needs an equivalent structure ('3 people near Anchor NE')."
+    },
+    {
+      "need": "A person marker whose state is time-based (live, fading with a last-seen age, frozen when upstream data stops) and readable without colour",
+      "nearest_role": "Badge",
+      "why_insufficient": "A badge is a static count or dot. It has no notion of time since last update, and its states are colour-coded by convention."
+    },
+    {
+      "need": "A live append-only log with follow-tail, pause, and filter-to-one-device, whose updates must not flood assistive technology",
+      "nearest_role": "List",
+      "why_insufficient": "A list renders a stable set of rows. A log grows several times a second, needs a paused or following mode, and needs announcements throttled to a summary rather than one per row."
+    }
+  ],
+  "heuristic_review": [
+    {
+      "heuristic": "Visibility of system status",
+      "page": "02 - Live Floor",
+      "severity": "high",
+      "finding": "When the store computer stopped sending, markers would stay where they were and still look live. An operator would read a frozen floor as people standing still, which is the 'show only who is really there' failure in its worst form.",
+      "fix": "Added a Frozen marker variant (hatched) that every marker switches to on store-computer loss, a banner stating the freeze time, and an assertive announcement. Anchor statuses on 04 become 'Unknown since…' for the same reason. Spec updated on 02 (error state, components) and 04 (edge cases)."
+    },
+    {
+      "heuristic": "Match between system and the real world",
+      "page": "03 - Person Detail",
+      "severity": "medium",
+      "finding": "The first draft labelled signal as 'RSSI −71 dBm' and the person as 'digital ID'. That is the data model's vocabulary, and the operator role is not known to be RF-literate.",
+      "fix": "Signal is now shown as 'Good / Fair / Weak' with dBm as secondary text, the ID is labelled 'Anonymous ID', and a verdict sentence states in plain words whether the reading looks consistent. Spec updated on 03 (content structure, labels)."
+    },
+    {
+      "heuristic": "User control and freedom",
+      "page": "07 - Rollout Progress",
+      "severity": "high",
+      "finding": "Once a firmware update started there was no way to stop it, and a calibration change had no way back. These are the two most expensive actions in the product, on live hardware with people being tracked.",
+      "fix": "Added 'Pause rollout' and 'Stop and roll back' on 07 (stop confirms, with the safe option focused), an automatic pause when an anchor fails verification, and setting history with per-change revert on 05. Spec updated on 05 and 07."
+    },
+    {
+      "heuristic": "Consistency and standards",
+      "page": "03 - Person Detail",
+      "severity": "medium",
+      "finding": "The draft had a map-wide 'Show names' toggle on 02 and a per-person 'Reveal name' on 03: two controls with near-identical names and very different scope and privacy consequences.",
+      "fix": "Removed the map-wide toggle. Whether names show by default is an organisation policy read at sign-in, and the only operator control is per-person 'Reveal name' on 03, which asks for a reason and is logged. Spec updated on 02 and 03."
+    },
+    {
+      "heuristic": "Error prevention",
+      "page": "06 - Change Settings",
+      "severity": "high",
+      "finding": "A firmware update could be applied to every anchor at once while people were on the floor, taking the whole floor dark. Nothing in the flow prevented it.",
+      "fix": "Rollout defaults to staged (one anchor at a time while neighbours cover), and 'All at once' is disabled whenever anyone is present. Any change that leaves a phone uncovered needs an acknowledgement naming the people and the duration. Spec updated on 06."
+    },
+    {
+      "heuristic": "Recognition rather than recall",
+      "page": "05 - Equipment Detail",
+      "severity": "medium",
+      "finding": "An operator who suspected a person's reading on 03 and went to the anchor on 05 had to remember which person they were checking in order to find them in the connected-phones list.",
+      "fix": "Navigation from 03 to 05 carries the person as context: a 'From Person 7F3A' chip, with that person highlighted in the list, or a note that they have moved to another anchor. Spec updated on 05 (content structure, edge cases)."
+    },
+    {
+      "heuristic": "Flexibility and efficiency of use",
+      "page": "02 - Live Floor",
+      "severity": "low",
+      "finding": "Finding one person on a busy floor meant scanning the map or scrolling the list, with no fast path for an operator doing it repeatedly.",
+      "fix": "Added people search focused by '/', which filters the list and highlights matching markers, plus arrow-key navigation between canvas objects. Spec updated on 02 (interactions, keyboard focus)."
+    },
+    {
+      "heuristic": "Aesthetic and minimalist design",
+      "page": "02 - Live Floor",
+      "severity": "medium",
+      "finding": "The draft gave the raw stream a third column beside the map and the people list, so the busiest page carried three live-updating regions competing for attention.",
+      "fix": "The raw stream now shares the right panel with People as a tab, and is filtered per person on 03, where it answers a question rather than scrolling for its own sake. Spec updated on 02 (content structure, interactions)."
+    },
+    {
+      "heuristic": "Help users recognize, diagnose and recover from errors",
+      "page": "02 - Live Floor",
+      "severity": "medium",
+      "finding": "When names failed to resolve, an operator could not tell whether they lacked permission or the customer's identity service was down. Both looked like anonymous IDs.",
+      "fix": "A banner names the cause ('your organisation's identity service isn't responding'), sign-in degrades rather than failing when the token cannot be issued, and 'Reveal name' is disabled with the same explanation. Spec updated on 01 (edge cases), 02 (disabled state) and 03 (disabled state)."
+    },
+    {
+      "heuristic": "Help and documentation",
+      "page": "none",
+      "severity": "none",
+      "finding": "none",
+      "fix": "The two concepts that need explaining explain themselves in place: presence states carry a text label and last-seen age plus an always-available legend on 02, and the drift flag on 05 states its evidence and the usual remedy in one sentence. No separate help is needed for the primary journey."
+    }
+  ],
+  "assumptions": [
+    "Design system: none was supplied, so the documented Material 3 baseline is used (human decision at the fork). Token names come from ux-pipeline/skills/wireframe-ia/references/material-design-tokens.json. Where Material 3 lacks a component (data table, breadcrumb, banner, skeleton, stepper, charts) it is built from M3 anatomy and tokens and marked new.",
+    "Direction: B+C composite. From B: one dashboard, names resolved in the operator's browser, pseudonymous fallback with per-person reveal, the reading-explainer panel, the impact preview and role-gated settings. From C: drift check, staged OTA with rollback, the presence/activity timeline, and the stream heartbeat (surfaced on 04 and 08).",
+    "The integration health panel (A-only) is not in this composite. The integrator persona's HMW 5 is served only by the heartbeat, which the customer's own monitoring consumes, and has no integrator UI here.",
+    "Every API endpoint named in data_dependencies is a proposal. The RFQ defines no API surface.",
+    "The operator role is the RFQ's unnamed 'users'. Two capabilities are assumed: view (all operators) and 'equipment-editor' (change settings, run rollouts), read from the customer IdP.",
+    "Whether names show by default is an organisation policy ('names on' or 'anonymous IDs with reveal') read at sign-in, not an operator toggle.",
+    "Single site per view, with a site selector in the top bar because the PKI design implies several sites. The pilot layout is one room with four corner anchors and two doors (RFQ p.6 mock-up).",
+    "Fade and remove timings for out-of-range people are configurable per site. The RFQ gives no values, so none are specified.",
+    "The demo phone app (login, welcome, config download) is not wireframed: target surface is web, and the app sits with the out-of-scope SDK.",
+    "The '90 seconds' OTA duration in 06's acknowledgement copy is a placeholder until real per-anchor update times are known."
+  ],
+  "validation": {
+    "ux": [
+      "Primary journey walks 01 → 02 → 03 → 05 → 06 → 05 → 02 without dead ends",
+      "Every RFQ dashboard requirement (§4 dashboard, device tracking, streaming view; §5C) maps to a page: floor plan with anchors (02), status and health (02, 04), click to configure (05, 06), logged-in only (02), identity + coordinates + anchor + signal (02, 03), anchor's phones (05), raw stream (02, 03)",
+      "All five RFQ §5D scenarios have a defined visible behaviour on 02"
+    ],
+    "ui": [
+      "Every component carries a Material 3 name or is marked new with why_new",
+      "Colour is referenced only by md.sys.color tokens",
+      "One primary action per page, sentence case, at most four words"
+    ],
+    "responsive": [
+      "All 8 pages specify desktop 1440, laptop 1280, tablet 768 and mobile 375",
+      "The floor plan recomposes to a list-first view at 375, and the equipment table recomposes to a list",
+      "Side sheets become full pages below 1280"
+    ],
+    "accessibility": [
+      "Seven accessibility keys on every page, each written for that page",
+      "The floor plan has a keyboard model and a text alternative",
+      "Presence and equipment states use shape plus text, never colour alone",
+      "Async results announced with deliberate politeness: frozen positions, names unavailable and rollback are assertive; arrivals, counts and step completion are polite"
+    ],
+    "prototype": [
+      "16 prototype flows; every page reachable from 01 - Sign In",
+      "Figma render not run: no Figma connection in this session (figma_file_url null)"
+    ]
+  },
+  "design_tokens_applied": true,
+  "figma_file_url": null
+}

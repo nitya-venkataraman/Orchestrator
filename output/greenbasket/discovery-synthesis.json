@@ -1,0 +1,80 @@
+{
+  "themes": [
+    {
+      "name": "Weekly reorder rebuilt by hand",
+      "insight": "Both shoppers buy a near-identical basket every week but must search and re-add each item one at a time because there is no reorder or regulars list, turning a 3-minute task into 11+ minutes.",
+      "frequency": 2,
+      "quotes": [
+        {"text": "There’s no ‘my regulars’ list, no reorder button. It’s maddening.", "source": "Sarah Mitchell"},
+        {"text": "I have to search for each item individually. Eggs. Search. Add. Milk. Search. Add. Sourdough. Search. Add. And so on. Every. Single. Week.", "source": "Mark Thompson"},
+        {"text": "I timed it last Sunday. Eleven minutes. Eleven minutes to order essentially the same things I ordered the week before.", "source": "Mark Thompson"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Silent substitutions with no control",
+      "insight": "Out-of-stock items are swapped without warning and with no accept/reject or alternative-picking step, so shoppers only discover the wrong item on delivery — an experience that has already driven cancellation.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "And nobody told me. No text, no email, no ‘hey, we’re out of thighs, is this OK?’ It just arrived wrong.", "source": "Mark Thompson"},
+        {"text": "Don’t silently swap my food and hope I won’t notice. I’m not an idiot.", "source": "Mark Thompson"},
+        {"text": "One more bad experience and I’m done. I don’t have the bandwidth.", "source": "Mark Thompson"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Storefront with no editorial layer",
+      "insight": "The browse experience is an unsorted product grid with no seasonality, curation, or producer stories, so the exploration-minded shopper falls back to search-only and keeps checking the unchanged homepage hoping for something new.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "it was like someone had built a gorgeous storefront and then put a spreadsheet inside it.", "source": "Sarah Mitchell"},
+        {"text": "Number one, by a mile, is product discovery. The browsing experience.", "source": "Sarah Mitchell"},
+        {"text": "Search. Honestly, search is the only reliable way.", "source": "Sarah Mitchell"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Delivery timing left unsaid",
+      "insight": "Shoppers accept the two-day delivery speed but not the opacity around it — a day-only window and no proactive update when an order slips break meal planning and household logistics.",
+      "frequency": 2,
+      "quotes": [
+        {"text": "It’s the silence that’s frustrating, not the speed.", "source": "Sarah Mitchell"},
+        {"text": "I was tracking it and there was no update for, like, 36 hours. I didn’t know if it was lost or just delayed.", "source": "Sarah Mitchell"},
+        {"text": "‘Monday’ isn’t a delivery window. I need to know if it’s morning or afternoon because Kate works Tuesdays", "source": "Mark Thompson"}
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "Impact Score means nothing",
+      "insight": "The sustainability number carries no context or breakdown, so one shopper can't tell if her score is good and the other ignores it entirely; both want a tangible per-order outcome instead (farms supported, waste prevented, food miles).",
+      "frequency": 2,
+      "quotes": [
+        {"text": "I don’t really know what a 73 means. Like, is that good? Out of what? What would an 80 look like versus a 60? There’s no context.", "source": "Sarah Mitchell"},
+        {"text": "A number out of a hundred doesn’t make me feel anything.", "source": "Sarah Mitchell"},
+        {"text": "tell me— ‘Mark, your orders this month supported four local farms and saved the equivalent of planting three trees.’", "source": "Mark Thompson"}
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "GreenBasket is the side shop",
+      "insight": "Because staples and range are thin, both shoppers give the bulk of their grocery spend to Ocado/Sainsbury's/Abel & Cole and treat GreenBasket as a top-up for veg and bakery, despite rating its product quality highest.",
+      "frequency": 2,
+      "quotes": [
+        {"text": "If GreenBasket had, like, two hundred more SKUs in the staples category, I’d probably consolidate.", "source": "Sarah Mitchell"},
+        {"text": "Sainsbury’s for the boring stuff. Pasta, tinned tomatoes, cleaning products. The stuff that GreenBasket just doesn’t have yet.", "source": "Sarah Mitchell"},
+        {"text": "And then GreenBasket is sort of— the supplementary thing. Fresh veg, meat sometimes, the bakery stuff.", "source": "Mark Thompson"}
+      ],
+      "severity": "medium"
+    }
+  ],
+  "gaps": [
+    "Only two participants, both London-based professionals (31 and 45) who kept using GreenBasket — no churned/lapsed users, no non-users, no rural or non-London shoppers, no students or older shoppers.",
+    "Direct tension the corpus can't resolve: editorial/discovery browsing is Sarah's #1 want but Mark explicitly rejects it (\"I don’t need a beautiful discovery experience\") — unknown which segment is larger.",
+    "All behaviour is self-reported recall; no observed sessions, so time estimates (11 min, 36 hours) and flow friction points are unverified.",
+    "No data on GreenBasket's actual SKU count, delivery SLA, or substitution rate — pains are reported but their scale and root cause are unknown.",
+    "Whether the Impact Score is designed to expand on tap, and what its methodology is, is unknown.",
+    "No signal on price sensitivity or willingness to pay more for these fixes; both value quality but neither was asked about price.",
+    "Mobile vs desktop ordering UX for GreenBasket specifically is unexplored, though one spouse reportedly avoids phone ordering."
+  ],
+  "source_count": 2
+}

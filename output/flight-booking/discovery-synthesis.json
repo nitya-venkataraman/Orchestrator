@@ -1,0 +1,84 @@
+{
+  "themes": [
+    {
+      "name": "True cost hidden in skippable panels",
+      "insight": "To learn what the trip really costs the traveler digs through a left-hand sidebar and a fare-class panel the flow lets you skim past, discovering the $205/$361 headline carries no carry-on, no seat and no checked bag and the real total is nearer $493 — the point at which the pricier bundled fare would have been the better buy.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "So the $205 headline is a fare with no carry-on and no seat.", "source": "travel-booking walkthrough (Results page / left sidebar)"},
+        {"text": "Clicking it opens a fare-class panel — this is the step people skim past", "source": "travel-booking walkthrough (Picking the outbound)"},
+        {"text": "I scrolled to row 27 and there was not one free seat on this fare.", "source": "travel-booking walkthrough (Checkout / Seats)"},
+        {"text": "total $361.79, flagged as \"typical\" for this route.", "source": "travel-booking walkthrough (Checkout / Your flights)"},
+        {"text": "that $361.79 is not what this trip costs if you're a normal traveler.", "source": "travel-booking walkthrough (closing flag)"},
+        {"text": "at which point the $331 \"Main\" fare, which includes the seat, was the better buy from the start.", "source": "travel-booking walkthrough (closing flag)"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Price levers aren't the default view",
+      "insight": "The two controls that move price the most — shifting dates on the flexible-dates strip and re-sorting results by price instead of the default \"Recommended\" — are both off by default, so a traveler who touches neither can pay several times more for the same route in the same week.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "Sep 23 was $172, my Sep 25 was $205, and Sun Sep 27 was **$1,030**.", "source": "travel-booking walkthrough (Results page / flexible-dates strip)"},
+        {"text": "If your dates move at all, this strip is the highest-leverage thing on the page.", "source": "travel-booking walkthrough (Results page / flexible-dates strip)"},
+        {"text": "Default sort is \"Recommended,\" not price. I'd switch that.", "source": "travel-booking walkthrough (Results page)"}
+      ],
+      "severity": "high"
+    },
+    {
+      "name": "Return-leg screen changes the rules",
+      "insight": "On the return leg the traveler has to re-read the screen because it now shows price deltas instead of totals, dangles a \"+$0\" option that would split the booking across two airlines, and only a small warning notes that picking a fare re-prices the outbound too.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "Prices show as *deltas* now, not totals.", "source": "travel-booking walkthrough (Return leg)"},
+        {"text": "that would have made it a mixed-carrier itinerary, where a delay on one airline isn't the other's problem.", "source": "travel-booking walkthrough (Return leg)"},
+        {"text": "so choosing a nicer fare here re-prices the outbound too.", "source": "travel-booking walkthrough (Return leg)"}
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "Upsell nudges shape the defaults",
+      "insight": "At each decision point the traveler has to hunt for the free or decline option: a full-screen bundle interstitial hides \"No thanks\" as a text link, trip insurance forces an explicit self-incriminating opt-out, and the SMS-alerts box is already checked.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "\"No thanks\" is a text link under the blue button.", "source": "travel-booking walkthrough (Bundle & Save modal)"},
+        {"text": "you must actively tick \"I understand my $361.79 non-refundable flight booking won't be protected.\"", "source": "travel-booking walkthrough (Checkout / trip insurance)"},
+        {"text": "The SMS-alerts checkbox is pre-ticked.", "source": "travel-booking walkthrough (Checkout)"},
+        {"text": "Fine print: nonrefundable, $150/ticket change fee, free cancellation within 24 hours of booking.", "source": "travel-booking walkthrough (Checkout)"}
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "Cost figures contradict across steps",
+      "insight": "The traveler can't take any single cost figure at face value because the screens disagree — checked bags read \"$95 roundtrip\" in one place and \"$49\" per direction in another, and a \"Continue without bags?\" dialog wrongly states the trip has no carry-on.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "Watch this number — the fare panel said \"$49,\" which is per direction.", "source": "travel-booking walkthrough (Checkout / Bags)"},
+        {"text": "the \"Continue without bags?\" confirmation claims your trip has \"no carry-on or checked bags,\" which contradicts the page above it.", "source": "travel-booking walkthrough (Checkout / Bags)"},
+        {"text": "It's wrong; your carry-on is included.", "source": "travel-booking walkthrough (Checkout / Bags)"}
+      ],
+      "severity": "medium"
+    },
+    {
+      "name": "Search form defaults fight the user",
+      "insight": "Setting up the search takes corrective work: the origin field pre-fills the wrong city from geolocation and appends rather than replaces what you type, and the traveler has to know to pick \"All Airports\" so nearby airports compete.",
+      "frequency": 1,
+      "quotes": [
+        {"text": "typing over it appends rather than replaces. I had to hit the X first.", "source": "travel-booking walkthrough (Search form)"},
+        {"text": "rather than a single airport, which is what lets JFK, LGA and EWR compete in one list.", "source": "travel-booking walkthrough (Search form)"}
+      ],
+      "severity": "low"
+    }
+  ],
+  "gaps": [
+    "Only one participant, and an expert one who already reasons about fare classes and mixed-carrier risk; there is no evidence of how the 'normal traveler' the conclusion rests on actually behaves.",
+    "A single session on one route (NYC->ATL), one date range, one airline (JetBlue) and one booking site — no basis for claiming the pricing structure or these patterns generalize.",
+    "The walkthrough describes the checkout screen but never completes payment or reaches a confirmation, so the final booking steps and any post-purchase friction are unobserved.",
+    "No think-aloud or emotional data — this is an annotated teardown, so we don't know where the user actually hesitated, felt anxious, or nearly abandoned.",
+    "No task metrics (time, clicks, errors, completion) and no head-to-head comparison with competing sites, so every severity rating here is judgment, not measurement.",
+    "Desktop only; no mobile, tablet, or accessibility observations.",
+    "The claims that the flexible-dates strip and the sort control behave as expected are asserted from inspection, not tested.",
+    "The source contains an unexplained internal discrepancy — the return leg reads '$361.80' while the running total reads '$361.79'."
+  ],
+  "source_count": 1
+}

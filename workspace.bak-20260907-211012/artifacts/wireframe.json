@@ -1,0 +1,313 @@
+{
+  "sitemap": [
+    {
+      "screen": "Start Order",
+      "path": "/",
+      "children": [
+        "Reorder Basket",
+        "Search & Browse",
+        "Regulars & History"
+      ]
+    },
+    {
+      "screen": "Reorder Basket",
+      "path": "/basket",
+      "children": [
+        "Item Detail",
+        "Checkout"
+      ]
+    },
+    {
+      "screen": "Search & Browse",
+      "path": "/browse",
+      "children": [
+        "Item Detail"
+      ]
+    },
+    {
+      "screen": "Item Detail",
+      "path": "/item/:id",
+      "children": []
+    },
+    {
+      "screen": "Checkout",
+      "path": "/checkout",
+      "children": [
+        "Order Tracking"
+      ]
+    },
+    {
+      "screen": "Order Tracking",
+      "path": "/orders/:id",
+      "children": [
+        "Substitution Approval"
+      ]
+    },
+    {
+      "screen": "Substitution Approval",
+      "path": "/orders/:id/substitutions",
+      "children": []
+    },
+    {
+      "screen": "Regulars & History",
+      "path": "/account/regulars",
+      "children": [
+        "Reorder Basket"
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "screen_name": "Start Order",
+      "purpose": "Give a returning shopper one obvious path to re-place their usual order.",
+      "components": [
+        "SL-Nav",
+        "SL-Card",
+        "SL-Button",
+        "SL-Banner",
+        "SL-Tag"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav global — inverted --sl-void surface, --sl-paper text, --sl-rule-heavy bottom",
+        "Hero band — --sl-void surface, --sl-type-display greeting, one SL-Button primary in --sl-signal, --sl-rule-heavy bottom, --sl-space-16 below",
+        "SL-Card poster — last order summary: item count and total in --sl-type-h3 with --sl-type-meta labels, delivery date row, --sl-rule-base frame",
+        "SL-Card list-item ×2 — Regulars and Search & Browse entry points, --sl-space-6 gutter, --sl-space-8 within",
+        "SL-Banner info — active delivery status line when an order is open, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "No past orders yet. One action: START FIRST ORDER.",
+        "loading": "SL-Card poster shows --sl-type-meta placeholder rows on a --sl-rule-hair frame.",
+        "error": "SL-Banner error — 'Order history unavailable. Retry or search the catalogue.'"
+      },
+      "microcopy": {
+        "cta_primary": "REORDER LAST ORDER"
+      }
+    },
+    {
+      "screen_name": "Reorder Basket",
+      "purpose": "Let the shopper confirm or adjust a pre-filled copy of their last order in one view.",
+      "components": [
+        "SL-Nav",
+        "SL-Table",
+        "SL-Tag",
+        "SL-Button",
+        "SL-Banner",
+        "SL-Input"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — Start Order / Reorder Basket, --sl-type-meta",
+        "Screen title — --sl-type-h1 'Your basket', item count in --sl-type-meta, --sl-space-8 below",
+        "SL-Banner info — 'Filled from your order of {date}. Adjust anything below.', --sl-rule-base",
+        "SL-Input search — 'Add an item' field above the table, --sl-space-6 below",
+        "SL-Table default — one row per item: name, quantity SL-Input, price, SL-Tag status for the substitution rule, remove SL-Button ghost; --sl-rule-hair row rules",
+        "SL-Button primary GO TO CHECKOUT in --sl-signal plus SL-Button ghost SAVE AS REGULARS, --sl-rule-heavy top, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "Last order could not be loaded. One action: SEARCH CATALOGUE.",
+        "loading": "SL-Table default renders --sl-type-meta skeleton rows on --sl-rule-hair rules.",
+        "error": "SL-Banner error — 'Some items are no longer sold. Review the flagged rows and continue.'"
+      },
+      "microcopy": {
+        "cta_primary": "GO TO CHECKOUT"
+      }
+    },
+    {
+      "screen_name": "Search & Browse",
+      "purpose": "Provide a fast keyword path to add the occasional item outside the usual basket.",
+      "components": [
+        "SL-Nav",
+        "SL-Input",
+        "SL-Table",
+        "SL-Tag",
+        "SL-Button",
+        "SL-Banner"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav global — inverted --sl-void surface, --sl-rule-heavy bottom",
+        "SL-Input search — full-width query field, --sl-type-body, --sl-space-8 below",
+        "SL-Tag filter ×n — category and dietary filters, --sl-space-2 gap, --sl-space-6 below",
+        "SL-Table compact — results: name, producer, price, add SL-Button ghost per row; --sl-rule-hair row rules",
+        "SL-Button ghost LOAD MORE — at the list foot, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "No results for that search. One action: CLEAR SEARCH.",
+        "loading": "SL-Table compact shows --sl-type-meta placeholder rows.",
+        "error": "SL-Banner error — 'Search is unavailable. Reorder from your basket or retry.'"
+      },
+      "microcopy": {
+        "cta_primary": "ADD TO BASKET"
+      }
+    },
+    {
+      "screen_name": "Item Detail",
+      "purpose": "Show one product and let the shopper set its substitution rule before ordering.",
+      "components": [
+        "SL-Nav",
+        "SL-Card",
+        "SL-Tag",
+        "SL-Input",
+        "SL-Button",
+        "SL-Banner"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — parent screen / item name, --sl-type-meta",
+        "SL-Card poster — full-bleed image slot, --sl-type-h1 product name, --sl-type-meta producer and origin row, --sl-rule-base bottom",
+        "Price and quantity — --sl-type-h2 price, SL-Input select for quantity, --sl-space-6 below",
+        "SL-Input select — substitution rule: 'Allow suggested', 'Choose from shortlist', 'Do not substitute'; --sl-type-meta label",
+        "SL-Tag status ×n — dietary and stock labels, --sl-space-2 gap",
+        "SL-Button primary ADD TO BASKET in --sl-signal, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "Item has no description yet — the metadata row and image slot collapse to --sl-type-meta 'DETAILS TO FOLLOW'.",
+        "loading": "SL-Card poster shows a --sl-rule-hair image placeholder and --sl-type-meta label rows.",
+        "error": "SL-Banner error — 'This item could not be loaded. Return to the basket.'"
+      },
+      "microcopy": {
+        "cta_primary": "ADD TO BASKET"
+      }
+    },
+    {
+      "screen_name": "Checkout",
+      "purpose": "Collect the delivery slot and confirm the order in one screen with no surprises.",
+      "components": [
+        "SL-Nav",
+        "SL-Card",
+        "SL-Table",
+        "SL-Input",
+        "SL-Button",
+        "SL-Tag",
+        "SL-Banner"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — Reorder Basket / Checkout, --sl-type-meta",
+        "Screen title — --sl-type-h1 'Checkout', --sl-space-8 below",
+        "SL-Card data — delivery slot picker: a day list, each day carrying a morning and an afternoon window with an SL-Tag count for remaining capacity; --sl-rule-base frame",
+        "SL-Table compact — order summary lines, each showing its substitution rule as an SL-Tag status; --sl-rule-hair rules",
+        "SL-Card data — totals block: subtotal, delivery, total in --sl-type-h2 with --sl-type-meta labels",
+        "SL-Input text — optional delivery notes, --sl-type-meta label",
+        "SL-Banner warning — shown only when an item still has no substitution rule set, --sl-space-6 above",
+        "SL-Button primary PLACE ORDER in --sl-signal plus SL-Button ghost BACK TO BASKET, --sl-rule-heavy top, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "Basket is empty. One action: START ORDER.",
+        "loading": "Slot list and totals render --sl-type-meta skeletons on a --sl-rule-hair frame.",
+        "error": "SL-Banner error — 'Payment was not authorised. Check the card and place the order again.'"
+      },
+      "microcopy": {
+        "cta_primary": "PLACE ORDER"
+      }
+    },
+    {
+      "screen_name": "Order Tracking",
+      "purpose": "Give the shopper one ETA they can trust and the time it was last confirmed.",
+      "components": [
+        "SL-Nav",
+        "SL-Card",
+        "SL-Table",
+        "SL-Tag",
+        "SL-Banner",
+        "SL-Button"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — Account / Order {id}, --sl-type-meta",
+        "Hero band — --sl-void surface, --sl-type-display delivery date, SL-Tag status ON TRACK or DELAYED, --sl-rule-heavy bottom",
+        "SL-Card data — half-day window and 'last confirmed {time}' line in --sl-type-h3 with --sl-type-meta labels",
+        "SL-Banner warning — proactive delay notice carrying the new date, shown only when the ETA has moved, --sl-space-6 below",
+        "SL-Table default — order lines, each showing its final substitution outcome as an SL-Tag status; --sl-rule-hair rules",
+        "SL-Button primary VIEW SUBSTITUTIONS in --sl-signal when swaps await approval, otherwise SL-Button ghost, plus SL-Button ghost CONTACT SUPPORT, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "No active order. One action: REORDER LAST ORDER.",
+        "loading": "Hero band and SL-Card data show --sl-type-meta placeholder text.",
+        "error": "SL-Banner error — 'Live tracking is unavailable. Your delivery date is unchanged; retry for live status.'"
+      },
+      "microcopy": {
+        "cta_primary": "VIEW SUBSTITUTIONS"
+      }
+    },
+    {
+      "screen_name": "Substitution Approval",
+      "purpose": "Let the shopper accept, replace, or drop each proposed swap before the van is loaded.",
+      "components": [
+        "SL-Nav",
+        "SL-Modal",
+        "SL-Card",
+        "SL-Tag",
+        "SL-Button",
+        "SL-Banner"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav breadcrumb — Order {id} / Substitutions, --sl-type-meta",
+        "SL-Banner info — 'Answer these before {cutoff}. Anything left follows your saved rule.', --sl-rule-base",
+        "SL-Card data ×n — per swap: original item and proposed item paired, price delta in --sl-type-meta, --sl-rule-base frame, --sl-space-6 gutter",
+        "Per card — SL-Button ghost ACCEPT, SL-Button ghost CHOOSE OTHER, SL-Button destructive REMOVE ITEM, --sl-space-2 gap",
+        "SL-Modal dialog — CHOOSE OTHER opens a shortlist of in-stock alternatives as SL-Card list-item rows, --sl-rule-hair rules",
+        "SL-Button primary CONFIRM ALL in --sl-signal, pinned at the foot, --sl-rule-heavy top, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "No substitutions proposed. One action: BACK TO ORDER.",
+        "loading": "SL-Card data rows render --sl-type-meta skeletons.",
+        "error": "SL-Banner error — 'Your choices were not saved. Saved rules still apply; retry to override.'"
+      },
+      "microcopy": {
+        "cta_primary": "CONFIRM ALL"
+      }
+    },
+    {
+      "screen_name": "Regulars & History",
+      "purpose": "Let the shopper curate the item set that seeds every future reorder.",
+      "components": [
+        "SL-Nav",
+        "SL-Table",
+        "SL-Tag",
+        "SL-Button",
+        "SL-Card",
+        "SL-Banner",
+        "SL-Input"
+      ],
+      "layout": "3-col ≥1200 → 2-col 768-1199 → 1-col <768",
+      "hierarchy": [
+        "SL-Nav sidebar — account sections, --sl-rule-hair divider",
+        "Screen title — --sl-type-h1 'Regulars', --sl-space-8 below",
+        "SL-Card data — 'Your regulars seed every reorder' explanation in --sl-type-body, --sl-rule-base frame",
+        "SL-Table sortable — regular items: name, typical quantity SL-Input, last ordered in --sl-type-meta, remove SL-Button ghost; --sl-rule-hair rules",
+        "SL-Table compact — past orders: date, item count, total, reorder SL-Button ghost per row; --sl-rule-hair rules",
+        "SL-Button primary BUILD BASKET in --sl-signal, --sl-rule-heavy top, --sl-space-8 above"
+      ],
+      "states": {
+        "empty": "No regulars saved. One action: ADD FROM LAST ORDER.",
+        "loading": "Both tables render --sl-type-meta skeleton rows.",
+        "error": "SL-Banner error — 'Regulars could not load. Reorder from history below or retry.'"
+      },
+      "microcopy": {
+        "cta_primary": "BUILD BASKET"
+      }
+    }
+  ],
+  "design_system_gaps": [
+    {
+      "need": "A selectable day-by-window delivery-slot grid, showing remaining capacity per cell and enforcing a single choice.",
+      "nearest_component": "SL-Card",
+      "why_insufficient": "SL-Card data can frame the picker but models no cell selection, no single-select constraint, and no per-cell capacity state; SL-Table has row rules but no selectable-cell affordance."
+    },
+    {
+      "need": "A compact three-state substitution-rule control repeated inline on every basket and checkout row.",
+      "nearest_component": "SL-Input",
+      "why_insufficient": "SL-Input select works as a standalone field but is too heavy to repeat on every table row; the implied segmented toggle is display-only in SL-Tag, which is defined for status, filter, and count, not input."
+    },
+    {
+      "need": "A persistent order-status object that carries the current ETA, its last-confirmed timestamp, and whether it has changed.",
+      "nearest_component": "SL-Banner",
+      "why_insufficient": "SL-Banner is transient page messaging, not a durable status surface; SL-Tag status shows the state label but not the timestamp or the fact that the ETA moved."
+    }
+  ],
+  "design_tokens_applied": true,
+  "figma_file_url": "https://www.figma.com/design/DykeyuXBVT643ydzJKchTT"
+}
